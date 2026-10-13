@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>特殊健診を知る</title>
+<meta name="description" content="特殊健康診断の種類ごとに、対象、頻度、一次・二次健診の項目、根拠条文、歴史を図表で整理したページ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body class="clinic detail-page">
+
+<nav class="genre wrap" aria-label="分野">
+  <a href="index.html">ファッション</a>
+  <a href="painting.html">絵画</a>
+  <a href="philosophy.html">哲学</a>
+  <a href="medicine.html" aria-current="page">医療</a>
+</nav>
+
+<main class="wrap" id="page"></main>
+<div class="tip" id="tip" role="tooltip" hidden></div>
+
+<script src="data/medicine-exams.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const table = (head, rows) => `<thead><tr>${head.map(h => `<th scope="col">${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c,i) => `<td data-l="${head[i]}"><span>${c}</span></td>`).join("")}</tr>`).join("")}</tbody>`;
+const tip = $("#tip");
+document.addEventListener("pointerover", e => {
+  const t = e.target.closest("[data-tip]"); if (!t) { tip.hidden = true; return; }
+  tip.innerHTML = t.dataset.tip; tip.hidden = false;
+  const r = t.getBoundingClientRect(), w = tip.offsetWidth;
+  tip.style.left = Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width / 2 - w / 2)) + "px";
+  tip.style.top = (r.top + scrollY - tip.offsetHeight - 10) + "px";
+});
+
+const id = new URLSearchParams(location.search).get("id") || EXAMS[0].id;
+const idx = Math.max(0, EXAMS.findIndex(x => x.id === id));
+const e = EXAMS[idx];
+document.title = `${e.name}｜特殊健診を知る`;
+
+/* 図：3年間の受診スケジュール（この健診と一般の定期健診） */
+function schedule(){
+  if (!e.months) return `<p class="caption">この健診は決まった間隔ではなく、リスクアセスメントの結果などから必要と判断したときに行います。</p>`;
+  const Wd = 900, L = 170, R = 30, H = 170, span = 36;
+  const x = m => L + m / span * (Wd - L - R);
+  const rows = [[e.short + "の健診", e.months, "var(--mc)"], ["一般の定期健診", 12, "color-mix(in srgb,var(--sub) 45%,#fff)"]];
+  if (e.id === "ex-pneumo") rows[0] = ["じん肺健診（管理1・従事中）", 36, "var(--mc)"], rows.splice(1, 0, ["じん肺健診（管理2・3）", 12, "color-mix(in srgb,var(--mc) 60%,#fff)"]);
+  let g = "";
+  for (let m = 0; m <= span; m += 6) g += `<line x1="${x(m)}" y1="16" x2="${x(m)}" y2="${H-30}" stroke="var(--hair)"/><text x="${x(m)}" y="${H-10}" text-anchor="middle" class="ax">${m === 0 ? "開始" : m + "か月"}</text>`;
+  rows.forEach((r, i) => {
+    const y = 40 + i * 40;
+    g += `<text x="${L-12}" y="${y+5}" text-anchor="end" class="rl">${r[0]}</text><line x1="${x(0)}" y1="${y}" x2="${x(span)}" y2="${y}" stroke="var(--hair)" stroke-width="2"/>`;
+    for (let m = 0; m <= span; m += r[1]) g += `<circle class="hit" cx="${x(m)}" cy="${y}" r="8" fill="${r[2]}" stroke="#fff" stroke-width="2" data-tip="<b>${r[0]}</b><br>${m === 0 ? "雇入れ時・配置替え時" : m + "か月後"}"/>`;
+  });
+  return `<div class="chart-wrap"><svg viewBox="0 0 ${Wd} ${H}" class="chart" role="img" aria-label="${e.name}と一般の定期健診の3年間の受診時期の比較">${g}</svg></div>`;
+}
+
+const prev = EXAMS[(idx - 1 + EXAMS.length) % EXAMS.length], next = EXAMS[(idx + 1) % EXAMS.length];
+$("#page").style.setProperty("--mc", e.c);
+$("#page").innerHTML = `
+ <a class="back linkbtn" href="medicine.html#tokushu">← 特殊健診のページへ</a>
+ <header class="dp-hero">
+  <div class="exam-icon" aria-hidden="true">${e.short.slice(0, 2)}</div>
+  <div>
+   <div class="eyebrow">Special Health Examination</div>
+   <h1>${e.name}</h1>
+   <div class="dp-meta"><span>${e.law}</span>${e.v === "ok" ? `<span class="chk ok">項目を資料で確認済</span>` : `<span class="chk ng">項目は一部のみ確認</span>`}</div>
+  </div>
+ </header>
+ <p class="dp-lead">${e.what}</p>
+
+ <div class="stats exam-stats">
+  <div class="stat"><b>${e.months ? (e.id === "ex-pneumo" ? "1〜3年" : e.months + "か月") : "必要時"}</b><span>定期の間隔</span><small>${e.timing}</small></div>
+  <div class="stat"><b>${e.keep.split("（")[0]}</b><span>記録の保存</span><small>${e.keep.includes("（") ? e.keep.slice(e.keep.indexOf("（")) : "健康診断個人票"}</small></div>
+  <div class="stat"><b>報告</b><span>所轄の労働基準監督署</span><small>${e.report}</small></div>
+ </div>
+
+ <h2 class="dp-h">対象となる人</h2>
+ <p class="dp-text">${e.target}</p>
+ <ul class="signs">${e.examples.map(s => `<li>${s}</li>`).join("")}</ul>
+
+ <h2 class="dp-h">図1　健診の流れと項目</h2>
+ <div class="exam-flow">
+  <div class="ef-col"><div class="ef-head">一次健診<small>全員に必ず行う</small></div><ol>${e.first.map(s => `<li>${s}</li>`).join("")}</ol></div>
+  <div class="ef-arrow" aria-hidden="true"><span>医師が<br>必要と<br>認めた人</span>→</div>
+  <div class="ef-col second"><div class="ef-head">二次健診<small>医師が必要と認める場合</small></div><ol>${e.second.map(s => `<li>${s}</li>`).join("")}</ol></div>
+  <div class="ef-arrow" aria-hidden="true">→</div>
+  <div class="ef-col after"><div class="ef-head">その後<small>事業者が行う</small></div><ol><li>本人へ結果を通知</li><li>医師の意見を聴く（3か月以内）</li><li>作業転換などの事後措置</li><li>記録の保存（${e.keep}）</li><li>労基署へ報告</li></ol></div>
+ </div>
+ ${e.freqTable ? `<h2 class="dp-h">管理区分と健診の頻度</h2><div class="tbl-wrap"><table class="tbl">${table(["粉じん作業との関係","管理区分","定期健診"], e.freqTable.map(r => [r[0], `<b>${r[1]}</b>`, r[2]]))}</table></div>` : ""}
+
+ <h2 class="dp-h">図2　3年間の受診スケジュール</h2>
+ <p class="caption">点にマウスを重ねる（スマホはタップ）と内容が出ます。</p>
+ ${schedule()}
+
+ <h2 class="dp-h">押さえておきたい点</h2>
+ <ol class="points">${e.notes.map(s => `<li>${s}</li>`).join("")}</ol>
+
+ <h2 class="dp-h">根拠となる条文</h2>
+ <div class="tbl-wrap"><table class="tbl">${table(["条文","内容"], e.arts.map(a => [`<b>${a[0]}</b>`, a[1]]))}</table></div>
+ ${e.egov ? `<div class="bk-links big"><a href="https://laws.e-gov.go.jp/law/${e.egov}" target="_blank" rel="noopener">条文を読む（e-Gov 法令検索） ↗</a></div>` : ""}
+
+ <h2 class="dp-h">あゆみ</h2>
+ <div class="tbl-wrap"><table class="tbl events">${table(["年","できごと"], e.hist.map(h => [`<span class="latin">${h[0]}</span>`, h[1]]))}</table></div>
+
+ <h2 class="dp-h">ほかの特殊健診</h2>
+ <div class="exam-nav">${EXAMS.map(x => `<a class="mpill${x.id === e.id ? " on" : ""}" href="exam.html?id=${x.id}" style="--mc:${x.c}">${x.short}</a>`).join("")}</div>
+ <nav class="pager">
+  <a href="exam.html?id=${prev.id}">← ${prev.name}</a>
+  <a href="exam.html?id=${next.id}">${next.name} →</a>
+ </nav>
+ <p class="disclaimer" style="margin-top:32px">学習用の一般的な情報です。条文番号や項目は2026年10月時点の確認によるもので、物質ごとの細かな項目や最新の改正は、e-Gov の条文、厚生労働省・労働局の資料、所轄の労働基準監督署で必ず確認してください。</p>
+ <p class="notice">出典：${e.src.map(s => `<a href="${s[1]}" target="_blank" rel="noopener">${s[0]}</a>`).join("、")}</p>`;
+</script>
+</body>
+</html>
