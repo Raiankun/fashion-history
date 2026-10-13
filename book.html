@@ -1,0 +1,118 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>名著を読む</title>
+<meta name="description" content="哲学の名著の要点、名言、構成、影響関係を図表で紹介するページ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body class="classic detail-page">
+
+<nav class="genre wrap" aria-label="分野">
+  <a href="index.html">ファッション</a>
+  <a href="painting.html">絵画</a>
+  <a href="philosophy.html" aria-current="page">哲学</a>
+</nav>
+<div class="meander" aria-hidden="true"></div>
+
+<main class="wrap" id="page"></main>
+<div class="tip" id="tip" role="tooltip" hidden></div>
+
+<script src="data/philosophy.js"></script>
+<script src="data/philosophy-detail.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const tip = $("#tip");
+document.addEventListener("pointerover", e => {
+  const t = e.target.closest("[data-tip]"); if (!t) { tip.hidden = true; return; }
+  tip.innerHTML = t.dataset.tip; tip.hidden = false;
+  const r = t.getBoundingClientRect(), w = tip.offsetWidth;
+  tip.style.left = Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width / 2 - w / 2)) + "px";
+  tip.style.top = (r.top + scrollY - tip.offsetHeight - 10) + "px";
+});
+function table(head, rows){ return `<thead><tr>${head.map(h => `<th scope="col">${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c,i) => `<td data-l="${head[i]}"><span>${c}</span></td>`).join("")}</tr>`).join("")}</tbody>`; }
+const yearLabel = y => y < 0 ? `前${-y}年` : `${y}年`;
+
+const id = new URLSearchParams(location.search).get("id") || BOOKS[0].id;
+const idx = Math.max(0, BOOKS.findIndex(b => b.id === id));
+const b = BOOKS[idx], d = BOOK_DETAIL[b.id], m = MOVEMENTS.find(x => x.id === b.m);
+document.title = `『${b.t}』｜名著を読む`;
+
+/* 図2：時代の中の位置。1500年より前は縮めて描く（軸の切れ目を表示） */
+function placeChart(){
+  const W = 960, L = 250, R = 20, RH = 28;
+  const eras = MOVEMENTS.filter(mv => BOOKS.some(x => x.m === mv.id));
+  const H = eras.length * RH + 46;
+  const BREAK = 1500, cut = L + (W - L - R) * 0.3;
+  const x = y => y < BREAK ? L + (y + 600) / (BREAK + 600) * (cut - L) : cut + (y - BREAK) / (2000 - BREAK) * (W - R - cut);
+  let g = "";
+  [-500, 0, 500, 1000, 1500, 1600, 1700, 1800, 1900, 2000].forEach(t => {
+    g += `<line x1="${x(t)}" y1="8" x2="${x(t)}" y2="${H-26}" stroke="var(--hair)" stroke-width="1"/><text x="${x(t)}" y="${H-8}" text-anchor="middle" class="ax">${t < 0 ? "前" + (-t) : t}</text>`;
+  });
+  g += `<text x="${cut}" y="${H-22}" text-anchor="middle" class="ax brk">≈</text>`;
+  eras.forEach((mv, i) => {
+    const y = 12 + i * RH;
+    g += `<a href="philosophy.html#${mv.id}"><text x="${L-10}" y="${y+12}" text-anchor="end" class="rl${mv.id === b.m ? " me" : ""}">${mv.t}</text></a>`;
+    BOOKS.filter(x => x.m === mv.id).forEach(bk => {
+      const dd = BOOK_DETAIL[bk.id], me = bk.id === b.id;
+      g += `<a href="book.html?id=${bk.id}"><circle class="hit" cx="${x(dd.yr)}" cy="${y+8}" r="${me ? 9 : 6}" fill="${me ? "var(--ox)" : "color-mix(in srgb,var(--ink) 35%,#fff)"}" stroke="#fff" stroke-width="2" data-tip="<b>『${bk.t}』</b><br>${bk.a}・${bk.y}"/></a>`;
+    });
+  });
+  return `<svg viewBox="0 0 ${W} ${H}" class="chart" role="img" aria-label="全39冊を年代と時代ごとに並べた図。この本を強調">${g}</svg>`;
+}
+
+const flow = `<div class="flowmap">
+  <div class="fcol">${d.before.map(t => `<span class="fnode">${t}</span>`).join("") || `<span class="fnode muted">―</span>`}</div>
+  <div class="farrow" aria-hidden="true">→</div>
+  <div class="fcol"><span class="fnode me">『${b.t}』</span></div>
+  <div class="farrow" aria-hidden="true">→</div>
+  <div class="fcol">${d.after.map(t => `<span class="fnode">${t}</span>`).join("") || `<span class="fnode muted">―</span>`}</div>
+ </div>
+ <div class="flowkey"><span>前提・下敷き</span><span></span><span>影響を与えた</span></div>`;
+
+const stars = n => `<span class="stars" aria-label="難しさ ${n}／3">${"★".repeat(n)}<span>${"★".repeat(3 - n)}</span></span>`;
+const quotes = [...(b.q ? [[b.q, b.qn]] : []), ...d.q].filter((q, i, arr) => arr.findIndex(r => r[0] === q[0]) === i);   // 同じ文は1回だけ
+const prev = BOOKS[(idx - 1 + BOOKS.length) % BOOKS.length], next = BOOKS[(idx + 1) % BOOKS.length];
+
+$("#page").style.setProperty("--mc", m.c);
+$("#page").innerHTML = `
+ <a class="back linkbtn" href="philosophy.html#books">← 名著の一覧へ</a>
+ <header class="dp-hero book-hero">
+  <div class="cover" aria-hidden="true"><span>${b.t.replace(/（.*?）/g, "")}</span><small>${b.a}</small></div>
+  <div>
+   <div class="eyebrow">${yearLabel(d.yr)} ・ ${m.en}</div>
+   <h1>『${b.t}』</h1>
+   <div class="dp-meta"><span>${b.a}</span><span>${b.y}</span><a class="mpill" href="philosophy.html#${m.id}" style="--mc:${m.c}">${m.t}</a>${isAozora(b) ? `<span class="badge">青空文庫で読める</span>` : ""}</div>
+   <div class="dp-meta">難しさ ${stars(d.lv)}</div>
+  </div>
+ </header>
+ <p class="dp-lead">${b.sum}</p>
+ ${b.read.length ? `<div class="bk-links big">${b.read.map(r => `<a class="${r[1].includes("aozora") ? "aoz" : ""}" href="${r[1]}" target="_blank" rel="noopener">${r[0]} ↗</a>`).join("")}</div>` : `<p class="caption">著作権保護期間中のため、全文は書店・図書館で。</p>`}
+
+ <h2 class="dp-h">要点</h2>
+ <ol class="points">${d.pts.map(p => `<li>${p}</li>`).join("")}</ol>
+
+ ${quotes.length ? `<h2 class="dp-h">名言</h2><div class="quotes">${quotes.map(q => `<figure class="bigquote"><blockquote>「${q[0]}」</blockquote><figcaption>${q[1]}</figcaption></figure>`).join("")}</div>` : ""}
+
+ <h2 class="dp-h">構成</h2>
+ <div class="tbl-wrap"><table class="tbl">${table(["部・章","内容"], d.parts.map(p => [`<b>${p[0]}</b>`, p[1] || "―"]))}</table></div>
+
+ <h2 class="dp-h">図1　前提と影響</h2>
+ ${flow}
+
+ <h2 class="dp-h">図2　時代の中の位置</h2>
+ <p class="caption">全39冊を、書かれた年と時代ごとに並べました。点を押すとその本へ移動します。1500年より前は横幅を縮めています。</p>
+ <div class="chart-wrap">${placeChart()}</div>
+
+ <nav class="pager">
+  <a href="book.html?id=${prev.id}">← 『${prev.t}』</a>
+  <a href="book.html?id=${next.id}">『${next.t}』 →</a>
+ </nav>
+ <p class="notice">出典：時代の解説は ${m.src.map(s => `<a href="${s.startsWith("http") ? s : "https://en.wikipedia.org/wiki/" + s}" target="_blank" rel="noopener">${s.startsWith("http") ? "Stanford Encyclopedia of Philosophy" : "Wikipedia：" + s.replace(/_/g, " ")}</a>`).join("、")}。名言の「当サイト訳」は原典からの当サイトによる訳・要旨、「原文」は日本語の原著からの引用です。年は推定を含みます。</p>`;
+</script>
+</body>
+</html>
