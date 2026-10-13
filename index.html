@@ -54,6 +54,27 @@ h3.sub .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-r
 .caption{font-size:13px;color:var(--sub);margin:12px 0 0;max-width:46em}
 .notice{font-size:12px;color:var(--sub);margin-top:64px;max-width:52em;line-height:1.9}
 
+/* ページ内ID */
+.sid{font-size:11px;letter-spacing:.04em;color:var(--sub);text-decoration-color:transparent;font-family:ui-monospace,Menlo,Consolas,monospace;word-break:break-all;line-height:1.5}
+.sid:hover{color:var(--ink);text-decoration-color:var(--hair)}
+.sid.copied::after{content:" コピーしました";font-family:var(--f-body);color:var(--mark)}
+/* Met Open Access の実物資料 */
+.met{margin-top:20px}
+.met:empty{display:none}
+.met-row{display:grid;grid-template-columns:repeat(auto-fill,minmax(96px,1fr));gap:12px;max-width:44em}
+.met figure{margin:0;min-width:0}
+.met img{display:block;width:100%;aspect-ratio:3/4;object-fit:contain;background:var(--tint)}
+.met figcaption{font-size:11.5px;line-height:1.6;margin-top:6px}
+.met figcaption span{display:block;color:var(--sub)}
+.met-credit,.met-none{font-size:11.5px;color:var(--sub);margin:10px 0 0;line-height:1.8}
+/* 公式動画 */
+.video{flex-basis:100%;max-width:640px;aspect-ratio:16/9;background:var(--tint);border:1px solid var(--hair)}
+.video iframe{display:block;width:100%;height:100%;border:0}
+.vplay{font:inherit;width:100%;height:100%;background:none;border:0;color:var(--ink);cursor:pointer;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:4px;font-size:14px;letter-spacing:.06em}
+.vplay span{font-size:28px;line-height:1}
+.vplay small{font-size:11.5px;color:var(--sub)}
+.vplay:hover span{color:var(--mark)}
+
 /* Filter = text index */
 .filter,.brandbar{display:flex;flex-wrap:wrap;gap:6px 22px;margin-bottom:28px}
 .chip{font:inherit;font-size:13px;letter-spacing:.06em;background:none;border:0;padding:2px 0;color:var(--sub);cursor:pointer;border-bottom:1px solid transparent}
@@ -285,7 +306,7 @@ dl.pts dd{margin:0}
   <section id="timeline" data-panel>
     <span class="kicker">Timeline</span>
     <h2>年代でたどる</h2>
-    <p class="lead">各年代の「＋ 詳しく」を開くと主な出来事・人物・現在への影響が見られます。系譜を選ぶと、その流れに関わる年代だけが強調されます。</p>
+    <p class="lead">各年代の「＋ 詳しく」を開くと主な出来事・人物・現在への影響が見られます。系譜を選ぶと、その流れに関わる年代だけが強調されます。各年代の画像は、メトロポリタン美術館がパブリックドメインとして公開している実物の衣装です。</p>
     <div class="filter" id="filter"></div>
     <div class="thread-note" id="threadNote" hidden></div>
     <div class="eras" id="eras"></div>
@@ -374,7 +395,7 @@ dl.pts dd{margin:0}
 
     <h3 class="sub">ブランド別</h3>
     <div class="brandbar" id="brandbar"></div>
-    <p class="photonote">ランウェイ写真は著作権があり、このページには直接載せられないため、写真へのリンクを付けています。FASHIONSNAP（日本語・ブラウザで開けます）で見つかったショーはそちらへ、見つからないものはGoogle画像検索へつなげています。各ショーの「構想と着想の源を見る」から、発想の元と系譜の流れを詳しく見られます。左の色見本は、報道をもとにしたコレクションの主な色です。解説は海外メディアの記事を日本語で要約したものです。</p>
+    <p class="photonote">ランウェイ写真は著作権があり、このページには直接載せられないため、写真へのリンクを付けています。ブランド公式の動画を登録したショーは、その場で再生できます（未登録のショーはYouTube検索へつなげています）。FASHIONSNAP（日本語・ブラウザで開けます）で見つかったショーはそちらへ、見つからないものはGoogle画像検索へつなげています。各ショーの「構想と着想の源を見る」から、発想の元と系譜の流れを詳しく見られます。左の色見本は、報道をもとにしたコレクションの主な色です。解説は海外メディアの記事を日本語で要約したものです。</p>
     <div class="brand" id="brand"></div>
     <p class="notice" style="margin-top:24px">2026年10月時点の報道をもとに整理しています。ショーの評価は媒体によって分かれます。ここでは代表的な見方を短くまとめています。</p>
   </section>
@@ -1109,6 +1130,30 @@ const PHOTOS = {
  "saintlaurent-fw26":FS+"saint-laurent/2026aw/","saintlaurent-ss27":FS+"saint-laurent/2027ss/"
 };
 
+/* ===== 公式動画（YouTube） =====
+   ショーID → 動画ID（youtube.com/watch?v=XXXXXXXXXXX の XXXXXXXXXXX）。
+   ブランド公式チャンネルの動画だけを登録する。未登録のショーにはYouTube検索へのリンクを出す */
+const VIDEOS = {
+};
+
+/* ===== 年表の実物資料：メトロポリタン美術館 Open Access =====
+   閲覧時にMetの公開APIで服飾部門（The Costume Institute）を検索し、パブリックドメイン（CC0）の画像だけを表示する */
+const MET_API = "https://collectionapi.metmuseum.org/public/collection/v1/";
+const ERA_MET = [
+ {from:1858, to:1914, q:["Worth","Poiret","Fortuny"]},
+ {from:1919, to:1929, q:["Chanel","Vionnet","Patou"]},
+ {from:1930, to:1939, q:["Schiaparelli","Vionnet","Adrian"]},
+ {from:1940, to:1949, q:["Dior","McCardell","Balenciaga"]},
+ {from:1950, to:1959, q:["Balenciaga","Givenchy","Dior"]},
+ {from:1960, to:1969, q:["Courrèges","Cardin","Quant","Saint Laurent"]},
+ {from:1970, to:1979, q:["Halston","Westwood","Kenzo","Miyake"]},
+ {from:1980, to:1989, q:["Comme des Garçons","Yamamoto","Gaultier","Armani"]},
+ {from:1990, to:1999, q:["Helmut Lang","Prada","Jil Sander","Margiela"]},
+ {from:2000, to:2009, q:["Lagerfeld","Marc Jacobs","Slimane"]},
+ {from:2010, to:2019, q:["Céline","Gucci","Sacai"]},
+ {from:2020, to:2026, q:["Bottega Veneta","Loewe"]}
+];
+
 /* 模式図：シルエットの種類と配色だけを描く（実際の写真ではない） */
 function fig(sil, pal){
   const [a, b = a, c = b] = pal;
@@ -1174,13 +1219,22 @@ const esc = s => s.replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'
 
 
 
+/* ページ内ID：表示してリンクにし、押すとURLをコピーする（VIDEOSの登録にも使う） */
+const idTag = id => `<a class="sid" href="#${id}" data-copy="${id}" title="このIDのリンクをコピー">#${id}</a>`;
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-copy]"); if (!a) return;
+  const url = location.href.split("#")[0] + "#" + a.dataset.copy;
+  try { navigator.clipboard.writeText(url).then(() => { a.classList.add("copied"); setTimeout(() => a.classList.remove("copied"), 1400); }, () => {}); } catch(_) {}
+});
+
 $("#eras").innerHTML = ERAS.map((e,i) => `
  <article class="era" data-th="${e.th.join(" ")}" id="era-${i}">
-  <div class="swatch"><div class="years">${e.y}</div><div class="cloth" style="background:${e.c}"></div></div>
+  <div class="swatch"><div class="years">${e.y}</div>${idTag("era-" + i)}<div class="cloth" style="background:${e.c}"></div></div>
   <div class="era-body">
    <h3>${e.t}</h3>
    <p class="sum">${e.s}</p>
    <div class="tags">${e.th.map(t => `<span class="tag">${THREADS[t].name}</span>`).join("")}</div>
+   <div class="met" data-met="${i}"></div>
    <details>
     <summary>詳しく</summary>
     <div class="cols">
@@ -1190,6 +1244,54 @@ $("#eras").innerHTML = ERAS.map((e,i) => `
    </details>
   </div>
  </article>`).join("");
+
+/* ===== Met Open Access の画像を年代ごとに読み込む ===== */
+const metJSON = u => fetch(MET_API + u).then(r => { if(!r.ok) throw new Error(r.status); return r.json(); });
+const metSearchUrl = i => "https://www.metmuseum.org/art/collection/search?q=" + encodeURIComponent(ERA_MET[i].q[0]);
+async function findMet(i, max = 4){
+  const m = ERA_MET[i];
+  const lists = await Promise.all(m.q.map(q => metJSON(`search?departmentId=8&hasImages=true&artistOrCulture=true&dateBegin=${m.from}&dateEnd=${m.to}&q=${encodeURIComponent(q)}`)
+    .then(r => (r.objectIDs || []).slice(0, 8)).catch(() => [])));
+  const ids = [];   // 各デザイナーから交互に取り、偏りを避ける
+  for (let k = 0; k < 8; k++) lists.forEach(l => { if (l[k] && !ids.includes(l[k])) ids.push(l[k]); });
+  const out = [];
+  for (let k = 0; k < ids.length && out.length < max; k += 6){
+    const objs = await Promise.all(ids.slice(k, k + 6).map(id => metJSON("objects/" + id).catch(() => null)));
+    objs.forEach(o => { if (o && o.isPublicDomain && o.primaryImageSmall && out.length < max)
+      out.push({u:o.primaryImageSmall, t:o.title || "", d:o.objectDate || "", a:o.artistDisplayName || "", h:o.objectURL}); });
+  }
+  return out;
+}
+function renderMet(el, i, items){
+  if (!items.length){
+    el.innerHTML = `<p class="met-none">この時代のパブリックドメイン画像は見つかりませんでした。<a href="${metSearchUrl(i)}" target="_blank" rel="noopener">メトロポリタン美術館のコレクションで探す ↗</a></p>`;
+    return;
+  }
+  el.innerHTML = `<div class="met-row">${items.map(o => `
+    <figure><a href="${esc(o.h)}" target="_blank" rel="noopener"><img src="${esc(o.u)}" alt="${esc(o.t)}" loading="lazy" decoding="async"></a>
+     <figcaption>${esc(o.t)}<span>${esc([o.a, o.d].filter(Boolean).join("・"))}</span></figcaption></figure>`).join("")}</div>
+    <p class="met-credit">画像：メトロポリタン美術館 The Costume Institute（Open Access／CC0）。画像を押すと所蔵品ページが開きます。</p>`;
+}
+async function loadMet(el){
+  const i = +el.dataset.met, key = "met-v1-" + i;
+  let items = null;
+  try { items = JSON.parse(sessionStorage.getItem(key)); } catch(e) {}
+  if (!items){
+    el.innerHTML = `<p class="met-none">メトロポリタン美術館の所蔵品を読み込み中…</p>`;
+    try { items = await findMet(i); }
+    catch(e) { el.innerHTML = `<p class="met-none">所蔵品を読み込めませんでした。<a href="${metSearchUrl(i)}" target="_blank" rel="noopener">メトロポリタン美術館のコレクションで探す ↗</a></p>`; return; }
+    try { sessionStorage.setItem(key, JSON.stringify(items)); } catch(e) {}
+  }
+  renderMet(el, i, items);
+}
+{
+  const mets = document.querySelectorAll("[data-met]");
+  if ("IntersectionObserver" in window){
+    // .met は空のあいだ非表示なので、年代のカード全体を監視する
+    const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ io.unobserve(e.target); loadMet(e.target.querySelector("[data-met]")); } }), {rootMargin:"300px"});
+    mets.forEach(el => io.observe(el.closest(".era")));
+  } else mets.forEach(loadMet);
+}
 
 let active = null;
 function renderFilter(){
@@ -1244,7 +1346,7 @@ function renderBrand(){
    <h4 style="margin-top:8px">ショーごとの解説（新しい順）</h4>
    <div class="showlist">${b.shows.slice().reverse().map(s => `
     <article class="show">
-     <div class="show-side"><span class="season">${s.s}</span>${s.d ? `<span class="when">${s.d}</span>` : ""}<div class="pal" aria-label="主な色">${s.pal.map(c => `<span style="background:${c}"></span>`).join("")}</div></div>
+     <div class="show-side"><span class="season">${s.s}</span>${idTag(s.id)}${s.d ? `<span class="when">${s.d}</span>` : ""}<div class="pal" aria-label="主な色">${s.pal.map(c => `<span style="background:${c}"></span>`).join("")}</div></div>
      <div class="show-body">
       <h5>${s.t}</h5>
       <dl class="pts">${s.pts.map(p => `<div><dt>${p[0]}</dt><dd>${p[1]}</dd></div>`).join("")}</dl>
@@ -1253,13 +1355,13 @@ function renderBrand(){
       <div class="links">
        ${INSP[s.id] ? `<a class="more" href="#${s.id}">構想と着想の源 →</a>` : ""}
        <a class="photo" href="${photoLink(b, s).u}" target="_blank" rel="noopener">${photoLink(b, s).l} ↗</a>
+       ${videoBlock(b, s)}
        <div class="src"><span>出典</span>${s.src.map(x => `<a href="${x[1]}" target="_blank" rel="noopener">${x[0]}</a>`).join("")}</div>
       </div>
      </div>
     </article>`).join("")}</div>`;
 }
 $("#brandbar").addEventListener("click", e => { const c = e.target.closest("[data-b]"); if(c){ brandIdx = +c.dataset.b; renderBrand(); } });
-renderBrand();
 
 function renderCalc(){
   const y = +$("#yr").value;
@@ -1284,11 +1386,31 @@ const slug = t => t.toLowerCase().replace(/[^a-z0-9]/g, "");
 const showId = (b, s) => slug(b.n) + "-" + slug(s.s);
 const SHOWS = [];
 BRANDS.forEach((b, bi) => b.shows.forEach(s => { s.id = showId(b, s); s.bi = bi; SHOWS.push(s); }));
+renderBrand();   // ショーIDが揃ってから描く
 function photoLink(b, s){
   if (PHOTOS[s.id]) return {u:PHOTOS[s.id], l:"写真を見る（FASHIONSNAP・日本語）"};
   const q = encodeURIComponent(`${b.n} ${s.s.replace(/–/g,"-")} runway ${s.t}`);
   return {u:`https://www.google.com/search?tbm=isch&q=${q}`, l:"画像検索で見る（Google）"};
 }
+/* 公式動画：登録済みならクリックで再生、未登録ならYouTube検索へ */
+function seasonQuery(s){
+  const m = s.s.match(/^(SS|FW|Cruise)(\d{2})/);
+  if (!m) { const y = s.s.match(/^(\d{4})\.\d{2}$/); return y ? y[1] : null; }
+  return ({SS:"Spring-Summer", FW:"Fall-Winter", Cruise:"Cruise"})[m[1]] + " 20" + m[2]
+    + (/メンズ/.test(s.s) ? " Men's" : /Artisanal/.test(s.s) ? " Artisanal" : /Couture/.test(s.s) ? " Couture" : "");
+}
+function videoBlock(b, s){
+  const id = VIDEOS[s.id];
+  if (id && /^[\w-]{11}$/.test(id))
+    return `<div class="video" data-yt="${id}"><button class="vplay" type="button"><span aria-hidden="true">▶</span>公式動画を再生<small>YouTube・押すと読み込みます</small></button></div>`;
+  const q = seasonQuery(s); if (!q) return "";
+  return `<a class="photo" href="https://www.youtube.com/results?search_query=${encodeURIComponent(`${b.n} ${q} show`)}" target="_blank" rel="noopener">公式動画を探す（YouTube）↗</a>`;
+}
+document.addEventListener("click", e => {
+  const p = e.target.closest(".vplay"); if (!p) return;
+  const v = p.parentElement, id = v.dataset.yt;
+  v.innerHTML = `<iframe src="https://www.youtube-nocookie.com/embed/${id}?autoplay=1&rel=0" title="公式動画" allow="autoplay; encrypted-media; picture-in-picture; fullscreen" allowfullscreen></iframe>`;
+});
 /* 逆引き：源 → それを参照したショー */
 const REFBY = {};
 Object.entries(INSP).forEach(([id, v]) => v.refs.forEach(r => (REFBY[r[0]] = REFBY[r[0]] || []).push(id)));
@@ -1325,13 +1447,14 @@ function openDetail(id){
     <div class="srcgrid">${refs}</div>
     <h3 class="sub">ショーの中身</h3>
     <div class="dbody">
-      <div class="show-side"><span class="season">${s.s}</span>${s.d ? `<span class="when">${s.d}</span>` : ""}<div class="pal" aria-label="主な色">${s.pal.map(c => `<span style="background:${c}"></span>`).join("")}</div></div>
+      <div class="show-side"><span class="season">${s.s}</span>${idTag(s.id)}${s.d ? `<span class="when">${s.d}</span>` : ""}<div class="pal" aria-label="主な色">${s.pal.map(c => `<span style="background:${c}"></span>`).join("")}</div></div>
       <div class="show-body">
         <dl class="pts">${s.pts.map(p => `<div><dt>${p[0]}</dt><dd>${p[1]}</dd></div>`).join("")}</dl>
         ${s.pro || s.con ? `<div class="evals">${s.pro ? `<div class="ev pro"><b>評価</b>${s.pro}</div>` : ""}${s.con ? `<div class="ev con"><b>異論・注意</b>${s.con}</div>` : ""}</div>` : ""}
         ${s.ctx ? `<p class="ctx"><b>文脈</b>${s.ctx}</p>` : ""}
         <div class="links">
           <a class="photo" href="${ph.u}" target="_blank" rel="noopener">${ph.l} ↗</a>
+          ${videoBlock(b, s)}
           <div class="src"><span>出典</span>${s.src.map(x => `<a href="${x[1]}" target="_blank" rel="noopener">${x[0]}</a>`).join("")}</div>
         </div>
       </div>
@@ -1391,6 +1514,7 @@ $("#srclist").addEventListener("click", e => { const er = e.target.closest("[dat
 function route(){
   const h = location.hash.slice(1);
   if (showById(h)) { openDetail(h); return true; }
+  if (/^era-\d+$/.test(h) && ERAS[+h.slice(4)]) { gotoEra(+h.slice(4)); return true; }
   if (h.startsWith("src-") && SOURCES[h.slice(4)]) {
     showTab("sources");
     const el = document.getElementById(h); if (el) { el.scrollIntoView({block:"center"}); el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1600); }
