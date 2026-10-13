@@ -1,0 +1,1397 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#fff;color:#000}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>装いの系譜</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Shippori+Mincho+B1:wght@600;800&family=Zen+Kaku+Gothic+New:wght@400;500;700&family=DM+Mono:wght@400;500&display=swap">
+<style>
+/* Layout: 生地見本帳。年代ごとに「スワッチ（生地見本）」を貼った台紙を縦に綴じ、上部のタブで 年表 / 系譜 / 用語 / 今を読む を切り替える */
+:root{
+  --bg:#EEF0EC; --paper:#F8F9F6; --ink:#1B2030; --muted:#5D6474; --line:#C9CEC6;
+  --accent:#2C4A7C; --accent-soft:#DCE3EE; --mark:#9B3B2E;
+  --k-founder:#9B3B2E; --k-designer:#2C4A7C; --k-art:#7A5C9A; --k-place:#4E7A4A; --k-society:#A07A2A;
+  --f-display:"Shippori Mincho B1","Hiragino Mincho ProN","Yu Mincho",serif;
+  --f-body:"Zen Kaku Gothic New","Hiragino Sans","Yu Gothic",sans-serif;
+  --f-mono:"DM Mono",ui-monospace,Menlo,monospace;
+}
+@media (prefers-color-scheme: dark){:root:not([data-theme="light"]){
+  --bg:#12151D; --paper:#1A1E29; --ink:#E6E8EE; --muted:#9AA1B2; --line:#2F3545;
+  --accent:#8FADE0; --accent-soft:#25304A; --mark:#E08A7A; --k-founder:#E08A7A; --k-designer:#8FADE0; --k-art:#B9A0DA; --k-place:#93C08C; --k-society:#D9B866; color-scheme:dark}}
+:root[data-theme="dark"]{
+  --bg:#12151D; --paper:#1A1E29; --ink:#E6E8EE; --muted:#9AA1B2; --line:#2F3545;
+  --accent:#8FADE0; --accent-soft:#25304A; --mark:#E08A7A; --k-founder:#E08A7A; --k-designer:#8FADE0; --k-art:#B9A0DA; --k-place:#93C08C; --k-society:#D9B866; color-scheme:dark}
+
+*{box-sizing:border-box}
+body{background:var(--bg);color:var(--ink);font-family:var(--f-body);font-size:15px;line-height:1.85;-webkit-font-smoothing:antialiased}
+a{color:var(--accent)}
+.wrap{max-width:1040px;margin:0 auto;padding-inline:20px}
+h1,h2,h3{font-family:var(--f-display);text-wrap:balance;margin:0;line-height:1.35}
+.mono{font-family:var(--f-mono);font-variant-numeric:tabular-nums}
+:focus-visible{outline:2px solid var(--accent);outline-offset:2px}
+
+/* Header */
+header.hero{padding-block:56px 28px}
+.eyebrow{font-family:var(--f-mono);font-size:12px;letter-spacing:.14em;color:var(--muted);text-transform:uppercase}
+.hero h1{font-size:clamp(40px,7vw,72px);font-weight:800;letter-spacing:.02em;margin-top:10px}
+.hero p{max-width:40em;color:var(--muted);margin:14px 0 0}
+.strip{display:flex;height:14px;margin-top:28px;border:1px solid var(--line)}
+.strip span{flex:1}
+
+/* Tabs */
+nav.tabs{position:sticky;top:env(safe-area-inset-top,0px);z-index:10;background:var(--bg);border-bottom:1px solid var(--line)}
+nav.tabs .wrap{display:flex;gap:4px;overflow-x:auto;scrollbar-width:none}
+nav.tabs button{font:inherit;font-weight:500;background:none;border:0;color:var(--muted);padding:14px 14px 12px;cursor:pointer;white-space:nowrap;border-bottom:2px solid transparent}
+nav.tabs button[aria-selected="true"]{color:var(--ink);border-bottom-color:var(--accent)}
+nav.tabs button small{font-family:var(--f-mono);font-size:11px;margin-right:6px;color:var(--muted)}
+main{padding-block:32px 80px}
+.lead{max-width:44em;color:var(--muted);margin:0 0 24px}
+section h2{font-size:clamp(24px,3.4vw,32px);font-weight:800;margin-bottom:10px}
+
+/* Thread filter */
+.filter{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:24px}
+.chip{font:inherit;font-size:13px;border:1px solid var(--line);background:var(--paper);color:var(--ink);padding:5px 12px;border-radius:999px;cursor:pointer}
+.chip[aria-pressed="true"]{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.thread-note{background:var(--accent-soft);padding:14px 18px;margin:-8px 0 24px;font-size:14px}
+
+/* Era card = 見本帳の台紙 */
+.eras{display:grid;gap:14px}
+.era{display:grid;grid-template-columns:120px 1fr;gap:20px;background:var(--paper);border:1px solid var(--line);padding:20px;transition:opacity .2s}
+.era.dim{opacity:.28}
+.swatch{display:flex;flex-direction:column;gap:6px}
+.swatch .cloth{aspect-ratio:1;max-width:100%;border:1px solid var(--line);position:relative}
+.swatch .cloth::after{content:"";position:absolute;inset:0;background:repeating-linear-gradient(45deg,rgba(255,255,255,.08) 0 2px,transparent 2px 5px)}
+.swatch .code{font-family:var(--f-mono);font-size:11px;color:var(--muted);letter-spacing:.06em}
+.era-body{min-width:0}
+.era .years{font-family:var(--f-mono);font-size:13px;color:var(--mark);letter-spacing:.06em}
+.era h3{font-size:22px;font-weight:800;margin:2px 0 8px}
+.era .sum{margin:0}
+.tags{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.tag{font-size:11px;padding:1px 8px;border:1px solid var(--line);color:var(--muted);border-radius:999px}
+details{margin-top:12px;border-top:1px dashed var(--line);padding-top:10px}
+summary{cursor:pointer;color:var(--accent);font-weight:500;font-size:14px}
+.cols{display:grid;grid-template-columns:1.2fr 1fr;gap:24px;margin-top:14px}
+.cols>div{min-width:0}
+.cols h4{font-size:12px;letter-spacing:.12em;color:var(--muted);margin:0 0 6px;font-weight:700}
+ol.events{list-style:none;padding:0;margin:0;display:grid;gap:6px}
+ol.events li{display:grid;grid-template-columns:52px 1fr;gap:10px;font-size:14px;line-height:1.7}
+ol.events .y{font-family:var(--f-mono);color:var(--muted)}
+.people{font-size:14px;margin:0 0 14px}
+.legacy{background:var(--bg);padding:10px 14px;font-size:14px;border-left:3px solid var(--mark)}
+
+/* Threads */
+.threads{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.thread{background:var(--paper);border:1px solid var(--line);padding:22px}
+.thread h3{font-size:20px;font-weight:800}
+.thread .q{color:var(--muted);font-size:14px;margin:4px 0 14px}
+.flow{display:flex;flex-wrap:wrap;align-items:center;gap:6px 4px;font-size:13px}
+.flow span.n{background:var(--bg);border:1px solid var(--line);padding:2px 8px}
+.flow span.n b{font-family:var(--f-mono);font-weight:500;color:var(--mark);margin-right:4px}
+.flow .arr{color:var(--muted)}
+.thread .see{margin-top:14px;font-size:13px}
+.linkbtn{font:inherit;background:none;border:0;color:var(--accent);padding:0;cursor:pointer;text-decoration:underline;text-underline-offset:3px}
+
+/* Glossary */
+.search{width:100%;max-width:420px;font:inherit;padding:10px 14px;border:1px solid var(--line);background:var(--paper);color:var(--ink);margin-bottom:20px}
+dl.gloss{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin:0}
+.term{background:var(--paper);border:1px solid var(--line);padding:16px 18px}
+.term dt{font-weight:700;font-size:16px}
+.term dt .en{font-family:var(--f-mono);font-size:11px;color:var(--muted);font-weight:400;margin-left:8px}
+.term dd{margin:6px 0 0;font-size:14px;color:var(--ink)}
+.empty{color:var(--muted)}
+
+/* Reading now */
+.lenses{display:grid;gap:12px;counter-reset:l;margin:0 0 40px;padding:0;list-style:none}
+.lenses li{background:var(--paper);border:1px solid var(--line);padding:16px 20px 16px 64px;position:relative;counter-increment:l}
+.lenses li::before{content:counter(l);position:absolute;left:20px;top:14px;font-family:var(--f-display);font-weight:800;font-size:26px;color:var(--mark)}
+.lenses b{display:block;font-size:16px}
+.lenses span{font-size:14px;color:var(--muted)}
+.cycle{overflow-x:auto;background:var(--paper);border:1px solid var(--line);padding:16px;margin-bottom:12px}
+.cycle svg{display:block;min-width:620px;width:100%;height:auto}
+.caption{font-size:13px;color:var(--muted);margin:0 0 40px}
+.now{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:40px}
+.now div{background:var(--paper);border:1px solid var(--line);padding:16px}
+.now h4{margin:0 0 4px;font-size:15px}
+.now p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.75}
+.sources{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;padding:0;list-style:none;margin:0 0 32px}
+.sources li{background:var(--paper);border:1px solid var(--line);padding:12px 16px;font-size:14px}
+.sources li span{display:block;color:var(--muted);font-size:12.5px}
+.notice{font-size:12.5px;color:var(--muted);border-top:1px solid var(--line);padding-top:16px}
+h3.sub{font-size:20px;font-weight:800;margin:0 0 12px}
+
+/* Runway */
+.seasonkey{display:flex;flex-wrap:wrap;gap:8px 20px;font-size:13px;color:var(--muted);background:var(--paper);border:1px solid var(--line);padding:12px 16px;margin-bottom:28px}
+.seasonkey b{font-family:var(--f-mono);color:var(--ink);font-weight:500;margin-right:4px}
+.mood{list-style:none;padding:0;margin:0 0 40px;display:grid;gap:0;border-top:1px solid var(--line)}
+.mood li{display:grid;grid-template-columns:110px 1fr;gap:16px;padding:14px 0;border-bottom:1px solid var(--line)}
+.mood .y{font-family:var(--f-mono);color:var(--mark);font-size:13px}
+.mood b{display:block;font-size:15px}
+.mood span{font-size:14px;color:var(--muted)}
+.brandbar{display:flex;flex-wrap:wrap;gap:8px;margin-bottom:18px}
+.brand{background:var(--paper);border:1px solid var(--line);padding:24px}
+.brand-head{display:flex;flex-wrap:wrap;justify-content:space-between;gap:8px 20px;align-items:baseline;border-bottom:1px solid var(--line);padding-bottom:14px;margin-bottom:18px}
+.brand-head h3{font-size:28px;font-weight:800;letter-spacing:.02em}
+.brand-head .now-cd{font-size:13px;color:var(--muted)}
+.brand-head .now-cd b{color:var(--ink)}
+.brand-grid{display:grid;grid-template-columns:1fr 1.6fr;gap:28px}
+.brand-grid>div{min-width:0}
+.brand h4{font-size:12px;letter-spacing:.12em;color:var(--muted);margin:0 0 8px;font-weight:700}
+.cdline{list-style:none;padding:0;margin:0 0 22px;display:grid;gap:8px}
+.cdline li{font-size:14px;padding-left:14px;border-left:3px solid var(--line)}
+.cdline li.cur{border-left-color:var(--mark)}
+.cdline li span{display:block;font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.shows{list-style:none;padding:0;margin:0;display:grid;gap:10px}
+.shows li{display:grid;grid-template-columns:78px 1fr;gap:12px;font-size:14px;line-height:1.75}
+.shows .s{font-family:var(--f-mono);font-size:12px;color:var(--mark);padding-top:2px}
+.shows b{font-weight:700}
+.readit{background:var(--accent-soft);padding:12px 16px;font-size:14px;margin-bottom:16px}
+
+.showlist{display:grid;gap:0;border-top:1px solid var(--line)}
+.show{display:grid;grid-template-columns:96px 1fr;gap:20px;padding:22px 0;border-bottom:1px solid var(--line)}
+.fig{margin:0;display:flex;flex-direction:column;gap:6px;align-items:center}
+.fig svg{width:80px;height:auto;max-width:100%;background:var(--bg);border:1px solid var(--line)}
+.fig .pal{display:flex;gap:3px}.fig .pal span{width:16px;height:16px;border:1px solid var(--line)}
+.fig figcaption{font-size:10px;color:var(--muted);letter-spacing:.08em}
+.show-body{min-width:0}
+.show-meta{display:flex;flex-wrap:wrap;gap:4px 12px;font-size:12.5px;color:var(--muted);align-items:center}
+.show-meta .season{font-family:var(--f-mono);color:var(--mark);font-size:13px;letter-spacing:.04em}
+.show h5{font-family:var(--f-display);font-size:19px;font-weight:800;margin:2px 0 10px}
+dl.pts{margin:0;display:grid;gap:6px}
+dl.pts div{display:grid;grid-template-columns:7.5em 1fr;gap:10px;font-size:14px;line-height:1.75}
+dl.pts dt{color:var(--muted);font-size:12.5px;padding-top:2px}
+dl.pts dd{margin:0}
+.evals{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:10px;margin-top:12px}
+.ev{font-size:13.5px;padding:10px 12px;background:var(--bg);line-height:1.7}
+.ev b{display:block;font-size:11px;letter-spacing:.1em;margin-bottom:2px}
+.ev.pro{border-left:3px solid var(--accent)}.ev.pro b{color:var(--accent)}
+.ev.con{border-left:3px solid var(--mark)}.ev.con b{color:var(--mark)}
+.ctx{font-size:13.5px;margin:10px 0 0}
+.ctx b{font-size:11px;letter-spacing:.1em;color:var(--muted);margin-right:8px}
+.links{margin-top:12px;display:grid;gap:6px}
+.photo{font-size:13.5px;font-weight:700}
+.src{font-size:12px;color:var(--muted);display:flex;flex-wrap:wrap;gap:4px 12px}
+.src span{letter-spacing:.1em}
+.src a{color:var(--muted)}
+.photonote{font-size:13px;color:var(--muted);background:var(--paper);border:1px dashed var(--line);padding:10px 14px;margin:0 0 18px}
+
+/* Detail & sources */
+.more{font-size:14px;font-weight:700;color:var(--mark)}
+.back{margin-bottom:18px;font-size:14px}
+.dhead{border-bottom:1px solid var(--line);padding-bottom:20px;margin-bottom:28px}
+.dhead h2{font-size:clamp(28px,4.4vw,44px);margin:4px 0 14px}
+.concept{font-family:var(--f-display);font-size:clamp(17px,2vw,20px);line-height:1.8;max-width:38em;margin:0}
+.chain{display:flex;flex-wrap:wrap;align-items:stretch;gap:8px;margin-bottom:36px}
+.node{background:var(--paper);border:1px solid var(--line);padding:10px 14px;display:flex;flex-direction:column;min-width:0;max-width:220px;font-size:14px;line-height:1.5}
+.node .cy{font-family:var(--f-mono);color:var(--mark);font-size:13px}
+.node.here{background:var(--accent);border-color:var(--accent);color:var(--paper)}
+.node.here .cy{color:var(--paper);opacity:.85}
+.carr{align-self:center;color:var(--muted)}
+.srcgrid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-bottom:36px}
+.srccard{background:var(--paper);border:1px solid var(--line);padding:16px 18px;min-width:0;transition:box-shadow .3s}
+.srccard.flash{box-shadow:0 0 0 3px var(--accent)}
+.srchead{display:flex;justify-content:space-between;gap:8px;align-items:center}
+.srchead .cy{font-family:var(--f-mono);font-size:12.5px;color:var(--mark)}
+.kind{font-size:11px;padding:1px 8px;border-radius:999px;color:var(--paper)}
+.k-founder{background:var(--k-founder)}.k-designer{background:var(--k-designer)}.k-art{background:var(--k-art)}.k-place{background:var(--k-place)}.k-society{background:var(--k-society)}
+.srccard h4{font-family:var(--f-display);font-size:17px;font-weight:800;margin:4px 0 6px}
+.srccard p{font-size:14px;margin:0 0 8px}
+.srccard .how{background:var(--bg);padding:8px 12px;border-left:3px solid var(--accent)}
+.srccard .how b{display:block;font-size:11px;letter-spacing:.1em;color:var(--accent)}
+.srclinks{display:flex;flex-direction:column;gap:4px;font-size:13px;color:var(--muted)}
+.srclinks .linkbtn{align-self:flex-start;font-size:13px}
+.dbody{display:grid;grid-template-columns:140px 1fr;gap:24px}
+.fig.big svg{width:120px}
+.sub .dot{display:inline-block;width:12px;height:12px;border-radius:50%;margin-right:8px;vertical-align:middle}
+#srcmap svg{min-width:720px}
+
+/* Forecast */
+.method{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:12px;margin-bottom:36px}
+.method div{background:var(--paper);border:1px solid var(--line);padding:16px}
+.method h4{margin:0 0 4px;font-size:15px}
+.method p{margin:0;font-size:13.5px;color:var(--muted);line-height:1.75}
+.calc{background:var(--paper);border:1px solid var(--line);padding:20px 22px;margin-bottom:40px}
+.calc label{font-weight:700}
+.calc input[type=range]{width:100%;max-width:480px;display:block;margin:10px 0 4px;accent-color:var(--accent)}
+.calc .yr{font-family:var(--f-mono);font-size:34px;color:var(--accent);line-height:1.2}
+.calc-out{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:12px;margin-top:14px}
+.calc-out div{border-top:2px solid var(--line);padding-top:8px;min-width:0}
+.calc-out .k{font-family:var(--f-mono);font-size:12px;color:var(--muted)}
+.calc-out p{margin:2px 0 0;font-size:14px}
+.fc{display:grid;gap:12px;margin-bottom:28px}
+.fcard{background:var(--paper);border:1px solid var(--line);padding:18px 20px;display:grid;grid-template-columns:1fr auto;gap:6px 16px}
+.fcard h4{margin:0;font-size:17px;font-family:var(--f-display);font-weight:800}
+.fcard .meta{display:flex;gap:6px;align-items:start;flex-wrap:wrap;justify-content:flex-end}
+.pill{font-size:11px;padding:2px 9px;border-radius:999px;border:1px solid var(--line);white-space:nowrap}
+.pill.hi{background:var(--accent);color:var(--paper);border-color:var(--accent)}
+.pill.mid{background:var(--accent-soft);color:var(--ink)}
+.pill.lo{color:var(--muted)}
+.fcard p{grid-column:1/-1;margin:0;font-size:14px}
+.fcard .sig{grid-column:1/-1;font-size:13px;color:var(--muted)}
+.fcard .sig b{color:var(--ink);font-weight:500}
+
+@media (max-width:720px){
+  .brand-grid,.method,.calc-out,.evals,.srcgrid,.dbody{grid-template-columns:1fr}
+  .node{max-width:100%}
+  .show{grid-template-columns:64px 1fr;gap:14px}.fig svg{width:60px}
+  dl.pts div{grid-template-columns:1fr;gap:0}
+  .mood li{grid-template-columns:1fr;gap:2px}
+  .brand{padding:18px}
+  .fcard{grid-template-columns:1fr}.fcard .meta{justify-content:flex-start}
+  .era{grid-template-columns:64px 1fr;gap:14px;padding:16px}
+  .swatch .code{font-size:9px}
+  .cols,.threads,dl.gloss,.now,.sources{grid-template-columns:1fr}
+  header.hero{padding-block:36px 20px}
+}
+@media (prefers-reduced-motion:reduce){*{transition:none!important}}
+</style>
+
+<header class="hero wrap">
+  <div class="eyebrow">Fashion Lineage · 1858 — 2026</div>
+  <h1>装いの系譜</h1>
+  <p>トレンドは毎シーズン入れ替わりますが、その多くは過去の何かへの参照か反動です。近代ファッションの誕生から2020年代までを年代ごとの「見本帳」にまとめ、繰り返し現れる流れ（系譜）と用語、今のトレンドを読むための視点を整理しました。</p>
+  <div class="strip" id="strip" aria-hidden="true"></div>
+</header>
+
+<nav class="tabs" aria-label="セクション">
+  <div class="wrap" role="tablist">
+    <button role="tab" data-tab="timeline" aria-selected="true"><small>A</small>年表</button>
+    <button role="tab" data-tab="threads" aria-selected="false"><small>B</small>6つの系譜</button>
+    <button role="tab" data-tab="glossary" aria-selected="false"><small>C</small>用語集</button>
+    <button role="tab" data-tab="now" aria-selected="false"><small>D</small>今を読む</button>
+    <button role="tab" data-tab="runway" aria-selected="false"><small>E</small>ランウェイ</button>
+    <button role="tab" data-tab="forecast" aria-selected="false"><small>F</small>トレンド予測</button>
+    <button role="tab" data-tab="sources" aria-selected="false"><small>G</small>着想の地図</button>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section id="timeline" data-panel>
+    <h2>年代別の見本帳</h2>
+    <p class="lead">各年代を一枚の台紙にしています。「くわしく」を開くと主な出来事・人物・現在への影響が見られます。系譜を選ぶと、その流れに関わる年代だけが強調されます。</p>
+    <div class="filter" id="filter"></div>
+    <div class="thread-note" id="threadNote" hidden></div>
+    <div class="eras" id="eras"></div>
+  </section>
+
+  <section id="threads" data-panel hidden>
+    <h2>繰り返し現れる6つの系譜</h2>
+    <p class="lead">個々のトレンドは違って見えても、根っこにある対立や動きは似ています。この6本の糸を知っておくと、新しい現象を「どの流れの続きか」で理解できます。</p>
+    <div class="threads" id="threadList"></div>
+  </section>
+
+  <section id="glossary" data-panel hidden>
+    <h2>用語集</h2>
+    <p class="lead">ニュースやコレクション評でよく出てくる言葉を集めました。</p>
+    <label for="q" class="eyebrow" style="display:block;margin-bottom:6px">用語を検索</label>
+    <input id="q" class="search" type="search" placeholder="例：プレタポルテ、コア、脱構築">
+    <dl class="gloss" id="gloss"></dl>
+  </section>
+
+  <section id="now" data-panel hidden>
+    <h2>今のトレンドを読む</h2>
+    <p class="lead">新しい流行を見たときに、次の5つを順に問うと文脈が見えてきます。</p>
+    <ol class="lenses">
+      <li><b>何を参照しているか</b><span>どの年代・どのサブカルチャーの引用か。Y2Kなら2000年前後、バレエコアなら1950年代のバレエ文化とフェミニンの再評価、というように年表に戻して位置づけます。</span></li>
+      <li><b>何への反動か</b><span>流行は直前の主流への揺り戻しとして起きやすい。ロゴ全盛の後に「静かな高級感」が来たように、前の流行を確認します。</span></li>
+      <li><b>どこから始まったか</b><span>ランウェイ（上から）、ストリート（下から）、SNS（横から）のどれか。発生源によって寿命と広がり方が変わります。</span></li>
+      <li><b>社会・経済の何を映しているか</b><span>戦争、不況、パンデミック、働き方の変化。服は生活の条件に反応します。ただし「不況でスカート丈が変わる」のような単純な法則は俗説として扱うのが無難です。</span></li>
+      <li><b>誰が、どの立場で発信しているか</b><span>デザイナー交代、ブランドの買収、インフルエンサーの案件。業界の構造を知ると、ニュースの重みが判断しやすくなります。</span></li>
+    </ol>
+
+    <h3 class="sub">トレンドのライフサイクル</h3>
+    <div class="cycle">
+      <svg viewBox="0 0 640 220" role="img" aria-label="トレンドの普及曲線。兆し、先行層、ピーク、大衆化、飽和、反動の6段階">
+        <line x1="40" y1="180" x2="610" y2="180" stroke="var(--line)" stroke-width="1" fill="none"/>
+        <path d="M40,176 C140,174 190,150 240,100 S310,30 340,30 S420,60 470,120 S560,172 610,174" fill="none" stroke="var(--accent)" stroke-width="2.5"/>
+        <g font-family="Zen Kaku Gothic New, sans-serif" font-size="12" fill="var(--ink)" text-anchor="middle">
+          <circle cx="90" cy="173" r="4" fill="var(--mark)"/><text x="90" y="200">兆し</text>
+          <circle cx="215" cy="125" r="4" fill="var(--mark)"/><text x="215" y="200">先行層</text>
+          <circle cx="340" cy="30" r="4" fill="var(--mark)"/><text x="340" y="200">ピーク</text>
+          <circle cx="430" cy="78" r="4" fill="var(--mark)"/><text x="430" y="200">大衆化</text>
+          <circle cx="520" cy="152" r="4" fill="var(--mark)"/><text x="520" y="200">飽和</text>
+          <circle cx="600" cy="174" r="4" fill="var(--mark)"/><text x="600" y="200">反動</text>
+        </g>
+        <text x="44" y="20" font-family="DM Mono, monospace" font-size="11" fill="var(--muted)">普及度</text>
+        <text x="606" y="214" font-family="DM Mono, monospace" font-size="11" fill="var(--muted)" text-anchor="end">時間 →</text>
+      </svg>
+    </div>
+    <p class="caption">かつては数年かけて進んだこの曲線が、SNS以降は数週間〜数か月で一周する「マイクロトレンド」が増えました。一方で、20〜30年前のものが懐かしさとともに戻ってくる大きな周期も続いています。</p>
+
+    <h3 class="sub">2020年代半ばの主な論点</h3>
+    <div class="now">
+      <div><h4>ディレクター交代の連鎖</h4><p>2024〜25年にシャネル、ディオール、グッチ、バレンシアガなど大手メゾンの責任者が一斉に入れ替わりました。新体制の初コレクションがブランドの方向を決めるため、2026年はその評価が続く時期です。</p></div>
+      <div><h4>ラグジュアリーの減速</h4><p>コロナ後の急成長と値上げの後、需要が鈍化。価格に見合う価値とは何か、が問われています。「静かな高級感」もこの流れと結びついています。</p></div>
+      <div><h4>速さと持続可能性</h4><p>超高速のオンライン型ファストファッションが拡大する一方、古着・リセールの市場も伸びています。EUでは繊維製品の環境規制づくりが進んでいます。</p></div>
+      <div><h4>「〜コア」の量産</h4><p>ゴープコア、バレエコア、ブロークコアなど、SNSでは美意識の束に「コア」をつけた名前が次々に生まれます。名前より、何を参照しているかに注目すると整理しやすくなります。</p></div>
+      <div><h4>快適さが前提に</h4><p>在宅勤務の経験を経て、ゆとりのあるシルエットや機能素材が日常着の標準になりました。アスレジャーの延長線上にあります。</p></div>
+      <div><h4>日本ブランドの存在感</h4><p>コム デ ギャルソン以降の系譜に加え、sacai、kolor、Auraleeなど日本ブランドが国際的に評価され、古着や「日本の定番服」も海外で人気です。</p></div>
+    </div>
+
+    <h3 class="sub">日々の情報を追うなら</h3>
+    <ul class="sources">
+      <li><a href="https://www.wwdjapan.com/" target="_blank" rel="noopener">WWDJAPAN</a><span>業界ニュース、人事、ビジネス。日本語</span></li>
+      <li><a href="https://www.fashionsnap.com/" target="_blank" rel="noopener">FASHIONSNAP</a><span>コレクション速報、国内ブランド、ストリート。日本語</span></li>
+      <li><a href="https://www.vogue.com/fashion-shows" target="_blank" rel="noopener">Vogue Runway</a><span>世界のコレクション全ルックと批評。英語</span></li>
+      <li><a href="https://www.businessoffashion.com/" target="_blank" rel="noopener">The Business of Fashion</a><span>業界構造、経営、分析。英語</span></li>
+    </ul>
+    <p class="notice">この内容は2026年半ば時点の情報をもとに整理しています。人事や企業動向は変わりやすいため、最新の状況は上記のような情報源で確認してください。年は代表的な説に従っており、資料によって1年程度のずれがあります。</p>
+  </section>
+
+  <section id="runway" data-panel hidden>
+    <h2>主要ブランドのランウェイ 2021–2026</h2>
+    <p class="lead">ここ5年ほどの主要メゾンのショーを、デザイナーの交代と代表的なコレクションでたどります。ランウェイは「誰が率いているか」で読むのが近道です。</p>
+    <div class="seasonkey">
+      <span><b>SS27</b>2027年春夏。2026年9〜10月に発表</span>
+      <span><b>FW26 / AW26</b>2026年秋冬。2026年2〜3月に発表</span>
+      <span><b>Resort / Cruise</b>春夏前の中間コレクション。5月頃</span>
+      <span><b>Couture</b>オートクチュール。1月と7月</span>
+    </div>
+
+    <h3 class="sub">シーズンごとの空気</h3>
+    <ol class="mood" id="mood"></ol>
+
+    <h3 class="sub">ブランド別</h3>
+    <div class="brandbar" id="brandbar"></div>
+    <p class="photonote">ランウェイ写真は著作権があり、このページには直接載せられないため、写真へのリンクを付けています。FASHIONSNAP（日本語・ブラウザで開けます）で見つかったショーはそちらへ、見つからないものはGoogle画像検索へつなげています。各ショーの「構想と着想の源を見る」から、発想の元と系譜の流れを詳しく見られます。左の図は報道をもとにシルエットと主な色を示した模式図で、実際のルックの再現ではありません。解説は海外メディアの記事を日本語で要約したものです。</p>
+    <div class="brand" id="brand"></div>
+    <p class="notice" style="margin-top:24px">2026年10月時点の報道をもとに整理しています。ショーの評価は媒体によって分かれます。ここでは代表的な見方を短くまとめています。写真は Vogue Runway などで全ルックを見られます。</p>
+  </section>
+
+  <section id="detail" data-panel hidden></section>
+
+  <section id="sources" data-panel hidden>
+    <h2>着想の地図</h2>
+    <p class="lead">2025〜2026年のショーが、どの時代の何を参照しているかを一枚にまとめました。円が大きいほど、多くのショーが参照しています。円を押すと、その源の説明と、参照したショーの一覧に移動します。</p>
+    <div class="cycle" id="srcmap"></div>
+    <p class="caption">傾向：創業者のアーカイブ（1910〜60年代）と、1990年代〜2010年代の名デザイナーの仕事に参照が集中しています。新しいデザイナーがまず「ブランドの原点」と「直前の偉大な前任者」を掘り起こしていることがわかります。</p>
+    <div id="srclist"></div>
+  </section>
+
+  <section id="forecast" data-panel hidden>
+    <h2>これからのトレンド予測</h2>
+    <p class="lead">流行はある程度くり返します。ただし同じ形では戻らず、その時代の素材や価値観で作り直されます。ここでは3つの物差しを使って、2027〜2029年ごろを予測しました。あくまで仮説として読んでください。</p>
+
+    <div class="method">
+      <div><h4>① 20〜30年周期</h4><p>デザイナーや消費者の中心世代が、10代のころに見ていたものを懐かしみ、作り直します。2020年代前半のY2Kブームは約20年前の再来でした。</p></div>
+      <div><h4>② 振り子</h4><p>ミニマルが飽和すると装飾が、装飾が飽和するとミニマルが新鮮に見えます。今どちら側にいて、どこまで振れたかを測ります。</p></div>
+      <div><h4>③ 構造の変化</h4><p>デザイナー交代、景気、気候、技術。周期とは別に、服の作られ方や着られ方を変える要因です。</p></div>
+    </div>
+
+    <div class="calc">
+      <label for="yr">周期計算機：この年に「懐かしい」と感じられそうなのは？</label>
+      <input type="range" id="yr" min="2026" max="2032" step="1" value="2027">
+      <div class="yr" id="yrOut">2027</div>
+      <div class="calc-out" id="calcOut"></div>
+      <p class="caption" style="margin:12px 0 0">20〜30年周期は経験則です。必ずそうなるわけではありませんが、リバイバルの候補を挙げるには便利です。</p>
+    </div>
+
+    <h3 class="sub">予測：2027〜2029年</h3>
+    <div class="fc" id="fc"></div>
+    <p class="notice">予測の根拠は2026年10月までのコレクションと報道です。確度は「高・中・低」の3段階で、あくまで筆者（Claude）の見立てです。「見るべきサイン」が出てきたら予測が当たりつつあるとみなせます。</p>
+  </section>
+</main>
+
+<script>
+const THREADS = {
+  liberation:{name:"身体の解放と機能", q:"服は身体を締めつけるものから、動くためのものへ",
+    flow:[["1906","ポワレ、コルセットなしのドレス"],["1920s","シャネルのジャージー素材"],["1940s","マッカーデルのアメリカン・スポーツウェア"],["1960s","ミニスカートとパンツスーツ"],["2010s","アスレジャー"],["2020s","快適さが標準に"]],
+    note:"女性の社会進出、スポーツの普及、働き方の変化と連動して進んだ、もっとも長い流れです。"},
+  structure:{name:"構築と脱構築", q:"美しく作り込むか、作り方そのものを問い直すか",
+    flow:[["1947","ディオールのニュールック"],["1950s","バレンシアガの造形"],["1981","川久保玲・山本耀司のパリ進出"],["1988","マルジェラのデビュー"],["2015","デムナのバレンシアガ"]],
+    note:"完成された服の理想に対して、穴、ほつれ、裏返し、非対称で「服とは何か」を問う動きが周期的に現れます。"},
+  street:{name:"ストリートからの逆流", q:"流行は上から下りてくるだけでなく、街から上がってくる",
+    flow:[["1950s","ジーンズとレザーの若者"],["1970s","パンク"],["1980s","ヒップホップとスニーカー"],["1990s","裏原宿"],["2017","シュプリーム×ルイ・ヴィトン"],["2018","ヴァージル・アブローがLVへ"]],
+    note:"20世紀前半はパリのメゾンが流行を決めていましたが、戦後は若者文化が起点となり、2010年代にはストリート出身者がラグジュアリーの中心に立ちました。"},
+  pendulum:{name:"ミニマルとマキシマルの振り子", q:"引き算の時代と足し算の時代が交互に来る",
+    flow:[["1980s","肩パッドと誇張"],["1990s","ミニマリズム"],["2000s","ロゴとIT バッグ"],["2010s前半","フィービー・ファイロの実用美"],["2015〜","ミケーレの装飾"],["2023〜","静かな高級感"]],
+    note:"ひとつの美意識が飽和すると、反対側が新鮮に見えます。今どちら側にいるかを意識すると、次の揺り戻しが予想しやすくなります。"},
+  industry:{name:"大量生産と持続可能性", q:"服をどれだけ速く、安く、多く作るのか",
+    flow:[["1960s","プレタポルテの台頭"],["1990s〜","ファストファッション"],["2000s","コングロマリット化"],["2013","ラナ・プラザ崩落"],["2020s","超高速EC型とリセール市場"]],
+    note:"オーダーメイドから既製服、そしてファストファッションへ。速度と量の拡大が環境・労働問題を生み、その反省が今の業界の大きな論点になっています。"},
+  japan:{name:"日本の文脈", q:"受け入れ、作り替え、世界へ返す",
+    flow:[["1960s","アイビーとみゆき族"],["1970s","高田賢三・三宅一生がパリへ"],["1980s","黒の衝撃とDCブランド"],["1990s","裏原宿・渋カジ・ギャル"],["2000s","ユニクロの世界展開"],["2010s〜","sacaiなど次世代"]],
+    note:"アメリカやヨーロッパの服を独自に解釈し、のちに世界に影響を返すという往復が繰り返されてきました。"}
+};
+
+const ERAS = [
+ {y:"1858–1910s", t:"近代ファッションの誕生", c:"#C9B48A", code:"SW-1900",
+  s:"デザイナーが自分の名前で服を発表する「メゾン」の仕組みがパリで生まれ、20世紀に入るとコルセットで身体を締めつける服からの解放が始まります。",
+  ev:[["1858","シャルル・フレデリック・ワースがパリに店を開く。オートクチュールの祖とされる"],["1906頃","ポール・ポワレがコルセットを必要としないドレスを発表"],["1909","バレエ・リュスのパリ公演。東洋趣味が流行"],["1914–18","第一次世界大戦。女性の労働参加で丈が短く実用的に"]],
+  p:"ワース、ポール・ポワレ、マリアノ・フォルチュニ",
+  l:"「デザイナーがシーズンごとに新作を見せる」という今のファッション業界の基本形はこの時代にできました。",
+  th:["liberation"]},
+ {y:"1920s", t:"ジャズ・エイジと直線の服", c:"#1E1E22", code:"SW-1920",
+  s:"戦後の解放感の中、膝丈のストンとしたドレスとボブヘアの「フラッパー」が登場。シャネルは下着用だったジャージー素材や黒を日常着に持ち込みました。",
+  ev:[["1921","シャネルNo.5発売"],["1925","パリでアール・デコ博覧会"],["1926","米Vogueがシャネルの黒いドレスを「シャネルのフォード」と紹介。リトル・ブラック・ドレスの始まり"],["1920s","ヴィオネがバイアスカットを発展させ、ジャン・パトゥはスポーツウェアを提案"]],
+  p:"ココ・シャネル、マドレーヌ・ヴィオネ、ジャン・パトゥ",
+  l:"リトル・ブラック・ドレス、ボーダー、ツイードなど、今も「定番」と呼ばれるアイテムの多くがここに由来します。",
+  th:["liberation"]},
+ {y:"1930s", t:"恐慌とハリウッドの夢", c:"#C89A9A", code:"SW-1930",
+  s:"世界恐慌で現実は厳しくなる一方、映画の中の女優が憧れの対象に。体に沿うロングドレスが主流になり、スキャパレリは芸術とファッションを結びつけました。",
+  ev:[["1929","世界恐慌"],["1930s","バイアスカットのイブニングドレスが流行"],["1937","スキャパレリとダリによるロブスター柄のドレス"],["1940","ナイロンストッキングが米国で発売"]],
+  p:"エルザ・スキャパレリ、映画衣装デザイナーのエイドリアン",
+  l:"アーティストとのコラボレーション、セレブリティが流行を広める構図の原型です。",
+  th:["structure"]},
+ {y:"1940s", t:"戦争・配給・ニュールック", c:"#6B6E4E", code:"SW-1940",
+  s:"第二次世界大戦で布地は配給制になり、服は簡素で機能的に。パリの占領中はアメリカが独自のスポーツウェアを育てました。終戦後、ディオールの豪華なシルエットが一気に時代を変えます。",
+  ev:[["1940","ドイツがパリを占領"],["1941","英国でユーティリティ服の制度開始"],["1942","米国で布地使用を制限するL-85規制"],["1947","ディオールのデビューコレクション。「ニュールック」と呼ばれる"]],
+  p:"クリスチャン・ディオール、クレア・マッカーデル",
+  l:"制約から生まれた実用服と、その反動としての華やかさ。危機の後に装飾が戻るパターンはこの後も繰り返されます。",
+  th:["liberation","structure"]},
+ {y:"1950s", t:"オートクチュール黄金期と若者の登場", c:"#3E5C8A", code:"SW-1950",
+  s:"パリのメゾンが世界の流行を決めた最後の時代。同時にアメリカでは映画スターのジーンズとレザージャケットが若者の制服となり、「ユースカルチャー」が生まれます。",
+  ev:[["1954","シャネルが復帰"],["1955","映画『理由なき反抗』。Tシャツとジーンズが反抗の象徴に"],["1957","バレンシアガのサック・ドレス。ディオール死去、21歳のイヴ・サンローランが後継に"],["1950s","日本では洋裁ブームで洋服が一般家庭に定着"]],
+  p:"クリストバル・バレンシアガ、ユベール・ド・ジバンシィ、ジェームズ・ディーン",
+  l:"白T・デニム・レザーの組み合わせは、ここから70年以上続くカジュアルの基本形です。",
+  th:["structure","street"]},
+ {y:"1960s", t:"ユースクエイク", c:"#E0A23A", code:"SW-1960",
+  s:"若者が消費の主役に。ロンドンのミニスカート、宇宙時代を意識した未来的な服、そしてサンローランによる高級既製服（プレタポルテ）の本格化で、流行の発信源が多様になりました。",
+  ev:[["1964","クレージュのスペース・エイジ・コレクション。銀座でみゆき族"],["1960s半ば","マリー・クヮントがミニスカートを広める"],["1966","サンローランがタキシードの女性服「ル・スモーキング」と既製服店リヴ・ゴーシュを発表"],["1967","ツイッギー来日、日本でミニブーム"]],
+  p:"マリー・クヮント、アンドレ・クレージュ、ピエール・カルダン、イヴ・サンローラン",
+  l:"オーダーメイドから既製服へ、という業界の主軸の移動はここで決定的になりました。日本ではアイビーが男性ファッションの基礎に。",
+  th:["liberation","street","industry","japan"]},
+ {y:"1970s", t:"多様化とパンク", c:"#8A4B2A", code:"SW-1970",
+  s:"ヒッピー、グラム、ディスコ、パンクと、ひとつの流行では語れない時代に。日本人デザイナーがパリで注目され始めたのもこの頃です。",
+  ev:[["1970","高田賢三がパリに「ジャングル・ジャップ」を開店"],["1973","三宅一生がパリで発表。米仏のデザイナーが競演した「ヴェルサイユの戦い」"],["1974","ダイアン・フォン・ファステンバーグのラップドレス"],["1976前後","ヴィヴィアン・ウエストウッドとマルコム・マクラーレンがロンドンでパンクの服を発信"]],
+  p:"ヴィヴィアン・ウエストウッド、ホルストン、高田賢三、三宅一生",
+  l:"安全ピンや破れなど、パンクの「壊す」美学は後の脱構築やストリートの源流になりました。",
+  th:["street","japan"]},
+ {y:"1980s", t:"パワースーツと黒の衝撃", c:"#111114", code:"SW-1980",
+  s:"好景気を背景に、肩パッドの入った強いスーツやブランドが富の象徴に。その真ん中に、穴の空いた黒い服を持ち込んだのが日本の二人でした。",
+  ev:[["1981–82","川久保玲（コム デ ギャルソン）と山本耀司がパリで発表。「黒の衝撃」と呼ばれる"],["1985","ナイキ「エア ジョーダン 1」発売"],["1986","Run-DMC「My Adidas」。ヒップホップとスポーツブランドが結びつく"],["1986–88","アントワープ王立芸術学院出身の「アントワープ・シックス」がロンドンで注目される"],["1988","マルタン・マルジェラがデビュー"]],
+  p:"ジョルジオ・アルマーニ、ジャン＝ポール・ゴルチエ、川久保玲、山本耀司",
+  l:"日本では「DCブランド」ブーム。ブランドロゴへの熱狂と、それへの反発という二つの流れがここで同時に生まれています。",
+  th:["structure","street","pendulum","japan"]},
+ {y:"1990s", t:"ミニマリズムとグランジ、裏原宿", c:"#9AA3A0", code:"SW-1990",
+  s:"80年代の誇張への反動で、装飾を削ぎ落とした服が主流に。古着のような「グランジ」がランウェイに上がり、東京・裏原宿では世界に先駆けたストリートブランドが育ちました。",
+  ev:[["1990","英Vogueの表紙にスーパーモデル5人が並ぶ"],["1992","マーク・ジェイコブスがペリー・エリスでグランジのコレクションを発表"],["1993","裏原宿にNOWHERE開店。A BATHING APE、UNDERCOVERが人気に"],["1994","トム・フォードがグッチのクリエイティブ・ディレクターに"],["1998","ヘルムート・ラングがコレクションをネット配信。ユニクロ原宿店のフリースが社会現象に"]],
+  p:"ヘルムート・ラング、ジル・サンダー、ミウッチャ・プラダ、藤原ヒロシ、NIGO®",
+  l:"「静かな高級感」や「ノームコア」など、90年代ミニマルは今も定期的に参照される基準点です。",
+  th:["structure","street","pendulum","japan"]},
+ {y:"2000s", t:"ロゴ、コラボ、ファストファッション", c:"#D98BB5", code:"SW-2000",
+  s:"大手グループがブランドを次々と傘下に収め、ロゴバッグが大流行。ZARA・H&M・ユニクロが急成長し、高級ブランドとの協業で「ハイ＆ロー」が当たり前になりました。",
+  ev:[["2001","エディ・スリマンがディオール オムを始動。細身のシルエットが男性服を変える"],["2003","ルイ・ヴィトンと村上隆のコラボ"],["2004","H&Mとカール・ラガーフェルドのコラボ"],["2005","ブログ「The Sartorialist」。ストリートスナップがネットへ"],["2009","ユニクロとジル・サンダーの「+J」"]],
+  p:"カール・ラガーフェルド、マーク・ジェイコブス、エディ・スリマン",
+  l:"いわゆる「Y2K」はこの時代の再評価です。ブランドの協業やネットでの発信など、今の仕組みの多くがここで始まりました。",
+  th:["pendulum","industry","japan"]},
+ {y:"2010s", t:"SNSとストリートの頂点", c:"#5C8A72", code:"SW-2010",
+  s:"Instagramが流行の速度を変え、限定品を発売日に並んで買う「ドロップ」文化が広がりました。ストリート出身のデザイナーが高級ブランドを率いるようになり、同時に生産の現場への問題意識も高まります。",
+  ev:[["2010","Instagram公開"],["2013","バングラデシュの縫製工場ビル、ラナ・プラザが崩落。1,100人以上が死亡"],["2014","「ノームコア」が話題に"],["2015","アレッサンドロ・ミケーレがグッチ、デムナがバレンシアガへ"],["2017","シュプリームとルイ・ヴィトンのコラボ"],["2018","ヴァージル・アブローがルイ・ヴィトン メンズのディレクターに"]],
+  p:"フィービー・ファイロ、アレッサンドロ・ミケーレ、デムナ、ヴァージル・アブロー、阿部千登勢（sacai）",
+  l:"ラグジュアリーとストリートの境界がほぼ消えたことが、2010年代最大の変化です。",
+  th:["structure","street","pendulum","industry","japan"]},
+ {y:"2020s", t:"パンデミック以後とマイクロトレンド", c:"#B8A9D6", code:"SW-2020",
+  s:"コロナ禍で快適さが最優先になり、TikTokでは流行が数週間で生まれては消えるように。反動としての「静かな高級感」、そして大手メゾンのデザイナー大交代が、今の状況をつくっています。",
+  ev:[["2020","コロナ禍でショーがデジタル配信に"],["2021","ヴァージル・アブロー死去"],["2023","「クワイエット・ラグジュアリー」が流行語に。フィービー・ファイロが自身のブランドを始動"],["2025","シャネルにマチュー・ブレイジー、ディオールにジョナサン・アンダーソン、グッチにデムナ、バレンシアガにピエールパオロ・ピッチョーリが就任"],["2025","ジョルジオ・アルマーニ死去"]],
+  p:"マチュー・ブレイジー、ジョナサン・アンダーソン、デムナ",
+  l:"Y2K、90年代ミニマル、ゴープコアなど、過去の参照がSNS上で高速に入れ替わっています。年表のどこを参照しているかを見ると整理しやすくなります。",
+  th:["liberation","pendulum","industry"]}
+];
+
+const GLOSS = [
+ ["オートクチュール","Haute Couture","パリのクチュール連盟が認めたメゾンによる、顧客の身体に合わせた高級注文服。現在も年2回コレクションが開かれます。"],
+ ["プレタポルテ","Prêt-à-Porter","高級既製服。「すぐ着られる」の意。一般にいうパリコレやミラノコレの多くはプレタポルテです。"],
+ ["メゾン","Maison","「家」の意。歴史ある高級ブランドを指して使われます。"],
+ ["クリエイティブ・ディレクター","Creative Director","ブランドの服と世界観の責任者。創業者以外が務めることが多く、交代はブランドの方向転換を意味します。"],
+ ["ファッションウィーク","Fashion Week","ニューヨーク、ロンドン、ミラノ、パリの順に開かれる新作発表の期間。東京にもあります。"],
+ ["プレフォール／リゾート","Pre-Fall / Resort","春夏・秋冬の間に出る中間コレクション。リゾートはクルーズとも呼ばれます。"],
+ ["ルック","Look","ショーで見せる一体のコーディネート。「ルック1」はショーの最初の一体で、方向性を示す重要なもの。"],
+ ["ニュールック","New Look","1947年のディオールのデビュー作。絞ったウエストと広がるスカートで戦後の女性像を一新しました。"],
+ ["バイアスカット","Bias Cut","布目に対して斜めに裁断する技法。布が体に沿って流れるように落ちます。"],
+ ["テーラリング","Tailoring","スーツやジャケットの仕立て技術。肩や襟の構築が要です。"],
+ ["脱構築","Deconstruction","服の作り方そのものを見せたり崩したりする手法。縫い目を外に出す、裏地を表にする、など。マルジェラが代表例。"],
+ ["ミニマリズム","Minimalism","装飾を削ぎ、素材と形で見せる美意識。90年代に主流化しました。"],
+ ["ストリートウェア","Streetwear","スケート、ヒップホップ、サーフなどの若者文化から生まれた服。Tシャツ、フーディ、スニーカーが中心。"],
+ ["ドロップ","Drop","新作を少量ずつ決まった日に発売する方式。シュプリームが広め、行列や転売を生みました。"],
+ ["コラボレーション","Collaboration","ブランド同士、またはアーティストとの共同制作。ハイブランドとファストファッションの組み合わせは「ハイ＆ロー」とも。"],
+ ["ファストファッション","Fast Fashion","流行を素早く安価に大量生産する業態。ZARA、H&Mなど。近年はさらに速いオンライン専業型も登場。"],
+ ["コングロマリット","Conglomerate","複数のブランドを所有する企業グループ。LVMH、ケリング、リシュモンなど。"],
+ ["ディフュージョンライン","Diffusion Line","メインより手頃な価格のセカンドライン。2010年代以降は統合・廃止が進みました。"],
+ ["ITバッグ","It Bag","その時期に誰もが欲しがる象徴的なバッグ。2000年代に特に盛んでした。"],
+ ["ノームコア","Normcore","「ノーマル」と「ハードコア」の合成語。あえて普通の服を着るスタイル。2014年ごろ話題に。"],
+ ["アスレジャー","Athleisure","運動着を日常着として着るスタイル。レギンスやスウェットなど。"],
+ ["クワイエット・ラグジュアリー","Quiet Luxury","ロゴを見せず、素材と仕立てで高級感を出すスタイル。「ステルス・ウェルス」とも。"],
+ ["Y2K","Y2K","2000年前後のファッションの再流行。ローライズ、メタリック、小さなバッグなど。"],
+ ["〜コア","-core","ある美意識のまとまりに付ける接尾語。ゴープコア（アウトドア）、バレエコア、ブロークコア（サッカーユニフォーム）など。"],
+ ["リセール","Resale","中古品の売買。古着店やフリマアプリだけでなく、ブランド自身が参入する例も増えています。"],
+ ["サステナビリティ","Sustainability","環境・労働への負荷を減らす取り組み。素材、生産、廃棄までが対象です。"],
+ ["DCブランド","Designer's & Character Brands","1980年代日本の、デザイナーや個性を打ち出した国内ブランドの総称。"],
+ ["裏原宿","Ura-Harajuku","1990年代に原宿の裏通りで生まれたストリートブランド群とその文化。"]
+];
+
+const MOOD = [
+ ["2021–22","ロックダウン明けの解放","ミュウミュウのマイクロミニ（SS22）が象徴に。Y2K、肌見せ、明るい色が広がり、グッチは創業100周年のショーでバレンシアガと「ハッキング」し合いました。"],
+ ["2022–23","騒動と反動","バレンシアガの広告問題（2022年11月）、ミケーレのグッチ退任で、過激さや装飾の時代に区切り。2023年には「クワイエット・ラグジュアリー」が流行語になります。"],
+ ["2024","静けさと減速","ラグジュアリーの売上が鈍化。グッチは赤一色の控えめな路線、クロエはボーホーを復活。シャネルのヴィアール退任から、交代の連鎖が始まります。"],
+ ["2025","大交代の年","シャネル、ディオール、ロエベ、バレンシアガ、ボッテガ・ヴェネタ、セリーヌなどで新デザイナーがデビュー。秋のSS26は「デビューのシーズン」と呼ばれました。"],
+ ["2026","装飾の復活","FW26のミラノでは毛皮風素材、ディスコ、キャンディカラーが目立ち、SS27ではランジェリートップ、スカート、ウエスト強調、透ける素材、強い色が並びました。バイヤーからは「静かな高級感から折衷的なマキシマリズムへ」との声も。10月にはサンローランのヴァカレロが退任を発表しました。"]
+];
+
+const VR = (season, slug) => `https://www.vogue.com/fashion-shows/${season}/${slug}`;
+const VRD = slug => `https://www.vogue.com/fashion-shows/designer/${slug}`;
+
+const BRANDS = [
+ {n:"CHANEL", jp:"シャネル", cd:"マチュー・ブレイジー（2025〜）",
+  line:[["2019–2024","ヴィルジニー・ヴィアール"],["2025–","マチュー・ブレイジー",1]],
+  read:"ツイード、パール、カメリア、キルティングという強い定番を、どこまで崩してどこまで残すか。ブレイジーは定番を壊さず、着方をゆるめる方向で作り直しています。",
+  shows:[
+   {s:"2019–24", t:"ヴィアール期", sil:"skirtsuit", pal:["#E9E2D4","#1C1C1C","#C9B48A"],
+    pts:[["概要","ラガーフェルドの右腕だったヴィアールが後継に。着やすさを重視し、売上は好調でした。"],["評価","方向性が見えにくいという批評が続き、2024年6月に退任しました。"]],
+    src:[["Vogue Runway: Chanel（英語）",VRD("chanel")]]},
+   {s:"SS26", d:"2025年10月・グラン・パレ（パリ）", t:"ブレイジーのデビュー", sil:"suit", pal:["#6B4A35","#EDE6D8","#1A1A1A"],
+    pts:[["演出","グラン・パレを宇宙に変え、巨大な惑星を吊るし、床は星空のように光らせました。ガブリエル・シャネルが天文学に関心を持っていたことにちなみます。"],["最初のルック","茶色の千鳥格子のパンツスーツ。ウエストを低く、袖を折り返して着崩しています。"],["素材・手仕事","毛糸の房で作ったカメリアをニットのスカートに。透けるニットのイブニングドレスには羽根や立体的な花。"],["キーアイテム","キルティングのフラップバッグをねじって変形させたもの。パールも新しい装飾として使われました。"]],
+    pro:"今季最高のデビューとの声も。創業者本人に立ち返り、スカートスーツやカメリアなどの定番をよみがえらせたと評価されました。",
+    con:"根本的な刷新ではなく、自信のある「リセット」にとどまるという見方もあります。",
+    ctx:"ボッテガ・ヴェネタで評価を高めたブレイジーの起用は、シャネルが「定番を守るだけ」から抜け出す合図とみなされました。",
+    src:[["The Impression（英語）","https://theimpression.com/chanel-spring-2026-fashion-show-review/"],["theFashionSpot（英語）","https://www.thefashionspot.com/runway-news/907417-forum-members-review-the-wonderful-debut-of-matthieu-blazy-as-chanel-creative-director"],["Fashion Week Daily（英語）","https://fashionweekdaily.com/chanels-spring-2026-show-joyfully-shoots-for-the-stars/"]],
+    ph:VR("spring-2026-ready-to-wear","chanel")},
+   {s:"FW26", d:"2026年3月・グラン・パレ", t:"工事中のメゾン", sil:"skirtsuit", pal:["#B9B2A5","#D8C9A8","#2A2A2A"],
+    pts:[["演出","会場を建設現場に見立て、シャネルは完成した記念碑ではなく、今も作り直している途中だと示しました。"],["素材","金属糸や玉虫色の繊維を織り込み、ほのかに光るツイード。"],["スタイリング","バッグは口を開けたまま持たせ、ジャケットも従来の「上品なツイード」から離れた着方に。"],["終盤","妖精のような軽いルックが続き、ラガーフェルド時代へのオマージュと読まれました。"]],
+    pro:"会場は熱狂的で、新しい方向への期待が大きいと報じられました。",
+    ctx:"2シーズン目で、デビューの驚きから「この路線を続ける」という意思表示に移りました。",
+    src:[["The Zoe Report（英語）","https://www.thezoereport.com/fashion/chanel-fall-winter-2026-show-review"],["OUCH Magazine（英語）","https://ouchmagazine.com/blogs/fashion-shows/chanel-fall-winter-2026-review-a-house-in-transformation-at-paris-fashion-week"],["The Impression（英語）","https://theimpression.com/chanel-fall-2026-fashion-show-review/"]],
+    ph:VR("fall-2026-ready-to-wear","chanel")},
+   {s:"Cruise27", d:"2026年4月28日・ビアリッツ（フランス）", t:"ビアリッツへの里帰り", sil:"slip", pal:["#1C2A44","#F3EFE7","#9FB8C8"],
+    pts:[["会場","大西洋岸のリゾート地ビアリッツ。ガブリエル・シャネルが1915年に店と工房を開いた町です。"],["最初のルック","1926年のスケッチを作り直したリトル・ブラック・ドレス。"],["モチーフ","水平線のように走るバスク風のボーダー。水兵服をリゾート着とイブニングの両方に展開しました。"],["キーアイテム","ブルトン・シャツを、ゆったりしたハーフジップのプルオーバーにしてフリルのスカートと合わせました。"],["終盤","人魚を思わせる、うろこのように光るドレス。"]],
+    ctx:"ブレイジー初のクルーズ。メゾンの原点となった場所と服を、次々と参照しました。",
+    src:[["Vogue Scandinavia（英語）","https://www.voguescandinavia.com/articles/chanel-cruise-2027"],["FZINE（英語）","https://www.fzine.com/fashion/chanel-cruise-collection-2026-runway-highlights"],["Grazia Singapore（英語）","https://grazia.sg/?p=106331"],["The Impression（英語）","https://theimpression.com/chanel-cruise-2027-fashion-show-review/"]]},
+   {s:"SS27", d:"2026年10月5日・グラン・パレ", t:"La Conversation – Part Three", sil:"skirtsuit", pal:["#F1EEE6","#A9C3D9","#1C1C1C"],
+    pts:[["規模","83ルック。就任からちょうど1年のショーです。"],["演出","天井から大きな鳥を吊るし、巨大な月と色とりどりのガラスの床を配置しました。"],["シルエット","コルセットの骨、ペプラム、フリルの襟が、エドワード朝の名残として登場しました。"],["ディテール","ジャケットの襟を外側に折り返す着方。パリ全体で見られた傾向で、シャネルはその代表例に挙げられました。"],["方向性","デビューで示した方向を磨き込み、最も幅の広いコレクションになりました。"]],
+    pro:"The Impressionは10点満点で9.5。WWDは「これまでで最も多彩」と評しました。",
+    con:"ファンの掲示板では、サイズ感がだらしない、迫力が足りないという厳しい声もありました。",
+    src:[["The Impression（英語）","https://theimpression.com/chanel-spring-2027-fashion-show-review/"],["WWD（英語）","https://wwd.com/runway/spring-2027/paris/chanel/review/"],["theFashionSpot（英語）","https://www.thefashionspot.com/runway-news/975684-forum-members-review-the-chanel-spring-2027-collection-from-matthieu-blazy-one-year-after-becoming-creative-director"],["Fashionista（英語）","https://fashionista.com/2026/10/paris-fashion-week-spring-2027-trends"]],
+    ph:VR("spring-2027-ready-to-wear","chanel")}
+  ]},
+
+ {n:"DIOR", jp:"ディオール", cd:"ジョナサン・アンダーソン（2025〜）",
+  line:[["2016–2025","マリア・グラツィア・キウリ（ウィメンズ）"],["2018–2025","キム・ジョーンズ（メンズ）"],["2025–","ジョナサン・アンダーソン（全部門）",1]],
+  read:"創業者以来はじめて、ウィメンズ・メンズ・オートクチュールを一人が率いる体制です。ニュールックの「バー・ジャケット」をどう作り替えるかが毎回の見どころです。",
+  shows:[
+   {s:"2016–25", t:"キウリ期", sil:"midi", pal:["#F2EEE8","#1E1E1E","#8C7A6B"],
+    pts:[["概要","「We Should All Be Feminists」と書いたTシャツから始まり、フェミニズムのメッセージと、各国の職人やアーティストとの協業を続けました。チュールのロングスカートが象徴です。"],["退任","2025年5月のクルーズ（ローマ）が最後のショーになりました。"]],
+    src:[["Vogue Runway: Dior（英語）",VRD("christian-dior")]]},
+   {s:"SS26", d:"2025年10月・パリ", t:"ウィメンズのデビュー", sil:"mini", pal:["#F3EFE7","#1B2A4A","#C8B27E"],
+    pts:[["演出","アダム・カーティス監督の映像で開幕。ディオールの古い記録映像と超現実的な場面をつなぎ合わせたものです。テーマはシェイクスピアの「人生は舞台」。全74ルック。"],["シルエット","ニュールックのスーツを、短く切ったタキシード風ジャケットとプリーツのミニスカートに作り替えました。"],["ディテール","リボンをあしらったストラップレスのドレス、海賊のような帽子。スカートはギャザーや波打つ裾、バブルの裾で花びらのような質感に。"],["バッグ","「Dior」の文字を鎖にしたスエードのバッグ。"]],
+    pro:"スタンディングオベーションが起き、メゾンの定番を理解したうえで遊べる人だと評価されました。",
+    con:"賛否が大きく割れ、事前にレッドカーペットで女優が着た服を嫌う声もネットにありました。",
+    ctx:"アンダーソンは2025年6月にメンズでデビュー済み。これで3部門すべてを率いる体制が揃いました。",
+    src:[["Jing Daily（英語）","https://jingdaily.com/intels/2025-10/02/jonathan-anderson-debuts-1st-dior-women-s-show"],["ELLE Singapore（英語）","https://elle.com.sg/fashion/designers/paris-fashion-week-dior-spring-summer-2026-review/"],["The Industry（英語）","https://www.theindustry.fashion/jonathan-anderson-makes-his-dior-debut-with-bows-and-buccaneer-hats-at-paris-fashion-week/"],["Amy Odell（英語）","https://amyodell.substack.com/p/jonathan-andersons-strange-dior-debut"]],
+    ph:VR("spring-2026-ready-to-wear","christian-dior")},
+   {s:"FW26", d:"2026年3月3日・チュイルリー庭園", t:"庭園の散歩", sil:"volume", pal:["#D9C7E0","#A8C5A0","#F4EFE6"],
+    pts:[["演出","睡蓮の浮かぶ水面の上に木のデッキを渡したランウェイ。"],["テーマ","かつて人々が着飾って出かけた「遊歩庭園」と「散歩」。フランス宮廷の服装の決まりごとも参照しています。"],["素材・色","羽根の仕上げ、淡いパステルの花柄、大胆な花のアップリケ。"],["シルエット","裾がフルートのように広がる、誇張したシルエット。"]],
+    pro:"冬服をやわらかくロマンティックに見せ、新鮮だという評価。",
+    con:"方向転換ではなく、就任以来の世界観の続きにすぎないという見方も。",
+    src:[["The Zoe Report（英語）","https://www.thezoereport.com/fashion/dior-fall-winter-2026-show-review"],["PurseBlog（英語）","https://www.purseblog.com/dior/jonathan-anderson-takes-us-on-a-delightful-garden-stroll-for-dior-fall-2026/"],["The Impression（英語）","https://theimpression.com/christian-dior-fall-2026-fashion-show-review/"]],
+    ph:VR("fall-2026-ready-to-wear","christian-dior")},
+   {s:"SS27", d:"2026年9月29日・チュイルリー庭園 八角形の池", t:"クルミと不完全さ", sil:"midi", pal:["#F6F2EA","#8A6A4F","#E8C9C9"],
+    pts:[["演出","池の上に白いランウェイを渡し、65ルックを発表。"],["着想","手の中で転がして育てる中国の胡桃（文玩）。手で触れることで生まれる艶と不揃いさがテーマです。"],["ディテール","左右で違うイヤリング。この傾向はディオール、ドリス・ヴァン・ノッテン、クロエで見られました。"],["全体","とても女性的で軽やかな方向。"]],
+    pro:"手仕事や手触り、不揃いさでディオールの歴史に新しい命を吹き込んだと評価されました。",
+    con:"まとまりがなく作り込みすぎ、ディオールの本質であるシルエットを忘れている、どのコレクションも同じに見える、という批判も。",
+    src:[["The Impression（英語）","https://theimpression.com/christian-dior-spring-2027-fashion-show-review/"],["theFashionSpot（英語）","https://www.thefashionspot.com/runway-news/974898-forum-members-review-jonathan-andersons-ultra-feminine-christian-dior-spring-2027-collection"],["PurseBlog（英語）","https://www.purseblog.com/dior/dior-spring-2027-review/"],["tfashion.ai（英語）","https://tfashion.ai/runway/ss27/paris"]],
+    ph:VR("spring-2027-ready-to-wear","christian-dior")}
+  ]},
+
+ {n:"LOUIS VUITTON", jp:"ルイ・ヴィトン", cd:"ニコラ・ジェスキエール（ウィメンズ）／ファレル・ウィリアムス（メンズ）",
+  line:[["2013–","ニコラ・ジェスキエール（ウィメンズ）",1],["2018–2021","ヴァージル・アブロー（メンズ）"],["2023–","ファレル・ウィリアムス（メンズ）",1]],
+  read:"ウィメンズは時代を混ぜ合わせるSFのような造形、メンズは音楽とセレブリティの祝祭です。同じブランドに、まったく違う二つの語り方が並んでいます。",
+  shows:[
+   {s:"SS24 メンズ", d:"2023年6月・ポンヌフ（パリ）", t:"ファレルのデビュー", sil:"sport", pal:["#6E7B4F","#8A6A3F","#D8C9A8"],
+    pts:[["概要","ヴァージル・アブローの死去（2021年11月）を経て、ファレル・ウィリアムスが就任。橋の上を会場にした大規模なショー。"],["キーアイテム","迷彩とダミエ柄を合わせた「ダモフラージュ」。"]],
+    ctx:"デザイナーではなく音楽家・セレブリティを責任者に据えた人事として、大きな議論を呼びました。",
+    src:[["Vogue Runway（英語）",VR("spring-2024-menswear","louis-vuitton")]], ph:VR("spring-2024-menswear","louis-vuitton")},
+   {s:"SS26", d:"2025年10月・ルーヴル", t:"「避難所」", sil:"slip", pal:["#B8B6B2","#EDE6DA","#E4C4C8"],
+    pts:[["テーマ","家のようにくつろげる場所＝避難所。"],["素材","洗いをかけたシルク、透ける綿など、軽く手触りのよい素材。"],["色","くすんだグレー、クリーム、ピンク。"],["メンズ（2025年6月）","ファレルはポンピドゥー・センターで、インドの手仕事と色彩に着想したコレクションを発表。"]],
+    pro:"建築的な精密さと洗練された配色が高く評価されました。",
+    con:"シルエットのサイズ展開が限られる点は指摘されています。メンズはにぎやかすぎる、個性に欠けるとの声も。",
+    src:[["The Impression（英語）","https://theimpression.com/louis-vuitton-spring-2026-fashion-show-review/"],["Fluxury（英語）","https://www.fluxurymagazine.com/en/louis-vuitton-spring-summer-2026-collection"],["Esquire Australia（英語）","https://esquire.com.au/louis-vuitton-spring-summer-2026"]],
+    ph:VR("spring-2026-ready-to-wear","louis-vuitton")},
+   {s:"FW26", d:"2026年3月10日・ルーヴル（クール・カレ）", t:"Super Nature", sil:"coat", pal:["#4A4440","#7A5A40","#C2185B"],
+    pts:[["演出","ドラマ『セヴェランス』の美術を手がけたジェレミー・ヒンドルが、芝で覆った幾何学的な丘を中庭に作りました。森の空き地とSFの中間のような風景です。"],["着想","山、森、平原と、そこに暮らす人々。冒頭はトルコの羊飼いが着る厚手のコート「ケペネク」から。全54ルック。"],["シルエット","主役はアウター。肩を大きく張り出した箱型で、獣毛やウールで覆っています。"],["素材・色","チャコール、茶、アイボリーにフューシャやバーガンディを差し色に。フリンジ、羽根、毛足の長い素材、革。"]],
+    pro:"ジェスキエールが遊び心を取り戻したシーズンと評されました。",
+    con:"衣装っぽいと切り捨てることもできる、という見方もあります。",
+    src:[["OUCH Magazine（英語）","https://ouchmagazine.com/blogs/fashion-shows/louis-vuitton-fall-winter-2026-review-nicolas-ghesquiere-s-folklore-inspired-fantasy-at-pfw"],["FZINE（英語）","https://www.fzine.com/fashion/louis-vuitton-fall-winter-2026-collection-review"],["W Magazine（英語）","https://www.wmagazine.com/fashion/louis-vuitton-fall-2026-runway-show-photos"],["Pursebop（英語）","https://www.pursebop.com/?p=128306"]],
+    ph:VR("fall-2026-ready-to-wear","louis-vuitton")},
+   {s:"SS27", d:"2026年10月6日・ルーヴル（クール・カレ）", t:"Ergonomie", sil:"slip", pal:["#E8B4C4","#B8B8C0","#9C7A5A"],
+    pts:[["テーマ","体を縛らず、体に沿う服。"],["素材","しなやかなジャージー、技術系ナイロン、第二の皮膚のようなドレス。"],["背景","ジェスキエールは、ヨーロッパの熱波で服の重さそのものを考え直したと語っています。"],["色","パリ・コレクションの最後を飾ったショー。ピンク、メタリック、土の色。"]],
+    pro:"服を軽くするという方向転換そのものは評価されました。",
+    con:"ジェスキエールの持ち味である鋭い構築が影を潜め、大きな転換にしてはおとなしすぎたという声も。",
+    ctx:"気候が服の作り方を変える例として注目されています（「F トレンド予測」参照）。",
+    src:[["Vogue Philippines（英語）","https://vogue.ph/fashion/runway/louis-vuitton-spring-summer-2027-show-review/"],["The Impression（英語）","https://theimpression.com/louis-vuitton-spring-2027-fashion-show-review/"],["Forbes（英語）","https://www.forbes.com/sites/laiafarrangraves/2026/10/08/paris-fashion-week-springsummer-2027-key-trends-to-know/"]],
+    ph:VR("spring-2027-ready-to-wear","louis-vuitton")}
+  ]},
+
+ {n:"GUCCI", jp:"グッチ", cd:"デムナ（2025〜）",
+  line:[["2015–2022","アレッサンドロ・ミケーレ"],["2023–2025","サバト・デ・サルノ"],["2025–","デムナ",1]],
+  read:"装飾のミケーレ、静けさのデ・サルノ、そしてトム・フォード時代の色気を呼び戻すデムナ。このブランドの振れ幅は、業界全体の振り子をそのまま映しています。",
+  shows:[
+   {s:"FW21", d:"2021年4月・映像発表", t:"Aria", sil:"suit", pal:["#B0122B","#1C1C1C","#C9A55C"],
+    pts:[["概要","創業100周年。バレンシアガのロゴや服を取り込む「ハッキング」で話題になりました。"]],
+    src:[["Vogue Runway（英語）",VR("fall-2021-ready-to-wear","gucci")]], ph:VR("fall-2021-ready-to-wear","gucci")},
+   {s:"SS23", d:"2022年9月・ミラノ", t:"Twinsburg", sil:"coat", pal:["#3A3A3A","#C9A55C","#7A2E2E"],
+    pts:[["概要","双子のモデルが並んで歩いたミケーレ最後のショー。同年11月に退任しました。"]],
+    src:[["Vogue Runway（英語）",VR("spring-2023-ready-to-wear","gucci")]], ph:VR("spring-2023-ready-to-wear","gucci")},
+   {s:"SS24", d:"2023年9月・ミラノ", t:"Ancora", sil:"mini", pal:["#6B0F1A","#1C1C1C","#E9E2D4"],
+    pts:[["概要","デ・サルノのデビュー。深い赤「アンコーラ・レッド」と控えめな服。売上回復には至らず、2025年2月に退任しました。"]],
+    src:[["Vogue Runway（英語）",VR("spring-2024-ready-to-wear","gucci")]], ph:VR("spring-2024-ready-to-wear","gucci")},
+   {s:"SS26", d:"2025年9月22〜23日・ミラノ", t:"La Famiglia と映画『The Tiger』", sil:"gown", pal:["#2E5E3A","#C9A55C","#1C1C1C"],
+    pts:[["形式","ショーは開かず、37ルックのルックブックをInstagramで公開。写真家キャサリン・オピーが家族の肖像写真のように撮影しました。"],["コンセプト","グッチらしい顧客像を誇張した「グッチの一族」。「グッチらしさとは何か」の研究と位置づけています。"],["映画","スパイク・ジョーンズとハリナ・レインが監督。デミ・ムーアがグッチ家の相続人を演じ、登場人物は全員が新作を着ています。"]],
+    ctx:"ランウェイの前に、まずブランドのキャラクターを物語で示すという異例のデビューでした。",
+    src:[["W Magazine（英語）","https://www.wmagazine.com/fashion/gucci-spring-2026-demna-designer-debut-milan-fashion-week-photos"],["Numéro（英語）","https://numero.com/en/fashion/fashion-week-en/with-the-film-the-tiger-gucci-makes-a-spectacular-comeback/"],["GQ Hong Kong（英語）","https://gqhongkong.com/en/top-stories-en/milan-fashion-week-demna-debuts-his-first-gucci-collection-la-famiglia-with-short-film-the-tiger"]],
+    ph:VR("spring-2026-ready-to-wear","gucci")},
+   {s:"FW26", d:"2026年2月27日・パラッツォ・デッレ・シンティッレ（ミラノ）", t:"Primavera", sil:"gown", pal:["#1A1A1A","#C0C0C8","#8B1E2D"],
+    pts:[["演出","ボッティチェリの『春』にちなむタイトル。会場を大理石張りの架空の美術館にし、ウフィツィ美術館の許可を得て古代彫刻の複製を並べました。"],["シルエット","体の線をそのまま見せる、ぴったりした服。トム・フォード時代のグッチの官能性への目配せです。"],["クロージング","ケイト・モスが背中の大きく開いたラメのドレスで登場。トム・フォード時代以来のグッチのランウェイでした。"],["アクセサリー","細身になった「バンブー1947」、新スニーカー「マンハッタン」、ローファー。一部はショー直後に購入できる即売方式。"]],
+    pro:"官能性を今の形で作り直したノスタルジーとして評価する声。",
+    con:"CNNは「空っぽ」と批判。シンプルすぎてバッグを売るための土台にしか見えない服もあった、と指摘しました。",
+    src:[["CNN（英語）","https://edition-prod-cf.sitemirror.cnn.com/2026/02/27/style/demna-gucci-ai"],["AP / NY1（英語）","https://ny1.com/nyc/all-boroughs/ap-top-news/2026/02/27/kate-moss-closes-demnas-first-gucci-show-in-a-plunging-gown-and-branded-thong"],["Esquire India（英語）","https://www.esquireindia.co.in/amp/story/style/just-landed/inside-demnas-gucci-runway-debut"],["The Zoe Report（英語）","https://www.thezoereport.com/fashion/milan-fashion-week-fall-winter-2026-trends"]],
+    ph:VR("fall-2026-ready-to-wear","gucci")},
+   {s:"SS27", d:"2026年9月25日・ミラノ", t:"The Store Show", sil:"suit", pal:["#5A3A22","#E8DCC6","#C9A55C"],
+    pts:[["演出","ミラノの旗艦店を再現した会場。"],["モチーフ","乗馬。ホースビット金具と乗馬風のテーラリング。"],["ディテール","クロージングのドレスは金属の重りで留めてあり、さりげなさを装った技術的な仕掛けと評されました。"]],
+    pro:"デムナがグッチで初めて「自分のビジョンを完全に示した」最高の出来という評価。FW26より抑えた表現でした。",
+    con:"バレンシアガ時代の感覚に寄りすぎて、グッチらしさが薄いという指摘も。",
+    src:[["Hypebeast（英語）","https://hypebeast.com/2026/9/gucci-ss27-demna-distills-his-complete-personal-vision"],["Who What Wear（英語）","https://www.whowhatwear.com/fashion/runway/gucci-milan-fashion-week-spring-summer-2027"],["Coveteur（英語）","https://coveteur.com/gucci-spring-summer-2027-review"]],
+    ph:VR("spring-2027-ready-to-wear","gucci")}
+  ]},
+
+ {n:"BALENCIAGA", jp:"バレンシアガ", cd:"ピエールパオロ・ピッチョーリ（2025〜）",
+  line:[["2015–2025","デムナ"],["2025–","ピエールパオロ・ピッチョーリ",1]],
+  read:"デムナ期は「ショーそのものが事件」でした。ピッチョーリは、創業者クリストバル・バレンシアガの造形に、自身の得意な色彩とロマンティシズムを重ねています。",
+  shows:[
+   {s:"2021.07", d:"パリ", t:"オートクチュールの復活", sil:"volume", pal:["#1A1A1A","#3A3A3A","#E8E2D8"],
+    pts:[["概要","1968年の創業者引退以来、53年ぶりにオートクチュールを再開しました。"]],
+    src:[["Vogue Runway（英語）",VR("fall-2021-couture","balenciaga")]], ph:VR("fall-2021-couture","balenciaga")},
+   {s:"FW22", d:"2022年3月・パリ", t:"吹雪", sil:"coat", pal:["#2A2A2A","#D8D8D8","#E8C547"],
+    pts:[["概要","ウクライナ侵攻の直後。人工の吹雪の中を、モデルが荷物を抱えて歩きました。ジョージア出身で、自身も難民経験のあるデムナの個人的な表現です。"]],
+    src:[["Vogue Runway（英語）",VR("fall-2022-ready-to-wear","balenciaga")]], ph:VR("fall-2022-ready-to-wear","balenciaga")},
+   {s:"SS23", d:"2022年10月・パリ", t:"泥のランウェイ", sil:"coat", pal:["#5A4632","#1A1A1A","#8A8A8A"],
+    pts:[["概要","泥を敷き詰めた会場。直後の2022年11月、子どもを起用した広告が大きな批判を受け、以降デムナは服作りの基本へ戻りました。"]],
+    src:[["Vogue Runway（英語）",VR("spring-2023-ready-to-wear","balenciaga")]], ph:VR("spring-2023-ready-to-wear","balenciaga")},
+   {s:"SS26", d:"2025年10月・パリ", t:"ピッチョーリのデビュー", sil:"gown", pal:["#111111","#B3122E","#C9D63A"],
+    pts:[["最初のルック","彫刻のような黒いドレスに、白いオペラグローブと大きなサングラス。"],["方向性","1950年代の華やかさと今の重さを組み合わせ、構築的なシルエットを重視。"],["色","黒に、強い赤、シャルトルーズ（黄緑）、バーガンディ、淡いピンク。デムナ時代によく使われた色も残しています。"],["装飾","フリンジ、羽根、花のアップリケ。花柄も戻りました。"]],
+    pro:"過去と現在をつなぐデビューとして好評。",
+    ctx:"ストリートとアスレジャーが中心だったデムナ時代から、クチュール的な造形へ大きく舵を切りました。",
+    src:[["W Magazine（英語）","https://www.wmagazine.com/fashion/balenciaga-spring-2026-runway-photos"],["PurseBlog（英語）","https://www.purseblog.com/balenciaga/pierpaolo-picciolis-debut-collection-for-balenciaga-bridges-the-gap-between-past-and-present/"],["Overstandard（英語）","https://overstandard.dk/pierpaolo-piccioli-presents-a-new-era-at-balenciaga-with-a-vivid-ss26-debut/"]],
+    ph:VR("spring-2026-ready-to-wear","balenciaga")},
+   {s:"FW26", d:"2026年3月・パリ", t:"『ユーフォリア』との協業", sil:"coat", pal:["#111111","#C2185B","#5A4632"],
+    pts:[["演出","ドラマ『ユーフォリア』のサム・レヴィンソンと協業し、第3シーズンの場面を会場に組み込みました。映画のような雰囲気で、音楽はスティーリー・ダン。"],["前半","最初の9ルックは黒の革とウール。"],["シルエット","お椀型の帽子など1980年代への目配せ。構築的な襟、丸みのあるコート、彫刻的な形。"],["見せ場","マゼンタのコートに会場からどよめきが起きました。"]],
+    pro:"グラフィックのフーディにオペラグローブと鋲付きの靴を合わせ、デムナ時代とヴァレンティノ時代の両方に目配せした、という読み方も。",
+    con:"大きなフーディが雰囲気から浮き、彫刻的な見せ場を弱めたという指摘。",
+    src:[["Vogue Singapore（英語）","https://vogue.sg/balenciaga-fall-winter-2026-show/"],["The Zoe Report（英語）","https://www.thezoereport.com/fashion/balenciagas-fall-winter-2026-show-review"]],
+    ph:VR("fall-2026-ready-to-wear","balenciaga")},
+   {s:"SS27", d:"2026年10月・テニスクラブ・ド・パリ", t:"Les Coraux de la Liberté", sil:"midi", pal:["#E86A5A","#2E4A7A","#F3EFE7"],
+    pts:[["コンセプト","「動きの自由、選択の自由」。全72ルック。"],["方向性","クチュールの考え方を、デニム、シャツ、Tシャツ、革ジャン、ボンバー、靴、バッグに持ち込みました。"],["キーアイテム","主役になるスカート。"]],
+    pro:"The Impressionは9.2点。前シーズンより個人的で自信に満ち、就任1年で最も商業的にわかりやすいという評価。",
+    con:"9月下旬、このショーを最後に退任するという見通しが業界メディアで報じられました。2026年10月11日時点で公式発表は確認できていません。",
+    src:[["The Impression（英語）","https://theimpression.com/balenciaga-spring-2027-fashion-show-review/"],["W Magazine（英語）","https://www.wmagazine.com/fashion/balenciaga-spring-2027-runway-photos"],["Vogue Adria（英語）","https://vogueadria.com/balenciaga-paris-fashion-week/"],["Yahoo（英語）","https://www.yahoo.com/entertainment/articles/pierpaolo-piccioli-finds-groove-balenciaga-065738565.html"],["Complex（英語）","https://www.complex.com/style/a/kris-seavers/balenciaga-summer-27-piccioli-coral-paris"],["The Hollywood Reporter（英語）","https://www.hollywoodreporter.com/lifestyle/style/is-pierpaolo-piccioli-already-out-balenciaga-1236710234/"]],
+    ph:VR("spring-2027-ready-to-wear","balenciaga")}
+  ]},
+
+ {n:"MAISON MARGIELA", jp:"メゾン マルジェラ", cd:"グレン・マーティンス（2025〜）",
+  line:[["1988–2009","マルタン・マルジェラ（創業者）"],["2009–2014","デザインチーム（創業者退任後）"],["2014–2024","ジョン・ガリアーノ"],["2025–","グレン・マーティンス",1]],
+  read:"脱構築の本家です。顔を隠すモデル、四つの白いステッチのタグ、足袋の形のブーツ「タビ」、古着や既製品の再構成。「服とは何か」「作者とは誰か」を問う姿勢を、各デザイナーがどう引き継ぐかが見どころです。年表の「構築と脱構築」の系譜の中心にいるブランドです。",
+  shows:[
+   {s:"1988–2009", t:"創業者の時代", sil:"coat", pal:["#F3F1EC","#C8C2B6","#1A1A1A"],
+    pts:[["概要","1988年にデビュー。縫い目や裏地を表に出す、古着を解体して作り直すといった手法で脱構築を確立しました。本人は顔を出さないまま2009年に退任。"],["象徴","1990年の子どもたちが参加したショーは、のちのマーティンスのデビューでも参照されました。"]],
+    src:[["Vogue Runway: Maison Margiela（英語）",VRD("maison-margiela")]]},
+   {s:"SS24 Artisanal", d:"2024年1月・アレクサンドル3世橋の下", t:"ガリアーノの集大成", sil:"volume", pal:["#E8E2D8","#5A4A3A","#9AA3A0"],
+    pts:[["演出","橋の下に、夜の酒場のような空間を作りました。"],["見せ場","陶器のように光る肌のメイクと、コルセットで極端に絞ったシルエット。"],["位置づけ","近年のオートクチュールで最も評価されたショーのひとつ。ガリアーノは同年12月に退任しました。"]],
+    src:[["Vogue Runway（英語）",VR("spring-2024-couture","maison-margiela")]], ph:VR("spring-2024-couture","maison-margiela")},
+   {s:"FW25 Couture", d:"2025年7月・パリ", t:"マーティンスのデビュー", sil:"gown", pal:["#C8C2B6","#2A2A2A","#8A6A4F"],
+    pts:[["人物","ベルギー出身。ディーゼルやY/Projectで知られます。まずクチュールライン「アーティザナル」で登場しました。"],["見せ場","顔を覆うマスク。メゾンの「匿名性」の伝統を引き継いでいます。"]],
+    pro:"ほぼ不可能なことをやってのけたデビューと高く評価されました。",
+    con:"マスクなど、歴史の参照がそのまますぎるという指摘も。",
+    src:[["The Impression（英語）","https://theimpression.com/maison-margiela-fall-2025-couture-fashion-show-review/"]],
+    ph:VR("fall-2025-couture","maison-margiela")},
+   {s:"SS26", d:"2025年10月4日・パリ", t:"既製服のデビュー", sil:"suit", pal:["#F3F1EC","#4A5A78","#1A1A1A"],
+    pts:[["演出","7〜15歳の子ども61人の楽団が、わざと不完全な演奏で開幕。1990年のショーへの目配せです。"],["見せ場","モデルは口を開けたままにする金属のマウスピースを着け、匿名性と沈黙を表現しました。"],["服","ニュートラルな色のテーラリング、デニム、白いボタンダウンシャツ。メゾン自身は「実生活のための提案」と説明しています。"],["アクセサリー","アクリルのヒールの「タビ・クロー」が既製服で初登場。ボックスバッグも復活しました。"]],
+    pro:"抑制の効いた構成が評価されました。",
+    con:"クチュールに比べるとおとなしいという声も。",
+    ctx:"直前に、ブランド初のアンバサダーとしてマイリー・サイラスが発表されていました。",
+    src:[["Numéro（英語）","https://numero.com/en/fashion/fashion-week-en/glenn-martens-orchestrates-a-revival-at-margiela/"],["W Magazine（英語）","https://www.wmagazine.com/fashion/maison-margiela-glenn-martens-spring-2026-runway-photos"],["Robb Report Singapore（英語）","https://robbreport.com.sg/maison-margiela-spring-summer-2026/"],["AnOther（英語）","https://www.anothermag.com/fashion-beauty/16679/maison-margiela-spring-summer-2026-glenn-martens-review"]],
+    ph:VR("spring-2026-ready-to-wear","maison-margiela")},
+   {s:"FW26", d:"2026年4月・上海", t:"上海でのショーと展覧会", sil:"gown", pal:["#F3F1EC","#2F5DA8","#1A1A1A"],
+    pts:[["形式","パリではなく上海で発表。展覧会「Artisanal: Our Creative Laboratory」と同時開催です。"],["着想","蚤の市、磁器、エドワード朝。"],["見せ場","本物の陶器片約500個をオーガンジーに留めたドレス。制作に300時間以上かかったとされます。"],["手法","クチュールと既製服の混在。顔を隠すマスク、第二の皮膚のような服、白く塗った服（ビアンケット）、異素材の貼り合わせ。タキシードの変奏も繰り返し登場しました。"]],
+    ctx:"中国市場を重視した発表地で、マルジェラの手法を展覧会としても見せる試みです。",
+    src:[["Runway Magazine（英語）","https://runwaymagazines.com/maison-margiela-fall-winter-2026-shanghai/"],["Fashion Week Daily（英語）","https://fashionweekdaily.com/glenn-martens-maison-margiela-fall-2026/"],["Otto di San Pietro（英語）","https://ottodisanpietro.com/blogs/editorial/the-new-maison-margiela-by-glenn-martens"]],
+    ph:VR("fall-2026-ready-to-wear","maison-margiela")},
+   {s:"SS27", d:"2026年9月29日・パリ", t:"HARD and SOFT", sil:"slip", pal:["#D9A441","#B5472E","#6B7F4A"],
+    pts:[["タイトル","仕立て（ハード）と柔らかな服作り（ソフト）。パリのアトリエの二つの伝統です。"],["演出","花の作家マーク・コレが、部屋ごとに、しおれた花束、土の壁から出る芽、芝の部屋、植木鉢と、時間が進むように花を配置しました。"],["オマージュ","同じくベルギー出身のラフ・シモンズが2012年にディオールで見せた花の壁への敬意です。マーク・コレはその時の作家でもあります。"],["服","硬い芯を入れたトレンチ、コルセットのようなドレープのトップス、前が弾けたようなカウルのドレス。会場の花はプリントになり、服の上では満開のまま残されました。"],["柄","1970年代のテーブルクロスに着想したサイケデリックな花柄。"],["方向性","演出の派手さを抑え、より着やすい服へ。"],["体制","マーティンスは直前にディーゼルで最後のショーを終え、同じOTBグループのマルジェラに専念します。"]],
+    pro:"スタイリングと職人技は10点中8点。冷静で分析的なコレクションという評価です。",
+    con:"驚きは7点と控えめ。より商業的になったと受け止められました。",
+    ctx:"1980年代の創業時の矛盾、つまり美しさと崩しの間へ立ち返る試みとも読まれています。",
+    src:[["The Impression（英語）","https://theimpression.com/?p=12040921"],["Dazed（英語）","https://www.dazeddigital.com/fashion/article/71076/1/maison-margiela-ss27-paris-fashion-week-pfw-glenn-martens-dior-raf-simons"],["The National（英語）","https://www.thenationalnews.com/magazine/2026/09/30/dior-finds-its-voice-as-saint-laurent-goes-for-gold-at-paris-fashion-week/"],["Hypebae（英語）","https://hypebae.com/ph/2026/9/maison-margiela-ss27-paris-fashion-week-runways-tabi-mark-colle"]],
+    ph:"https://www.fashionsnap.com/collection/maison-margiela/2027ss/", phLabel:"写真を見る（FASHIONSNAP・日本語）"}
+  ]},
+
+ {n:"PRADA", jp:"プラダ", cd:"ミウッチャ・プラダ＋ラフ・シモンズ（2020〜）",
+  line:[["1978–","ミウッチャ・プラダ",1],["2020–","ラフ・シモンズ（共同）",1]],
+  read:"ユニフォーム、日常着、「ダサい」とされてきたものを再定義するブランドです。プラダの判断は数シーズン後に業界全体へ広がることが多く、先行指標として見る価値があります。2025年にはプラダ・グループがヴェルサーチの買収を決めました。",
+  shows:[
+   {s:"SS21", d:"2020年9月・映像発表", t:"共同体制の始まり", sil:"suit", pal:["#1A1A1A","#E8E8E8","#7A7A7A"],
+    pts:[["概要","ラフ・シモンズが共同クリエイティブ・ディレクターに就任し、最初のコレクションを発表しました。"]],
+    src:[["Vogue Runway（英語）",VR("spring-2021-ready-to-wear","prada")]], ph:VR("spring-2021-ready-to-wear","prada")},
+   {s:"SS26", d:"2025年9月・プラダ財団（ミラノ）", t:"スカートと宝石", sil:"midi", pal:["#E8742A","#5A5A3A","#E8E2D8"],
+    pts:[["軸","スカート、宝石のような装飾、決まりのないスタイリング。"],["色","強いオレンジ。"],["キーアイテム","大きなユーティリティジャケット。"]],
+    pro:"これまでで最もなめらかなトーンの転換と評されました。",
+    con:"ファンの掲示板では「仕掛けばかりで新しさがない」と厳しい声。配色は好評でした。",
+    src:[["Vogue Singapore（英語）","https://vogue.sg/prada-spring-summer-2026-show/"],["Schön Magazine（英語）","https://schonmagazine.com/prada-spring-summer-26/"],["theFashionSpot（英語）","https://www.thefashionspot.com/runway-news/906292-forum-members-review-the-prada-spring-2026-collection-from-miuccia-prada-raf-simons"]],
+    ph:VR("spring-2026-ready-to-wear","prada")},
+   {s:"FW26", d:"2026年2月・プラダ財団 デポジト", t:"ほどく・重ねる・見せる", sil:"coat", pal:["#E8C547","#C0392B","#6B5A4A"],
+    pts:[["展開","居心地のよいニットと色とりどりのマフラーで始まり、ショーが進むにつれて服が裂かれ、ほつれ、中身がのぞいていきました。"],["ディテール","胸元を縦に走る毛皮風の紐飾り。セーブルやチーターのように見えるものも。切れ目からは光る裏地がのぞきます。"],["構成","15人の女性が、少しずつ変わっていく装いで何度も登場する構成と報じられました。"],["文脈","ミラノ全体で見られた「ふわふわした素材」の流れを代表するショーです。"]],
+    ctx:"崩れていく世界で、服は人をなぐさめられるのか、という問いとして読まれました。",
+    src:[["FashionUnited / AFP（英語）","https://fashionunited.uk/news/fashion/prada-unravels-layers-and-reveals-at-milan-fashion-week/2026022786532"],["FashionUnited（英語）","https://fashionunited.uk/news/fashion/furry-frayed-freezing-on-milan-catwalks-the-fashion-trends/2026030286585"]],
+    ph:VR("fall-2026-ready-to-wear","prada")},
+   {s:"SS27", d:"2026年9月22日・ミラノ", t:"スカートだけのショー", sil:"midi", pal:["#E8A0B4","#3A6B8A","#7A5A3A"],
+    pts:[["コンセプト","ほぼ全ルックをスカートで構成。一つのアイテムだけでショーを作るのは異例です。"],["丈","ひざにかかるミディ丈が中心。"],["バリエーション","色を切り替えたアコーディオンプリーツに箱型の革ベスト。透けるキャンディカラーのラメには、ブラレットやストラップのないバンドゥを合わせました。"],["言葉","ブランドはスカートを「自由のために設計された」と表現しています。"]],
+    ctx:"1996年の「アグリー・シック」を思わせる、一点集中の提案です。パンツの時代からスカートの時代への転換点として注目されています（「F トレンド予測」参照）。",
+    src:[["Who What Wear（英語）","https://www.whowhatwear.com/fashion/runway/prada-milan-fashion-week-spring-summer-2027"],["The Zoe Report（英語）","https://www.thezoereport.com/fashion/prada-spring-summer-2027-show-review"]],
+    ph:VR("spring-2027-ready-to-wear","prada")}
+  ]},
+
+ {n:"MIU MIU", jp:"ミュウミュウ", cd:"ミウッチャ・プラダ",
+  line:[["1993–","ミウッチャ・プラダ",1]],
+  read:"2020年代前半で最も勢いのあるブランドのひとつです。少女的なもの、学生服、仕事着、スポーツを少しずらして着る提案が、そのままSNSのトレンドになってきました。",
+  shows:[
+   {s:"SS22", d:"2021年10月・パリ", t:"マイクロミニ", sil:"mini", pal:["#A9B4C2","#F3EFE7","#3A3A3A"],
+    pts:[["概要","極端に短いプリーツスカートと丈の短いニット。ローライズとY2K流行の象徴になりました。"]],
+    src:[["Vogue Runway（英語）",VR("spring-2022-ready-to-wear","miu-miu")]], ph:VR("spring-2022-ready-to-wear","miu-miu")},
+   {s:"SS26", d:"2025年10月・パリ", t:"At Work（エプロン）", sil:"midi", pal:["#D8C9A8","#5A4632","#C0C0C8"],
+    pts:[["主役","エプロン。働く女性への賛歌で、ミウッチャは「一番好きな服」と語りました。"],["展開","前ポケットの実用的なエプロンから、かぎ針編み、最後は銀の鋲やクリスタルで覆ったものへ。全65ルックのほぼすべてにエプロンが入りました。"],["演出","客席はフォーマイカ（樹脂天板）のテーブル。"]],
+    pro:"保守的な女性像の記号だったエプロンを、設計し直して新しく見せたと評価されました。",
+    src:[["Marie Claire（英語）","https://www.marieclaire.com/fashion/miu-miu-spring-2026-fashion-show-apron/"],["W Magazine（英語）","https://www.wmagazine.com/fashion/miu-miu-spring-2026-runway-photos"],["AnOther（英語）","https://anothermag.com/fashion-beauty/16694/miuccia-prada-miu-miu-spring-summer-2026-show-review"]],
+    ph:VR("spring-2026-ready-to-wear","miu-miu")},
+   {s:"FW26", d:"2026年3月・パレ・ディエナ", t:"小さな体、広い世界", sil:"slip", pal:["#8A9A7A","#E8E2D8","#4A3A2E"],
+    pts:[["テーマ","広い世界の中の小さな人間の体。体は小さくても、それで十分だというメッセージ。"],["演出","会場を森に変えました。"],["服","スリップドレス、細身のテーラリング、短いアウター。ブランド初期の定番への回帰です。"],["素材","洗いをかけた綿ポプリン、ダブルフェイスのカシミヤ、着古したような麻。シルクに透けるメッシュを重ね、ミニドレスに小さなリボン。"],["バッグ","鋲や毛皮の仕上げ。新しい「ヴィヴァン」バッグ。"]],
+    pro:"ここ数シーズンの挑発的な遊びから一転し、静かで内省的。「ささやくようなショー」と好評でした。",
+    src:[["The Impression（英語）","https://theimpression.com/miu-miu-fall-2026-fashion-show-review/"],["PurseBlog（英語）","https://www.purseblog.com/miu-miu/miu-miu-fall-2026-breathes-new-life-into-its-brand-signatures-in-celebration-of-individuality/"],["FZINE（英語）","https://www.fzine.com/fashion/miu-miu-fall-winter-2026"]],
+    ph:VR("fall-2026-ready-to-wear","miu-miu")},
+   {s:"SS27", d:"2026年9〜10月・パリ", t:"Here and Now", sil:"bramidi", pal:["#3A3A3A","#C8C2B6","#C6FF3A"],
+    pts:[["コンセプト","普段のスポーツ着を格上げする。ミウッチャは「スポーツに優雅さを」と説明しました。"],["キーアイテム","ラインストーンのスポーツブラにトラックジャケット。わざとちぐはぐに合わせる「ウロング・シュー・セオリー」的なスタイリング。"],["クロージング","ジジ・ハディッドが、チャコールのスポーツブラ、クリスタル刺繍のプリーツのミディスカート、ネオンの差し色のスニーカーで登場。"],["キャスト","オリヴィア・コールマン、エマ・コリンもモデルとして歩きました。"]],
+    pro:"派手さはないが、非常に強いコレクションと評されました。",
+    src:[["The Zoe Report（英語）","https://www.thezoereport.com/fashion/miu-miu-spring-2027-review"],["The Impression（英語）","https://theimpression.com/?p=12040912"],["Arab News（英語）","https://www.arabnews.pk/lifestyle/paris-plays-host-to-arab-fashion-stars-nora-attal-gigi-hadid-3003225"]],
+    ph:VR("spring-2027-ready-to-wear","miu-miu")}
+  ]},
+
+ {n:"LOEWE", jp:"ロエベ", cd:"ジャック・マッコロー＆ラザロ・ヘルナンデス（2025〜）",
+  line:[["2013–2025","ジョナサン・アンダーソン"],["2025–","マッコロー＆ヘルナンデス",1]],
+  read:"アンダーソン期は工芸と、超現実的な遊び心のブランドでした。新体制は、ニューヨークのプロエンザ・スクーラーを20年以上率いた二人。アメリカン・スポーツウェアとスペインの革工芸を組み合わせています。",
+  shows:[
+   {s:"SS22", d:"2021年10月・パリ", t:"ゆがみと風船", sil:"volume", pal:["#E8C547","#F3EFE7","#C0392B"],
+    pts:[["概要","ゆがんだ形や風船のようなヒールで、日常を少し超現実的に見せました。"]],
+    src:[["Vogue Runway（英語）",VR("spring-2022-ready-to-wear","loewe")]], ph:VR("spring-2022-ready-to-wear","loewe")},
+   {s:"FW23 メンズ", d:"2023年1月・パリ", t:"ピクセルの服", sil:"sport", pal:["#3A6B8A","#8A8A8A","#E8E2D8"],
+    pts:[["概要","粗い画像のドットをそのまま立体にしたようなジーンズやパーカー。デジタル時代の服を問う遊びです。"]],
+    src:[["Vogue Runway（英語）",VR("fall-2023-menswear","loewe")]], ph:VR("fall-2023-menswear","loewe")},
+   {s:"SS26", d:"2025年10月・パリ", t:"新体制のデビュー", sil:"sport", pal:["#D12A2A","#2A4ABF","#E8C547"],
+    pts:[["方向性","アメリカン・スポーツウェアとスペインの工芸の融合。"],["キーアイテム","ボンバー、タンクトップ、パーカ、ジーンズを建築的なカットで。"],["バッグ","定番「アマソナ」を作り直した「アマソナ180」。"]],
+    pro:"若々しいラグジュアリーとして、欠点のないデビューという評価。",
+    con:"原色の使い方が慎重すぎて、ロエベらしい冒険に届いていないという指摘。",
+    src:[["FashionUnited（英語）","https://fashionunited.uk/news/fashion/mccollough-and-hernandez-embrace-andersons-legacy-in-their-debut-for-loewe/2025100384273"],["The Impression（英語）","https://theimpression.com/loewe-spring-2026-fashion-show-review/"],["V Magazine（英語）","https://vmagazine.com/article/jack-mccollough-lazaro-hernandez-debut-at-loewe/"]],
+    ph:VR("spring-2026-ready-to-wear","loewe")},
+   {s:"FW26", d:"2026年3月・パリ", t:"極彩色の夢", sil:"coat", pal:["#E86A9A","#3AA0C8","#5A3A22"],
+    pts:[["着想","ドイツの美術家コジマ・フォン・ボーニン。彫刻の海の生き物が客席に置かれ、展示のようなショーになりました。"],["実験","3Dプリントの型でラテックスを流し込んだスリップドレス。ゴムボートから着想したパーカ。空気で膨らませたマフラー。"],["定番","ムートンのアウター、コーデュロイ、ビーズのイブニングドレス。"],["素材","革が中心。構築的なコート、長いブーツ、すっきりしたバッグ。"]],
+    pro:"今季パリで最も想像力豊かな瞬間のひとつという評価。新しいロエベの土台ができつつあるとも評されました。",
+    src:[["Harper's Bazaar Singapore（英語）","https://www.harpersbazaar.com.sg/fashion/runway/loewe-fall-winter-2026-review"],["PAP Magazine（英語）","https://www.pap-magazine.com/en/article/loewe-fall-winter-2026-jack-mccollough-lazaro-hernandez-debut"],["The Impression（英語）","https://theimpression.com/loewe-fall-2026-fashion-show-review/"],["Footwear Magazine（英語）","https://footwearmagazine.com/?p=21177"]],
+    ph:VR("fall-2026-ready-to-wear","loewe")},
+   {s:"SS27", d:"2026年10月2日・ヴァンセンヌ城の中庭", t:"アメリカ×スペイン・バロック", sil:"suit", pal:["#F2C12E","#1F3A6B","#B5472E"],
+    pts:[["演出","毎シーズン中庭に建てる白い箱の中に、円形の劇場のような空間。"],["着想","アメリカのカラーブロックとスペイン・バロック。プラド美術館の絵画を研究したといいます。両者を中和せず、ぶつけ合いました。"],["ディテール","前後を逆にしたポロ、サングラスの樹脂で作った襟のトレンチ、襟を二重にしたボンバー。"],["プレッピー","チェックのブレザー、デッキシューズ、スポーティなアノラック。ただし、ひとまとめのコーディネートにはしていません。"],["色","強い黄色が話題に。"]],
+    pro:"The Impressionは9点。楽しさと常識からの逸脱を両立したと評価。",
+    con:"終盤の硬い造形のルックが、着せ替え人形の服のように見えたという指摘。",
+    src:[["LVMH（英語）","https://www.lvmh.com/en/news-lvmh/ease-and-presence-for-loewe-spring-summer-2027"],["The Impression（英語）","https://theimpression.com/?p=12040936"],["AnOther（英語）","https://www.anothermag.com/fashion-beauty/17540/jack-mccollough-lazaro-hernandez-loewe-review-spring-summer-2027-ss27"],["Coveteur（英語）","https://coveteur.com/loewe-ss27-collar-trend"]],
+    ph:VR("spring-2027-ready-to-wear","loewe")}
+  ]},
+
+ {n:"BOTTEGA VENETA", jp:"ボッテガ・ヴェネタ", cd:"ルイーズ・トロッター（2025〜）",
+  line:[["2018–2021","ダニエル・リー"],["2021–2024","マチュー・ブレイジー"],["2025–","ルイーズ・トロッター",1]],
+  read:"ロゴを出さず、イントレチャート（革の編み込み）と素材で見せるブランドです。「クワイエット・ラグジュアリー」の代表格とされます。",
+  shows:[
+   {s:"FW22", d:"2022年2月・ミラノ", t:"ブレイジーのデビュー", sil:"sport", pal:["#3A5A8A","#8A2E2E","#E8E2D8"],
+    pts:[["概要","ジーンズとネルシャツに見える服が、実はすべてプリントした革。だまし絵のような職人技で一気に評価を高めました。"]],
+    src:[["Vogue Runway（英語）",VR("fall-2022-ready-to-wear","bottega-veneta")]], ph:VR("fall-2022-ready-to-wear","bottega-veneta")},
+   {s:"SS26", d:"2025年9月・ミラノ", t:"トロッターのデビュー", sil:"coat", pal:["#5A3A22","#2A2A2A","#C8B48A"],
+    pts:[["最初のルック","長い革のトレンチ、ワイドパンツ、大きなコート。"],["参照","ブランド初の女性クリエイティブ・ディレクター、ローラ・ブラッジョンの時代と、イントレチャートの伝統。"],["人物","ジグソー、ジョゼフ、ラコステ、カルヴェンを経た実務派です。"]],
+    pro:"10点満点の評価もあり、手触りと感情に富んだ見事なデビューと評されました。",
+    src:[["Numéro（英語）","https://numero.com/en/fashion/fashion-week-en/why-is-louise-trotters-debut-collection-for-bottega-veneta-a-success/"],["Vogue Singapore（英語）","https://vogue.sg/bottega-veneta-louise-trotter-debut/"],["Hero（英語）","https://hero-magazine.com/shows/louise-trotters-bottega-veneta-is-rich-in-texture-and-emotion"]],
+    ph:VR("spring-2026-ready-to-wear","bottega-veneta")},
+   {s:"FW26", d:"2026年2月28日・パラッツォ・サン・フェデーレ", t:"ミラノの硬さと官能", sil:"coat", pal:["#2E3A2A","#8A6A4F","#1A1A1A"],
+    pts:[["テーマ","1年暮らしたミラノの「ブルータリズム（無骨な建築）と官能」。"],["前半","肩の張ったニュートラルな色のスーツ。ブレイジー時代のボッテガを思わせます。"],["後半","主役はステートメントコート。鎧のような肩、丸いベルト、ウール・革・イントレチャートの長いトレンチ。"],["素材","マットなクロコ革、モヘア、ベルベットのようなニットのピーコートに、揃いのミニスカート。羽根、フリンジ、誇張した革。"],["バッグ","美しいが基本はシンプルで、服を引き立てる役割。"]],
+    pro:"トロッターは今季を「イット・コートの季節」と位置づけ、親密さとノスタルジーの研究として好評でした。",
+    src:[["The Zoe Report（英語）","https://www.thezoereport.com/fashion/bottega-venetas-fall/winter-2026-show-review"],["PurseBlog（英語）","https://www.purseblog.com/bottega-veneta/statement-coats-and-classic-intrecciato-ruled-the-runway-at-bottega-veneta-fall-2026/"]],
+    ph:VR("fall-2026-ready-to-wear","bottega-veneta")},
+   {s:"SS27", d:"2026年9月・ミラノ", t:"脱いでいく服", sil:"slip", pal:["#C8A878","#E8E2D8","#6B7F4A"],
+    pts:[["方向性","革を薄く削り、イントレチャートの編み目を粗く開いて、シルエットを少しずつ「脱がせて」いく。軽くリラックスした季節です。"],["手仕事","わざと不揃いにしたかぎ針編み、刺繍、フリンジ。"],["服","ギャザーのドレス、ドレープのブラウス、構築的なテーラリング。"]],
+    pro:"驚き、訴求力、スタイリング、職人技はいずれも9点。店頭での売りやすさは8点。ミラノにもメゾンにも馴染んできたと評されました。",
+    src:[["The Impression（英語）","https://theimpression.com/?p=12022255"],["AnOther（写真・英語）","https://www.anothermag.com/fashion-beauty/gallery/14848/bottega-veneta-spring-summer-2027/0"]],
+    ph:VR("spring-2027-ready-to-wear","bottega-veneta")}
+  ]},
+
+ {n:"SAINT LAURENT", jp:"サンローラン", cd:"後任未発表（ヴァカレロは2026年10月に退任）",
+  line:[["2016–2026","アンソニー・ヴァカレロ"],["2026–","後任は未発表",1]],
+  read:"強い肩、透ける素材、夜の装い。創業者イヴ・サンローランの「女性のためのタキシード」を、現代の官能性で作り直し続けています。",
+  shows:[
+   {s:"SS26", d:"2025年9月・エッフェル塔の下", t:"三つの女性像", sil:"skirtsuit", pal:["#1A1A1A","#5A3A6B","#C9A55C"],
+    pts:[["演出","紫陽花と緑で作った巨大なモノグラム。"],["人物像","革をまとった王女、流れるようなリヴ・ゴーシュ風のパリジェンヌ、現代の貴族。"],["シルエット","鋭い1980年代風。大きな肩、まっすぐなスカート、絞ったウエスト。"]],
+    pro:"一貫性があり、単調さに陥らないのが強みだという評価。",
+    con:"前半はおなじみの型に頼りすぎて既視感がある、新しい言葉より完成度を選んだ、との指摘。",
+    src:[["ELLE Singapore（英語）","https://elle.com.sg/fashion/paris-fashion-week-saint-laurent-spring-summer-2026-report/"],["The Impression（英語）","https://theimpression.com/?p=11763442"],["Fashion Week Daily（英語）","https://fashionweekdaily.com/saint-laurent-brings-80s-glamour-to-paris-fashion-week"]],
+    ph:VR("spring-2026-ready-to-wear","saint-laurent")},
+   {s:"FW26", d:"2026年3月・パリ", t:"反復の力", sil:"suit", pal:["#111111","#2A2A2A","#E8E2D8"],
+    pts:[["最初のルック","黒のシングルとダブルのスーツの変奏。1966年のタキシード「ル・スモーキング」もその一つです。"],["記念","ル・スモーキング誕生60周年。比率を見直し、くさび形の肩にして、肩の芯地を抜きました。"],["方向性","余計なものを削ぎ、線と影と意図だけを残す引き算。"]],
+    pro:"抑制こそが静かな興奮を生んでいる、という評価。",
+    con:"「今回はその公式が効いていない」「過去作の寄せ集め」というファンの声も。",
+    src:[["The Impression（英語）","https://theimpression.com/saint-laurent-fall-2026-fashion-show-review/"],["Runway Magazine（英語）","https://runwaymagazines.com/saint-laurent-fall-2026/"],["Vogue Singapore（英語）","https://vogue.sg/saint-laurent-fall-winter-2026-show/"],["AOL / theFashionSpot（英語）","https://www.aol.com/articles/forum-members-review-repetitive-fall-185518397.html"]],
+    ph:VR("fall-2026-ready-to-wear","saint-laurent")},
+   {s:"SS27", d:"2026年9〜10月・パリ", t:"金色の賛歌", sil:"gown", pal:["#C9A55C","#8A6A2E","#1A1A1A"],
+    pts:[["コンセプト","金一色。59ルック中49ルックが金色でした。"],["素材","液体のようなラメ、磨いたサテン、メタリックの革。"],["シルエット","鋭い肩のテーラリング。"],["節目","ヴァカレロの就任10周年。"]],
+    pro:"The Impressionは9.1点。豪華さと精密さ、映画のような官能性を評価しました。",
+    ctx:"2026年10月9日、サンローランとケリングがヴァカレロの退任を正式に発表し、これが最後のショーになりました。後任は未発表です。演出は、エッフェル塔の下の巨大な金のシャンデリアと、シャルロット・ゲンズブールの歌。",
+    con:"金一色の構成には、華やかだが一本調子だという見方もありえます。評価は概ね好意的でした。",
+    src:[["WWD（英語）","https://wwd.com/fashion-news/designer-luxury/anthony-vaccarello-leaves-saint-laurent-exit-1239319050/"],["W Magazine（英語）","https://www.wmagazine.com/fashion/saint-laurent-spring-2027-runway-photos"],["The Zoe Report（英語）","https://www.thezoereport.com/fashion/saint-laurent-spring-2027-review"],["Who What Wear（英語）","https://www.whowhatwear.com/fashion/runway/saint-laurent-paris-fashion-week-spring-summer-2027"],["The Impression（英語）","https://theimpression.com/saint-laurent-spring-2027-fashion-show-review/"],["AnOther（英語）","https://www.anothermag.com/fashion-beauty/17521/saint-laurent-spring-summer-2027-ss27-review-anthony-vaccarello"]],
+    ph:VR("spring-2027-ready-to-wear","saint-laurent")}
+  ]},
+
+ {n:"CELINE", jp:"セリーヌ", cd:"マイケル・ライダー（2024〜）",
+  line:[["2008–2018","フィービー・ファイロ"],["2018–2024","エディ・スリマン"],["2024–","マイケル・ライダー",1]],
+  read:"ライダーはファイロ期のデザインチームの中心人物です。スリマン期のロックと、ファイロ期の大人の実用美をどう合わせるかが見どころです。",
+  shows:[
+   {s:"2018–24", t:"スリマン期", sil:"suit", pal:["#111111","#3A3A3A","#C9A55C"],
+    pts:[["概要","細身のロックスタイル。映像で見せるショーが中心でした。"]],
+    src:[["Vogue Runway: Celine（英語）",VRD("celine")]]},
+   {s:"SS26", d:"2025年7月・パリ", t:"ライダーのデビュー", sil:"skirtsuit", pal:["#1F2A44","#E8E2D8","#8A2E2E"],
+    pts:[["形式","ランウェイ形式を復活させ、メンズとウィメンズを合同で発表。"],["方向性","ブルジョワとロックの混合。体に沿うシルエット、彫刻的な形、存在感のある小物。"],["影響","ファイロ期（2010年代）の古着の需要まで押し上げました。"]],
+    src:[["FashionUnited（英語）","https://fashionunited.in/news/fashion/michael-rider-unveils-a-debut-bourgeois-and-rock-collection-at-celine/2025070750490"],["Puck（英語）","https://puck.news/jcpenneys-zombie-era-the-new-celine-boom/"],["Grazia UK（英語）","https://graziadaily.co.uk/fashion/news/celine-spring-summer-2026/"]],
+    ph:VR("spring-2026-ready-to-wear","celine")},
+   {s:"FW26", d:"2026年3月・パリ", t:"ワードローブの論理", sil:"coat", pal:["#2A2A2A","#2E7A4A","#C2185B"],
+    pts:[["シルエット","細身へ移行。テーラードジャケット、細いパンツ、体に沿うオーバーコート。裾の広がり、構築的な肩。"],["色","緑、赤、フューシャ、紫の差し色。"],["小物","やわらかくしたトリオンフのロゴ。新作「リトル・ハーフムーン・ソフト・トリオンフ」。ベルトはよりすっきり。"]],
+    pro:"服を組み合わせて着る論理と、メゾンへの理解が評価されました。ファイロ期の経験が生きています。",
+    con:"ザ・ロウのようなミニマルに近づきすぎ、もっと大胆な主張を求める人には物足りないかもしれない、との指摘。",
+    src:[["The Impression（英語）","https://theimpression.com/celine-fall-2026-fashion-show-review/"],["Flaunt（英語）","https://www.flaunt.com/post/celine-fall-2026-read-to-wear"],["PurseBlog（英語）","https://www.purseblog.com/celine/for-celine-winter-2026-michael-rider-emphasizes-that-confidence-is-the-greatest-thing-you-can-wear/"]],
+    ph:VR("fall-2026-ready-to-wear","celine")},
+   {s:"SS27", d:"2026年9〜10月・パリ", t:"規律をひらく", sil:"coat", pal:["#C0392B","#1F2A44","#E8E2D8"],
+    pts:[["方向性","厳格な定番を、色と即興性と個人の解釈に向けてひらいています。"],["定番","鋭いテーラリング、細いコート、スカーフは継続。"],["色","強い赤。"],["メンズ","2026年6月には、初めて単独のメンズショーを開催しました。"]],
+    pro:"The Impressionは9.2点。単独メンズも9点で、スタイリングは10点でした。",
+    src:[["The Impression（英語）","https://theimpression.com/?p=12040906"],["The Impression メンズ（英語）","https://theimpression.com/celine-spring-2027-mens-fashion-show-review/"],["WWD（英語）","https://wwd.com/fashion-news/fashion-features/paris-fashion-week-spring-2027-skirts-femininity-trends-1239333120/"]],
+    ph:VR("spring-2027-ready-to-wear","celine")}
+  ]}
+];
+
+/* ===== 着想の源（参照される過去・作品・場所） ===== */
+const KIND = {
+  founder:"創業者・アーカイブ", designer:"過去のデザイナー", art:"美術・映画・文学",
+  place:"場所・自然・素材", society:"社会・生活・気候"
+};
+const SOURCES = {
+ "gc-edwardian":{n:"エドワード朝のコルセットと仕立て", y:1905, k:"founder", era:0, d:"1900年代のヨーロッパ上流階級の服。コルセットで胴を締め、重い装飾をまとうのが当然でした。若いガブリエル・シャネルが反発した対象です。"},
+ "gc-marine":{n:"ボーダーと水兵服", y:1913, k:"founder", era:0, d:"シャネルは1910年代、ドーヴィルやビアリッツの海辺で、漁師や水兵の服を女性のリゾート着に取り入れました。マリンボーダーが定番になった起点です。"},
+ "gc-biarritz":{n:"ビアリッツのシャネル（1915）", y:1915, k:"founder", era:0, d:"第一次大戦中、シャネルは大西洋岸のリゾート地ビアリッツに店と工房を開きました。のちのカンボン通り31番地の本店の土台になったとされます。"},
+ "gc-lbd":{n:"リトル・ブラック・ドレス（1926）", y:1926, k:"founder", era:1, d:"米Vogueが「シャネルのフォード」と紹介した黒いシンプルなドレス。喪の色だった黒を日常のおしゃれの色に変えました。"},
+ "gc-astro":{n:"シャネルと星（1932）", y:1932, k:"founder", era:2, d:"シャネルは1932年、彗星や星をモチーフにしたダイヤモンドのハイジュエリーを発表しました。天体はメゾンの装飾言語の一部です。"},
+ "gc-life":{n:"ガブリエル・シャネルの多面性", y:1883, k:"founder", era:0, d:"孤児院育ち、帽子職人、クチュリエ、香水の成功、戦中の空白、1954年の復帰。一人の中に何人もの女性がいる、という生涯そのものが繰り返し参照されます。"},
+ "lagerfeld":{n:"ラガーフェルドのシャネル（1983–2019）", y:1983, k:"designer", era:7, d:"36年間シャネルを率い、定番を毎シーズン遊び倒しました。グラン・パレに巨大なセットを組むショーの伝統も彼が作ったものです。"},
+ "dior-1947":{n:"ニュールックとバー・ジャケット（1947）", y:1947, k:"founder", era:3, d:"絞ったウエスト、丸い肩、腰の張ったジャケットに、広がるスカート。戦後の女性像を一新したディオールの原点です。"},
+ "dior-garden":{n:"クリスチャン・ディオールと庭", y:1920, k:"founder", era:1, d:"ディオールはノルマンディーのグランヴィルにある生家の庭で育ち、花を生涯愛しました。花の形のシルエットやスズランは、メゾンの重要なモチーフです。"},
+ "rococo":{n:"18世紀フランスの宮廷と遊歩庭園", y:1750, k:"art", era:null, d:"人々が着飾って庭を歩き、見る・見られることを楽しんだ時代。装いが身分や立場を示す決まりごとでもありました。"},
+ "shakespeare":{n:"シェイクスピア「この世は舞台」", y:1599, k:"art", era:null, d:"『お気に召すまま』の有名な台詞。人は一生のうちに、さまざまな役を演じるという考え方です。"},
+ "curtis":{n:"アダム・カーティス", y:2002, k:"art", era:9, d:"記録映像をコラージュして社会を描くイギリスのドキュメンタリー作家。ディオールのデビュー映像を手がけました。"},
+ "wenwan":{n:"文玩胡桃", y:1700, k:"place", era:null, d:"中国の伝統で、二つの胡桃を手の中で転がし続け、長い年月をかけて艶を育てるもの。形の揃った対は貴重で、完全な対称はめったにありません。"},
+ "ghesquiere-bal":{n:"ジェスキエールのバレンシアガ（1997–2012）", y:1997, k:"designer", era:8, d:"未来的な素材と構築的な形を組み合わせ、2000年代のデザイナー界に大きな影響を与えました。現在のルイ・ヴィトンでのSF的な造形の原点です。"},
+ "kepenek":{n:"ケペネク", y:1800, k:"place", era:null, d:"トルコのアナトリア地方の羊飼いが着る、フェルトの分厚い外套。雨風と寒さから身を守る袖のない服で、肩が大きく張り出しています。"},
+ "severance":{n:"ドラマ『セヴェランス』", y:2022, k:"art", era:11, d:"無機質なオフィス空間の美術で話題になったドラマ。その美術監督がルイ・ヴィトンの会場を手がけました。"},
+ "heatwave":{n:"ヨーロッパの熱波", y:2022, k:"society", era:11, d:"2020年代、ヨーロッパでは記録的な猛暑が続いています。服の重さや素材の選び方そのものを考え直すきっかけになっています。"},
+ "botticelli":{n:"ボッティチェリ『春（プリマヴェーラ）』", y:1480, k:"art", era:null, d:"フィレンツェのウフィツィ美術館にある、ルネサンスを代表する絵画。グッチの故郷フィレンツェの象徴でもあります。"},
+ "guccio":{n:"グッチオ・グッチとサヴォイ・ホテル", y:1897, k:"founder", era:0, d:"創業者グッチオ・グッチは若いころロンドンの高級ホテルで働き、上流階級の客、芸人、芸術家たちの装いと荷物を間近で見ました。1921年にフィレンツェで革製品店を開きます。"},
+ "gucci-bamboo":{n:"バンブーバッグ（1947）", y:1947, k:"founder", era:3, d:"戦後の資材不足の中、竹を熱で曲げて持ち手にしたバッグ。グッチの代表作です。"},
+ "gucci-horsebit":{n:"ホースビット（1953）", y:1953, k:"founder", era:4, d:"馬具のはみ（くつわ）を模した金具。乗馬を愛する上流階級の世界をローファーやバッグに持ち込みました。"},
+ "tomford-gucci":{n:"トム・フォードのグッチ（1994–2004）", y:1994, k:"designer", era:8, d:"倒産寸前のグッチを、官能的で挑発的な服と広告で立て直しました。ケイト・モスら当時のスーパーモデルが象徴です。"},
+ "michele-gucci":{n:"ミケーレのグッチ（2015–2022）", y:2015, k:"designer", era:10, d:"古着屋の宝探しのような装飾過多の世界。デムナはこの時代と正反対の官能性からグッチを作り直しています。"},
+ "cb-1950s":{n:"クリストバル・バレンシアガの造形（1950〜60年代）", y:1957, k:"founder", era:4, d:"体から離れた服。サック・ドレス（1957）、ベビードール（1958）、一枚布を折ったようなドレスなど、彫刻のような形で「クチュリエの中のクチュリエ」と呼ばれました。"},
+ "gazar":{n:"ガザル（1958）", y:1958, k:"place", era:4, d:"バレンシアガが生地会社と開発した、張りのある絹。形を保つので、彫刻的なドレスを可能にしました。ピッチョーリは改良版の「ネオ・ガザル」を復活させています。"},
+ "piccioli-valentino":{n:"ピッチョーリのヴァレンティノ（2008–2024）", y:2008, k:"designer", era:10, d:"鮮やかな単色、クチュールの手仕事、ロマンティシズム。全身ピンクのコレクション（2022）は大きな話題になりました。"},
+ "demna-bal":{n:"デムナのバレンシアガ（2015–2025）", y:2015, k:"designer", era:10, d:"大きなフーディ、ダッドスニーカー、日用品の高級化。ショー自体が事件になる手法で、ストリートとラグジュアリーの境を消しました。"},
+ "euphoria":{n:"ドラマ『ユーフォリア』", y:2019, k:"art", era:10, d:"10代の若者を描いた米ドラマ。強いメイクと衣装がZ世代の装いに大きく影響しました。"},
+ "coral":{n:"地中海の赤珊瑚とオード・フランジュの彫刻", y:2026, k:"place", era:11, d:"赤珊瑚は1年に数ミリしか育たず、同じ枝は二つとありません。フランスの作家オード・フランジュの麻の珊瑚の彫刻が、ショーのタイトルと中心的な装置になりました。"},
+ "mm-anon":{n:"マルジェラの匿名性", y:1988, k:"founder", era:7, d:"デザイナー本人が顔を出さず、モデルの顔を布やマスクで隠し、タグは白い布に数字だけ。服そのものを見せるための仕組みです。"},
+ "mm-1989":{n:"子どもたちのショー（1989）", y:1989, k:"founder", era:7, d:"マルジェラは1989年、パリ郊外の空き地で、地元の子どもたちも加わったショーを開きました。ファッションショーの格式を壊した伝説的な回です。"},
+ "jika-tabi":{n:"地下足袋", y:1920, k:"place", era:1, d:"親指と他の指が分かれた日本の作業用の履物。マルジェラはこれを1988年のデビューでブーツにし、「タビ」はメゾンの象徴になりました。"},
+ "mm-replica":{n:"複製（レプリカ）への関心", y:1994, k:"founder", era:8, d:"古着や既存の服をそのまま複製し、元の年代と出どころを書いて売る手法。「新しさ」よりも「既にあるもの」を見つめ直すマルジェラの基本姿勢です。"},
+ "mm-white":{n:"白く塗る手法（ビアンケット）", y:1990, k:"founder", era:8, d:"家具や靴、服を白い塗料で覆い、時間とともにひび割れて下の色が見えてくる。白はマルジェラの色です。"},
+ "galliano-mm":{n:"ガリアーノのアーティザナル（2014–2024）", y:2014, k:"designer", era:10, d:"古着や拾ったものを、演劇的なクチュールに作り変えたガリアーノの10年間。2024年のショーはその頂点とされます。"},
+ "raf-dior-2012":{n:"ラフ・シモンズのディオール・デビュー（2012）", y:2012, k:"designer", era:10, d:"ラフ・シモンズは2012年7月のディオールでのデビューで、邸宅の部屋の壁を何十万本もの生花で埋め尽くしました。手がけたのはベルギーの花の作家マーク・コレ。ファッション史に残る会場です。"},
+ "china-porcelain":{n:"中国の磁器", y:1400, k:"place", era:null, d:"白地に青の染付など、中国の磁器は世界の装飾美術に影響を与えてきました。マルジェラは上海でのショーで、陶器片そのものをドレスに使いました。"},
+ "flea-market":{n:"蚤の市", y:1988, k:"place", era:7, d:"マルジェラは創業期から、蚤の市で見つけた古着や布、日用品を服に作り変えてきました。"},
+ "prada-1996":{n:"プラダの「アグリー・シック」（1996）", y:1996, k:"designer", era:8, d:"くすんだ色、古めかしい柄、野暮ったいスカート丈。あえて「ダサい」ものを上品に見せ、のちの業界全体の美意識を変えたコレクションです。"},
+ "uniform":{n:"制服とユニフォーム", y:1950, k:"society", era:4, d:"学生服、作業着、看護服、エプロン。ミウッチャ・プラダは、社会的な役割を示す服を繰り返し取り上げてきました。"},
+ "apron":{n:"エプロンと女性の労働", y:1900, k:"society", era:0, d:"家庭や工場で働く女性の服であり、保守的な女性像の記号でもありました。"},
+ "sport-elevated":{n:"スポーツウェアの格上げ", y:2014, k:"society", era:10, d:"アスレジャーの普及で、運動着が日常着になりました。いまは逆に、運動着をドレスアップする段階に入っています。"},
+ "wrong-shoe":{n:"ウロング・シュー・セオリー", y:2024, k:"society", era:11, d:"服と靴をわざとちぐはぐに合わせ、着こなしに違和感と個性を出すSNS発の考え方。"},
+ "mccardell":{n:"クレア・マッカーデルとアメリカン・スポーツウェア", y:1942, k:"designer", era:3, d:"戦時中のアメリカで、動きやすく実用的な服を「アメリカらしさ」として確立したデザイナー。プロエンザ・スクーラーの二人はこの系譜にいます。"},
+ "proenza":{n:"プロエンザ・スクーラー（2002–2025）", y:2002, k:"designer", era:9, d:"マッコローとヘルナンデスがニューヨークで創業。アメリカン・スポーツウェアを少しひねった服で知られます。"},
+ "spanish-baroque":{n:"スペイン・バロック絵画", y:1656, k:"art", era:null, d:"ベラスケスに代表される17世紀スペインの宮廷絵画。プラド美術館に多く収められ、重厚な黒と大きく張った襟やスカートが特徴です。"},
+ "von-bonin":{n:"コジマ・フォン・ボーニン", y:2000, k:"art", era:9, d:"ドイツの美術家。布でできた大きなぬいぐるみのような海の生き物などで、かわいさと皮肉を同時に表現します。"},
+ "anderson-loewe":{n:"アンダーソンのロエベ（2013–2025）", y:2013, k:"designer", era:10, d:"工芸と超現実的なユーモア。新体制はこの遺産を受け継ぎつつ、より着やすい方向へ進めています。"},
+ "braggion":{n:"ローラ・ブラッジョンのボッテガ（1970年代〜）", y:1975, k:"founder", era:6, d:"ボッテガ・ヴェネタで初めて女性として創作を率いた人物。トロッターは、ブランドの女性的な視点の源流として参照しました。"},
+ "intrecciato":{n:"イントレチャート", y:1966, k:"founder", era:5, d:"細い革を編み込む技法。ロゴの代わりにブランドを示す、ボッテガ・ヴェネタの署名です。"},
+ "milan-brutal":{n:"ミラノのブルータリズム", y:1958, k:"place", era:4, d:"トーレ・ヴェラスカ（1958年完成）など、戦後ミラノの無骨なコンクリート建築。硬さの中の官能性というトロッターの主題の背景です。"},
+ "milan-season":{n:"ミラノの春から夏へ", y:2026, k:"place", era:11, d:"重ね着が一枚ずつ減り、体が軽くなっていく季節の変わり目。トロッターは「脱いでいく服」の着想にしました。"},
+ "ysl-smoking":{n:"ル・スモーキング（1966）", y:1966, k:"founder", era:5, d:"イヴ・サンローランが発表した女性のためのタキシード。夜の装いで男性服を女性が着る、という革命でした。"},
+ "ysl-gold":{n:"イヴ・サンローランと金", y:1991, k:"founder", era:8, d:"イヴ・サンローランは金を特別な色として愛しました。SS27は1991年秋冬リヴ・ゴーシュのコレクションを逆にたどる構成だったと報じられています。"},
+ "philo-celine":{n:"フィービー・ファイロのセリーヌ（2008–2018）", y:2008, k:"designer", era:10, d:"働く大人の女性のための実用的なミニマル。「フィービー期のセリーヌ」は今も古着市場で人気です。"},
+ "celine-70s":{n:"1970年代のセリーヌ", y:1972, k:"founder", era:6, d:"創業者セリーヌ・ヴィピアナ時代の、パリのブルジョワ的な上品さ。トリオンフのロゴもこの時代に生まれました。"},
+ "slimane-celine":{n:"スリマンのセリーヌ（2018–2024）", y:2018, k:"designer", era:10, d:"細身のロックスタイル。ライダーはこのロックの要素とファイロ期の大人の実用性を混ぜています。"},
+ "comfort-world":{n:"不安な世界でのなぐさめ", y:2026, k:"society", era:11, d:"戦争や分断が続く中で、服は人を守り、なぐさめられるのか。プラダが繰り返し投げかけてきた問いです。"},
+ "small-body":{n:"広い世界の中の小さな体", y:2026, k:"society", era:11, d:"ファッションの見せ物ではなく、一人の人間の身体を中心に置き直す考え方。"},
+ "store":{n:"高級店という舞台", y:1921, k:"founder", era:1, d:"店そのものが憧れの世界への入り口。グッチは1921年のフィレンツェの店から始まりました。デムナは「店」をショーの会場にしました。"}
+};
+
+/* ===== ショーごとの構想と系譜 ===== */
+const INSP = {
+ "chanel-cruise27":{concept:"シャネルが初期にメゾンを開いた海辺の町ビアリッツに戻り、「動きと自由」をテーマにしたリゾート・コレクション。",
+   refs:[["gc-biarritz","発表地そのもの。メゾンの原点への里帰りです。"],["gc-lbd","1926年のスケッチを再解釈した黒いドレスで開幕しました。"],["gc-marine","バスク地方のボーダーと水兵服を、リゾート着からイブニングまで展開。"]],
+   chain:[[1913,"海辺の水兵服"],[1915,"ビアリッツの店"],[1926,"黒いドレス"],[2026,"Cruise 2027"]]},
+ "chanel-ss26":{concept:"ブレイジーとガブリエル・シャネルの、時代を超えた「対話」の第1回。宇宙は、彼女の星への関心と、新しい時代の始まりを重ねた舞台です。",
+   refs:[["gc-astro","惑星と星空の会場は、シャネルの天体モチーフにちなみます。"],["gc-life","ブレイジーは「シャネル本人」に立ち返ると語りました。"],["lagerfeld","グラン・パレに巨大セットを組むショーの伝統を引き継いでいます。"]],
+   chain:[[1926,"黒とジャージーの解放"],[1932,"星のジュエリー"],[1983,"ラガーフェルドの遊び"],[2025,"SS26 宇宙"]]},
+ "chanel-fw26":{concept:"メゾンは完成した記念碑ではなく、今も作り直している途中だというメッセージ。",
+   refs:[["lagerfeld","終盤の妖精のようなルックは、ラガーフェルド時代への目配せと読まれました。"],["gc-life","定番を壊さず緩める姿勢は、シャネル自身の「着る人のための服」に通じます。"]],
+   chain:[[1954,"復帰後のツイードスーツ"],[1983,"ラガーフェルドの再解釈"],[2026,"FW26 工事中"]]},
+ "chanel-ss27":{concept:"「同じコインの別の面」。一人の女性が一生のうちに何人もの自分になる、というガブリエル・シャネルの多面性がテーマです。歴史の再現ではなく、彼女の重なり合った物語だと説明されています。",
+   refs:[["gc-edwardian","コルセットの骨、ペプラム、フリルの襟が、彼女が反発する前の時代の痕跡として登場。"],["gc-life","鳥が吊るされた会場は「自由になって飛び立った」シャネルの比喩。会場はブレイジーが休暇を過ごす南イタリアの村にも着想しています。"],["gc-lbd","スーツを軽く羽織るように着る、シャネルの革命的な発想への流れ。"]],
+   chain:[[1905,"エドワード朝のコルセット"],[1916,"ジャージーで解放"],[1954,"羽織るスーツ"],[2026,"SS27 多面的な女性"]]},
+
+ "dior-ss26":{concept:"人生は舞台であり、人は役を演じ分ける。ディオールの過去の映像と超現実を重ね、メゾンの記憶を「演じ直す」デビューです。",
+   refs:[["shakespeare","コレクションの軸となる考え方。"],["curtis","開幕の映像を監督。記録映像をコラージュする手法でディオールの歴史を見せました。"],["dior-1947","バー・ジャケットを短く切り、プリーツのミニと合わせて再構成。"]],
+   chain:[[1599,"この世は舞台"],[1947,"ニュールック"],[2025,"SS26 短いバー・ジャケット"]]},
+ "dior-fw26":{concept:"かつて人々が着飾って出かけた遊歩庭園と散歩。装いが身分や立場を語った時代の決まりごとを参照しています。",
+   refs:[["rococo","チュイルリー庭園自体が、王侯貴族が散歩した場所です。"],["dior-garden","花のアップリケ、パステルの花柄は、庭を愛したディオールにつながります。"]],
+   chain:[[1750,"宮廷の遊歩"],[1920,"グランヴィルの庭"],[1947,"花の形のシルエット"],[2026,"FW26 庭の散歩"]]},
+ "dior-ss27":{concept:"手で触れ、時間をかけることで貴くなるもの。完全な対称より、不揃いさや手の跡に価値を置きます。招待状には実物の胡桃が二つ入っていました。",
+   refs:[["wenwan","招待状と着想の出発点。左右非対称のスカートやイヤリングに表れました。"],["dior-garden","会場に植えた楠の木はショー後に庭へ植え替え。自然を「像」ではなく「過程」として扱っています。"],["dior-1947","スカートが主役である点はニュールックの伝統の続きです。"]],
+   chain:[[1700,"文玩胡桃"],[1947,"スカートの造形"],[2026,"SS27 不揃いさ"]]},
+
+ "louisvuitton-ss26":{concept:"家のようにくつろげる「避難所」としての服。",
+   refs:[["ghesquiere-bal","建築的な精密さは、バレンシアガ時代からのジェスキエールの持ち味です。"]],
+   chain:[[1997,"ジェスキエールの構築"],[2025,"SS26 避難所"]]},
+ "louisvuitton-fw26":{concept:"山、森、平原と、そこに暮らす人々。自然と民族衣装をSF的に再構成した「超自然」。",
+   refs:[["kepenek","冒頭の張り出した肩の外套の直接の源。"],["severance","芝の幾何学的な丘のセットを手がけた美術監督の作品。"],["ghesquiere-bal","民族衣装を未来的な形に変える手法はバレンシアガ時代から続きます。"]],
+   chain:[[1800,"アナトリアの羊飼いの外套"],[1997,"ジェスキエールのSF"],[2026,"FW26 Super Nature"]]},
+ "louisvuitton-ss27":{concept:"体を縛らない服。熱波を経験し、服の物理的な重さを見直しました。",
+   refs:[["heatwave","デザイナー本人が理由として挙げた要因。"],["sport-elevated","ジャージーや技術系ナイロンなど、スポーツ素材を高級服に。"]],
+   chain:[[1916,"シャネルのジャージー"],[2014,"アスレジャー"],[2022,"欧州の熱波"],[2026,"SS27 Ergonomie"]]},
+
+ "gucci-ss26":{concept:"グッチらしさとは何か。誇張された顧客像「グッチの一族」を、家族写真と映画で描きました。",
+   refs:[["guccio","上流階級と芸術家に憧れる創業者の視点が、キャラクター造形の土台です。"],["michele-gucci","ミケーレ期の物語性を、皮肉の効いた人物像として受け継いでいます。"]],
+   chain:[[1897,"サヴォイ・ホテルの客たち"],[1921,"フィレンツェ創業"],[2025,"SS26 グッチの一族"]]},
+ "gucci-fw26":{concept:"ボッティチェリの『春』にちなむ「新しい季節」。トム・フォード時代の官能性をよみがえらせた、デムナ初のランウェイです。",
+   refs:[["botticelli","タイトルと、古代彫刻が並ぶ美術館のような会場。"],["tomford-gucci","体の線を見せる服と、当時のミューズであるケイト・モスのクロージング。"],["gucci-bamboo","細身になったバンブー1947が復活。"]],
+   chain:[[1480,"ボッティチェリ『春』"],[1947,"バンブー"],[1994,"トム・フォードの官能"],[2026,"FW26 Primavera"]]},
+ "gucci-ss27":{concept:"グッチとは「より華やかな世界に属したいという欲望」と「その世界を自分の姿に作り変える大胆さ」。反抗的な貴族、気取り屋、変わり者という人物像で描きました。",
+   refs:[["store","実物大の架空の旗艦店が会場。"],["guccio","上流の客と芸術家を観察した創業者の体験が、ブルジョワと反抗の主題に。"],["gucci-horsebit","乗馬モチーフとホースビット金具。"]],
+   chain:[[1897,"サヴォイ・ホテル"],[1953,"ホースビット"],[2025,"グッチの一族"],[2026,"SS27 Store Show"]]},
+
+ "balenciaga-ss26":{concept:"創業者の構築的な造形と、ピッチョーリ自身の色彩とロマンティシズムの出会い。",
+   refs:[["cb-1950s","彫刻のような黒いドレスと1950年代の華やかさ。"],["piccioli-valentino","鮮やかな赤やシャルトルーズ、花の装飾。"],["demna-bal","前任者の時代の色を一部残し、断絶ではなく継承を示しました。"]],
+   chain:[[1957,"サック・ドレス"],[2008,"ヴァレンティノの色彩"],[2015,"デムナ"],[2025,"SS26 デビュー"]]},
+ "balenciaga-fw26":{concept:"映画のような空気。ドラマの世界と、1980年代、そして創業者の構築的な形を重ねました。",
+   refs:[["euphoria","製作者サム・レヴィンソンとの協業。第3シーズンの場面を会場に。"],["cb-1950s","構築的な襟、丸みのあるコート。"],["demna-bal","グラフィックのフーディは前任者への目配せ。"]],
+   chain:[[1958,"バレンシアガの造形"],[2015,"デムナのフーディ"],[2019,"『ユーフォリア』"],[2026,"FW26"]]},
+ "balenciaga-ss27":{concept:"メゾンは、多くの手によって少しずつ育つ生きた生態系である。珊瑚の成長に重ねました。",
+   refs:[["coral","タイトルと中心的な彫刻。透ける布と張りのある布の交互の使い方も、珊瑚の成長から。"],["gazar","創業者のガザルを改良した「ネオ・ガザル」を、表地にも芯にも使いました。"],["cb-1950s","クチュールの造形をデニムやシャツに持ち込む発想。"]],
+   chain:[[1958,"ガザル"],[2026,"クチュール「ネオ・ガザル」"],[2026,"SS27 珊瑚"]]},
+
+ "maisonmargiela-fw25couture":{concept:"マーティンスが、匿名性と手仕事というマルジェラの根本から出発したデビュー。",
+   refs:[["mm-anon","顔を覆うマスク。"],["galliano-mm","アーティザナルのクチュールを前任者から引き継ぎました。"]],
+   chain:[[1988,"匿名のデビュー"],[2014,"ガリアーノのアーティザナル"],[2025,"マーティンスのクチュール"]]},
+ "maisonmargiela-ss26":{concept:"不完全さと匿名性。実生活のための提案として、テーラリングやデニムに落とし込みました。",
+   refs:[["mm-1989","子どもたちの楽団は、1989年の子どもたちが加わったショーへの目配せ。"],["mm-anon","口を開けたままにするマウスピースで、顔と声を消しました。"],["jika-tabi","タビの新作「タビ・クロー」。"]],
+   chain:[[1920,"地下足袋"],[1988,"タビ・ブーツ"],[1989,"子どもたちのショー"],[2025,"SS26"]]},
+ "maisonmargiela-fw26":{concept:"上海で、メゾンの「創造の実験室」を展覧会と同時に見せる試み。蚤の市、磁器、エドワード朝が交差しました。",
+   refs:[["china-porcelain","本物の陶器片約500個を使ったドレス。"],["flea-market","古いものを拾い集めて作り変える創業以来の手法。"],["mm-white","白く塗った服。"],["mm-anon","顔を隠すマスク。"]],
+   chain:[[1400,"中国の磁器"],[1988,"蚤の市の再構成"],[1990,"白く塗る"],[2026,"FW26 上海"]]},
+ "maisonmargiela-ss27":{concept:"「HARD and SOFT」。仕立て（テーラリング）と柔らかな服作り（フル）という、パリのアトリエの二つの伝統。会場は同郷ベルギーのラフ・シモンズへのオマージュです。",
+   refs:[["raf-dior-2012","同じ花の作家マーク・コレを起用し、2012年の花の壁を、しおれた花で再現しました。"],["mm-replica","既存のものを複製するというマルジェラの創業以来の関心の延長だと説明されています。"]],
+   chain:[[1994,"マルジェラの複製"],[2012,"ラフのディオール 花の壁"],[2026,"SS27 しおれた花"]]},
+
+ "prada-ss26":{concept:"スカート、宝石、決まりのないスタイリング。",
+   refs:[["prada-1996","野暮ったさと上品さの境界を探る姿勢は1996年から続きます。"],["uniform","大きなユーティリティジャケット。"]],
+   chain:[[1996,"アグリー・シック"],[2025,"SS26"]]},
+ "prada-fw26":{concept:"崩れていく世界で、服は人をなぐさめられるのか。居心地のよいニットが裂かれ、ほどけていきます。",
+   refs:[["comfort-world","ショーの問い。"],["prada-1996","上品なものをわざと崩す手法。"]],
+   chain:[[1996,"アグリー・シック"],[2026,"FW26 ほどける服"]]},
+ "prada-ss27":{concept:"スカートは「自由のために設計された」もの。スカートだけでショーを作りました。",
+   refs:[["prada-1996","野暮ったいとされたミディ丈を主役にする点。"],["uniform","プリーツスカートは学生服の記号でもあります。"]],
+   chain:[[1996,"アグリー・シック"],[2025,"SS26 スカート"],[2026,"SS27 スカートだけ"]]},
+
+ "miumiu-ss26":{concept:"「At Work」。働く女性への敬意。エプロンを実用品から装飾品まで作り直しました。",
+   refs:[["apron","主役のアイテム。"],["uniform","役割を示す服を取り上げる、ミウッチャ一貫の主題。"]],
+   chain:[[1900,"働く女性のエプロン"],[2025,"SS26 At Work"]]},
+ "miumiu-fw26":{concept:"広い世界の中の小さな体。それでも体は十分だというメッセージで、初期の定番に戻りました。",
+   refs:[["small-body","ショーの主題。"],["prada-1996","スリップドレスや着古した素材は、1990年代のプラダとミュウミュウに通じます。"]],
+   chain:[[1993,"初期のミュウミュウ"],[2026,"FW26 小さな体"]]},
+ "miumiu-ss27":{concept:"「Here and Now」。スポーツに優雅さを与える。",
+   refs:[["sport-elevated","スポーツブラにラインストーン、トラックジャケット。"],["wrong-shoe","ちぐはぐな組み合わせ。"]],
+   chain:[[2014,"アスレジャー"],[2024,"ウロング・シュー"],[2026,"SS27 Here and Now"]]},
+
+ "loewe-ss26":{concept:"アメリカン・スポーツウェアとスペインの革工芸の融合。",
+   refs:[["mccardell","実用的なアメリカの服の系譜。"],["proenza","二人がニューヨークで20年以上培った感覚。"],["anderson-loewe","工芸を軸にする前任者の路線を継承。"]],
+   chain:[[1942,"アメリカン・スポーツウェア"],[2002,"プロエンザ・スクーラー"],[2013,"アンダーソンのロエベ"],[2025,"SS26"]]},
+ "loewe-fw26":{concept:"美術作品と服の境目をなくした、極彩色の夢。",
+   refs:[["von-bonin","会場に置かれた海の生き物の彫刻と、作品の色彩。"],["anderson-loewe","工芸と超現実的なユーモアの継承。"]],
+   chain:[[2000,"フォン・ボーニンの作品"],[2013,"アンダーソンの超現実"],[2026,"FW26"]]},
+ "loewe-ss27":{concept:"アメリカのカラーブロックとスペイン・バロック。二つの文化を中和せず、ぶつけ合いました。",
+   refs:[["spanish-baroque","プラド美術館の絵画を研究。大きな襟や硬い造形に表れました。"],["mccardell","プレッピーとスポーツの要素。"]],
+   chain:[[1656,"スペイン・バロック"],[1942,"アメリカン・スポーツウェア"],[2026,"SS27"]]},
+
+ "bottegaveneta-ss26":{concept:"ブランドの女性的な視点の源流と、編み込みの伝統に立ち返るデビュー。",
+   refs:[["braggion","初の女性クリエイティブ・ディレクターの時代を参照。"],["intrecciato","ブランドの署名である編み込み。"]],
+   chain:[[1966,"イントレチャート"],[1975,"ブラッジョン期"],[2025,"SS26"]]},
+ "bottegaveneta-fw26":{concept:"ミラノの無骨さと官能。硬い肩と柔らかなコートの対比です。",
+   refs:[["milan-brutal","1年暮らした街の建築から。"],["intrecciato","長いトレンチに編み込みを使用。"]],
+   chain:[[1958,"トーレ・ヴェラスカ"],[1966,"イントレチャート"],[2026,"FW26 イット・コート"]]},
+ "bottegaveneta-ss27":{concept:"春から夏へ、一枚ずつ脱いでいく。「洗練」と「有機的なもの」の間の言葉を探りました。",
+   refs:[["milan-season","着想の出発点。"],["intrecciato","編み目を粗く開いて軽くしました。"]],
+   chain:[[1966,"イントレチャート"],[2026,"SS27 脱いでいく服"]]},
+
+ "saintlaurent-ss26":{concept:"革の王女、パリジェンヌ、現代の貴族。サンローランの女性像を三つの人物で示しました。",
+   refs:[["ysl-smoking","男性服由来の強い仕立て。"]],
+   chain:[[1966,"ル・スモーキング"],[1980,"大きな肩"],[2025,"SS26"]]},
+ "saintlaurent-fw26":{concept:"反復と削ぎ落とし。ル・スモーキング誕生60周年。",
+   refs:[["ysl-smoking","60周年に合わせ、肩の形と比率を作り直しました。"]],
+   chain:[[1966,"ル・スモーキング"],[2016,"ヴァカレロ就任"],[2026,"FW26"]]},
+ "saintlaurent-ss27":{concept:"金から黒へ。ヴァカレロ最後のショーとなり、ショーノートには「光は、つかめないからこそ明るく輝く」という趣旨の言葉が添えられました。",
+   refs:[["ysl-gold","1991年秋冬のコレクションを逆にたどった構成と報じられています。"],["ysl-smoking","鋭い肩のテーラリング。"]],
+   chain:[[1966,"ル・スモーキング"],[1991,"YSLの金"],[2026,"SS27 最後のショー"]]},
+
+ "celine-ss26":{concept:"ブルジョワとロック。ファイロ期の大人の実用性と、スリマン期の細身を混ぜました。",
+   refs:[["celine-70s","パリのブルジョワ的な上品さ。"],["philo-celine","ライダー自身が中心にいたデザインチームの時代。"],["slimane-celine","ロックの要素と細身のシルエット。"]],
+   chain:[[1972,"ブルジョワのセリーヌ"],[2008,"ファイロ"],[2018,"スリマン"],[2025,"SS26"]]},
+ "celine-fw26":{concept:"組み合わせて着るワードローブの論理。",
+   refs:[["philo-celine","実用的な服の組み立て方。"],["celine-70s","トリオンフのロゴをやわらかく作り直しました。"]],
+   chain:[[1972,"トリオンフ"],[2008,"ファイロ"],[2026,"FW26"]]},
+ "celine-ss27":{concept:"着飾って町を出ること、身軽さと高揚感。規律ある定番を、色と即興性にひらきました。",
+   refs:[["philo-celine","細いコートやスカーフなどの規律ある定番。"],["celine-70s","スカーフと上品な装い。"]],
+   chain:[[1972,"ブルジョワのセリーヌ"],[2008,"ファイロ"],[2026,"SS27"]]}
+};
+
+/* ===== 写真リンク（FASHIONSNAPで確認できたもの） ===== */
+const FS = "https://www.fashionsnap.com/collection/";
+const PHOTOS = {
+ "chanel-ss26":FS+"chanel/2026ss/","chanel-fw26":FS+"chanel/2026aw/","chanel-ss27":FS+"chanel/2027ss/",
+ "dior-fw26":FS+"dior/woman/2026aw/","dior-ss27":FS+"dior/woman/2027ss/",
+ "louisvuitton-ss26":FS+"louis-vuitton/womens/2026ss/","louisvuitton-fw26":FS+"louis-vuitton/womens/2026aw/","louisvuitton-ss27":FS+"louis-vuitton/womens/2027ss/",
+ "gucci-ss26":FS+"gucci/2026ss/","gucci-fw26":FS+"gucci/2026aw/","gucci-ss27":FS+"gucci/2027ss/",
+ "maisonmargiela-ss26":FS+"maison-margiela/2026ss/","maisonmargiela-fw26":FS+"maison-margiela/2026aw/","maisonmargiela-ss27":FS+"maison-margiela/2027ss/",
+ "prada-ss26":FS+"prada/womens/2026ss/","prada-fw26":FS+"prada/womens/2026aw/","prada-ss27":FS+"prada/womens/2027ss/",
+ "miumiu-ss26":FS+"miu-miu/2026ss/","miumiu-fw26":FS+"miu-miu/2026aw/","miumiu-ss27":FS+"miu-miu/2027ss/",
+ "loewe-ss26":FS+"loewe/womens/2026ss/","loewe-fw26":FS+"loewe/2026aw/","loewe-ss27":FS+"loewe/2027ss/",
+ "saintlaurent-fw26":FS+"saint-laurent/2026aw/","saintlaurent-ss27":FS+"saint-laurent/2027ss/"
+};
+
+/* 模式図：シルエットの種類と配色だけを描く（実際の写真ではない） */
+function fig(sil, pal){
+  const [a, b = a, c = b] = pal;
+  const L = 'stroke="var(--muted)" stroke-width="2" stroke-linecap="round"';
+  const head = `<circle cx="40" cy="14" r="8" fill="var(--line)"/><line x1="40" y1="22" x2="40" y2="30" ${L}/>`;
+  const legs = (y1, y2 = 172) => `<line x1="35" y1="${y1}" x2="34" y2="${y2}" ${L}/><line x1="45" y1="${y1}" x2="46" y2="${y2}" ${L}/>`;
+  const arms = (y2 = 92) => `<line x1="24" y1="36" x2="18" y2="${y2}" ${L}/><line x1="56" y1="36" x2="62" y2="${y2}" ${L}/>`;
+  const S = {
+    suit: arms(94) + `<path d="M22,30 L58,30 L61,40 L58,96 L22,96 L19,40 Z" fill="${a}"/><path d="M36,30 L40,52 L44,30 Z" fill="${b}"/><path d="M24,96 L56,96 L54,172 L44,172 L40,108 L36,172 L26,172 Z" fill="${a}" opacity=".92"/>`,
+    skirtsuit: arms(90) + legs(124) + `<path d="M23,30 L57,30 L60,40 L57,84 L23,84 L20,40 Z" fill="${a}"/><path d="M23,30 L57,30 L57,34 L23,34 Z" fill="${c}"/><path d="M36,30 L40,48 L44,30 Z" fill="${b}"/><path d="M25,84 L55,84 L58,124 L22,124 Z" fill="${a}" opacity=".92"/>`,
+    mini: arms(80) + legs(104) + `<path d="M27,30 L53,30 L55,74 L25,74 Z" fill="${a}"/><path d="M25,74 L55,74 L64,104 L16,104 Z" fill="${b}"/>`,
+    midi: arms(80) + legs(140) + `<path d="M28,30 L52,30 L54,72 L26,72 Z" fill="${a}"/><path d="M26,72 L54,72 L66,142 L14,142 Z" fill="${b}"/><path d="M33,74 L28,140 M40,74 L40,140 M47,74 L52,140" stroke="${c}" stroke-width="1" opacity=".6"/>`,
+    bramidi: arms(80) + legs(140) + `<path d="M28,30 L52,30 L52,72 L28,72 Z" fill="var(--line)"/><path d="M28,40 L52,40 L52,52 L28,52 Z" fill="${a}"/><path d="M27,72 L53,72 L65,142 L15,142 Z" fill="${b}"/><path d="M33,74 L28,140 M40,74 L40,140 M47,74 L52,140" stroke="${c}" stroke-width="1.5" opacity=".8"/>`,
+    gown: arms(84) + `<path d="M29,30 L51,30 L53,68 L62,172 L18,172 L27,68 Z" fill="${a}"/><path d="M27,68 L53,68 L53,72 L27,72 Z" fill="${b}"/>`,
+    coat: legs(150) + `<path d="M18,30 L62,30 L66,40 L63,150 L17,150 L14,40 Z" fill="${a}"/><path d="M34,30 L40,64 L46,30 Z" fill="${b}"/><line x1="40" y1="64" x2="40" y2="150" stroke="${c}" stroke-width="1.5"/>`,
+    volume: arms(78) + legs(126) + `<path d="M29,30 L51,30 L52,62 L28,62 Z" fill="${a}"/><ellipse cx="40" cy="94" rx="30" ry="33" fill="${b}"/>`,
+    sport: `<path d="M16,30 L64,30 L67,82 L13,82 Z" fill="${a}"/><path d="M16,30 L64,30 L64,36 L16,36 Z" fill="${c}"/><path d="M23,82 L57,82 L63,172 L44,172 L40,104 L36,172 L17,172 Z" fill="${b}"/>`,
+    slip: arms(84) + legs(160) + `<line x1="33" y1="30" x2="33" y2="38" stroke="${a}" stroke-width="1.5"/><line x1="47" y1="30" x2="47" y2="38" stroke="${a}" stroke-width="1.5"/><path d="M31,38 L49,38 L52,80 L57,162 L23,162 L28,80 Z" fill="${a}"/><path d="M28,80 L52,80" stroke="${b}" stroke-width="2"/>`
+  };
+  return `<svg viewBox="0 0 80 180" role="img" aria-label="シルエットの模式図">${head}${S[sil] || S.suit}</svg>`;
+}
+
+const YEAR_STYLE = {
+ 1994:"グランジの名残とミニマリズム",1995:"スリップドレス、エアマックス95",1996:"プラダの「アグリー・シック」、トム・フォードのグッチ",
+ 1997:"裏原宿の全盛、厚底サンダル",1998:"ヘルムート・ラング、ユニクロのフリース",1999:"メタリックとサイバー、ミレニアム前夜",
+ 2000:"ロゴマニア、サドルバッグ",2001:"ディオール オムのスキニー",2002:"ジューシーなベロアのセットアップ、ギャル",
+ 2003:"村上隆×ルイ・ヴィトン、トラッカーハット",2004:"ボヘミアン、UGGのブーツ",2005:"スキニージーンズの普及、ストリートスナップのブログ",
+ 2006:"バレエシューズとレギンス",2007:"インディー・スリーズ、ネオン",2008:"ファストファッションの上陸ラッシュ",
+ 2009:"+J、肩の強いジャケット",2010:"フィービー・ファイロのセリーヌ、大人のミニマル",2011:"カラーブロック",
+ 2012:"ネオンとスリッポン、Tumblrの美学"
+};
+
+const FORECASTS = [
+ {t:"装飾とマキシマリズムが主流に", when:"2026–2027", c:"hi",
+  p:"「静かな高級感」から振り子が戻り始めています。ミラノFW26の毛皮風素材とディスコ、SS27の強い色・レース・ランジェリー的な要素はその表れです。2027年は装飾が日常着にも下りてくる年になりそうです。",
+  s:"<b>見るべきサイン：</b>ファストファッションの店頭にレース、フリル、メタリック、柄の重ね着が増えるか"},
+ {t:"スカートとウエストの復権", when:"2027", c:"hi",
+  p:"プラダはほぼスカートだけのショーを、バレンシアガは主役のスカートを打ち出し、パリではスカートスーツやペプラムが並びました。ワイドパンツ中心の数年間からの切り替わりです。",
+  s:"<b>見るべきサイン：</b>ミディ丈のプリーツスカート、ベルトでウエストを締めるスタイルの広がり"},
+ {t:"2010年代前半のリバイバル", when:"2027–2029", c:"mid",
+  p:"20年周期でいえば、次の参照先は2007〜2012年ごろ。セリーヌの新体制がファイロ期の古着の需要を高めたこと、NYのSS27で細いスカーフが見られたことは、その入口に見えます。インディー・スリーズ、細身のパンツ、大人のミニマルが候補です。",
+  s:"<b>見るべきサイン：</b>スキニー〜ストレートの細身パンツ、大ぶりのネックレス、Tumblr風の加工写真"},
+ {t:"暑さに対応する軽い服", when:"2027–", c:"mid",
+  p:"ルイ・ヴィトンは熱波を理由に軽い服を打ち出し、パリでは透ける網状の素材が広がりました。気候変動は周期とは関係なく服を変える構造要因で、今後も強まると考えられます。",
+  s:"<b>見るべきサイン：</b>メッシュやシアー素材、機能素材がハイブランドの定番になるか"},
+ {t:"スポーツの「格上げ」", when:"2026–2028", c:"mid",
+  p:"アスレジャーは定着しましたが、次は運動着をそのまま着るのではなく、装飾や仕立てで格上げする方向です。ミュウミュウのSS27やバレンシアガのデニムへのクチュール的アプローチがその例です。",
+  s:"<b>見るべきサイン：</b>トラックジャケットとドレッシーなスカートの組み合わせ、刺繍入りのスポーツウェア"},
+ {t:"定番バッグとハウスコードの作り直し", when:"2026–2028", c:"hi",
+  p:"新デザイナーはまずブランドの資産（アーカイブ）を掘り起こします。グッチのバンブー、ロエベのアマソナ、シャネルのフラップバッグの変形など、定番の作り直しがしばらく続きます。",
+  s:"<b>見るべきサイン：</b>復刻・再解釈バッグの発表と、古着市場での旧作の値上がり"},
+ {t:"リセールとアーカイブの一般化", when:"継続", c:"hi",
+  p:"古着やアーカイブ品は、安く買う手段から「その時代のデザイナーの仕事を所有する」楽しみへ変わりつつあります。デザイナー交代が多いほど、旧体制の服の価値は上がります。",
+  s:"<b>見るべきサイン：</b>ブランド自身による公式リセールや修理サービスの拡大"},
+ {t:"反動としてのミニマル回帰", when:"2028–2030", c:"lo",
+  p:"装飾の波がピークを越えると、再び引き算の美学が新鮮に見えるはずです。過去の周期から見ると2〜4年後。そのとき参照されるのは、2010年代前半のミニマルかもしれません。",
+  s:"<b>見るべきサイン：</b>評価の高い新人が無地・単色・構築的な服で注目されはじめる"}
+];
+
+/* render */
+const $ = s => document.querySelector(s);
+const esc = s => s.replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+
+$("#strip").innerHTML = ERAS.map(e => `<span style="background:${e.c}"></span>`).join("");
+
+$("#eras").innerHTML = ERAS.map((e,i) => `
+ <article class="era" data-th="${e.th.join(" ")}" id="era-${i}">
+  <div class="swatch"><div class="cloth" style="background:${e.c}"></div><div class="code">${e.code}</div></div>
+  <div class="era-body">
+   <div class="years">${e.y}</div>
+   <h3>${e.t}</h3>
+   <p class="sum">${e.s}</p>
+   <div class="tags">${e.th.map(t => `<span class="tag">${THREADS[t].name}</span>`).join("")}</div>
+   <details>
+    <summary>くわしく</summary>
+    <div class="cols">
+     <div><h4>主な出来事</h4><ol class="events">${e.ev.map(v => `<li><span class="y">${v[0]}</span><span>${v[1]}</span></li>`).join("")}</ol></div>
+     <div><h4>キーパーソン</h4><p class="people">${e.p}</p><h4>現在への影響</h4><div class="legacy">${e.l}</div></div>
+    </div>
+   </details>
+  </div>
+ </article>`).join("");
+
+let active = null;
+function renderFilter(){
+  $("#filter").innerHTML = `<button class="chip" data-t="" aria-pressed="${!active}">すべて</button>` +
+    Object.entries(THREADS).map(([k,v]) => `<button class="chip" data-t="${k}" aria-pressed="${active===k}">${v.name}</button>`).join("");
+}
+function applyThread(t){
+  active = t || null;
+  renderFilter();
+  document.querySelectorAll(".era").forEach(el => el.classList.toggle("dim", !!active && !el.dataset.th.split(" ").includes(active)));
+  const n = $("#threadNote");
+  if(active){ n.hidden = false; n.innerHTML = `<b>${THREADS[active].name}</b> ── ${THREADS[active].note}`; }
+  else n.hidden = true;
+}
+$("#filter").addEventListener("click", e => { const b = e.target.closest(".chip"); if(b) applyThread(b.dataset.t); });
+renderFilter();
+
+$("#threadList").innerHTML = Object.entries(THREADS).map(([k,v]) => `
+ <div class="thread">
+  <h3>${v.name}</h3>
+  <p class="q">${v.q}</p>
+  <div class="flow">${v.flow.map(f => `<span class="n"><b>${f[0]}</b>${f[1]}</span>`).join('<span class="arr">→</span>')}</div>
+  <p class="see">${v.note}<br><button class="linkbtn" data-goto="${k}">年表でこの流れを見る</button></p>
+ </div>`).join("");
+$("#threadList").addEventListener("click", e => {
+  const b = e.target.closest("[data-goto]"); if(!b) return;
+  showTab("timeline"); applyThread(b.dataset.goto); window.scrollTo({top:0});
+});
+
+function renderGloss(q){
+  q = (q||"").trim().toLowerCase();
+  const hits = GLOSS.filter(g => !q || g.join(" ").toLowerCase().includes(q));
+  $("#gloss").innerHTML = hits.length ? hits.map(g => `<div class="term"><dt>${esc(g[0])}<span class="en">${esc(g[1])}</span></dt><dd>${esc(g[2])}</dd></div>`).join("")
+    : `<p class="empty">「${esc(q)}」に一致する用語はありません。別の言葉で探してみてください。</p>`;
+}
+$("#q").addEventListener("input", e => renderGloss(e.target.value));
+renderGloss("");
+
+$("#mood").innerHTML = MOOD.map(m => `<li><span class="y">${m[0]}</span><div><b>${m[1]}</b><span>${m[2]}</span></div></li>`).join("");
+
+let brandIdx = 0;
+function renderBrand(){
+  $("#brandbar").innerHTML = BRANDS.map((b,i) => `<button class="chip" data-b="${i}" aria-pressed="${i===brandIdx}">${b.jp}</button>`).join("");
+  const b = BRANDS[brandIdx];
+  $("#brand").innerHTML = `
+   <div class="brand-head"><h3>${b.n}</h3><div class="now-cd">現在のデザイナー：<b>${b.cd}</b></div></div>
+   <div class="brand-grid">
+    <div><h4>デザイナーの流れ</h4>
+     <ul class="cdline">${b.line.map(l => `<li class="${l[2]?"cur":""}"><span>${l[0]}</span>${l[1]}</li>`).join("")}</ul></div>
+    <div><h4>見どころ</h4><div class="readit">${b.read}</div></div>
+   </div>
+   <h4 style="margin-top:8px">ショーごとの解説（新しい順）</h4>
+   <div class="showlist">${b.shows.slice().reverse().map(s => `
+    <article class="show">
+     <figure class="fig">${fig(s.sil, s.pal)}
+      <div class="pal">${s.pal.map(c => `<span style="background:${c}"></span>`).join("")}</div>
+      <figcaption>模式図</figcaption></figure>
+     <div class="show-body">
+      <div class="show-meta"><span class="season">${s.s}</span>${s.d ? `<span>${s.d}</span>` : ""}</div>
+      <h5>${s.t}</h5>
+      <dl class="pts">${s.pts.map(p => `<div><dt>${p[0]}</dt><dd>${p[1]}</dd></div>`).join("")}</dl>
+      ${s.pro || s.con ? `<div class="evals">${s.pro ? `<div class="ev pro"><b>評価</b>${s.pro}</div>` : ""}${s.con ? `<div class="ev con"><b>異論・注意</b>${s.con}</div>` : ""}</div>` : ""}
+      ${s.ctx ? `<p class="ctx"><b>文脈</b>${s.ctx}</p>` : ""}
+      <div class="links">
+       ${INSP[s.id] ? `<a class="more" href="#${s.id}">構想と着想の源を見る →</a>` : ""}
+       <a class="photo" href="${photoLink(b, s).u}" target="_blank" rel="noopener">${photoLink(b, s).l} ↗</a>
+       <div class="src"><span>出典</span>${s.src.map(x => `<a href="${x[1]}" target="_blank" rel="noopener">${x[0]}</a>`).join("")}</div>
+      </div>
+     </div>
+    </article>`).join("")}</div>`;
+}
+$("#brandbar").addEventListener("click", e => { const c = e.target.closest("[data-b]"); if(c){ brandIdx = +c.dataset.b; renderBrand(); } });
+renderBrand();
+
+function renderCalc(){
+  const y = +$("#yr").value;
+  $("#yrOut").textContent = y;
+  const pick = n => YEAR_STYLE[n] ? `${n}年：${YEAR_STYLE[n]}` : `${n}年：資料外`;
+  $("#calcOut").innerHTML = `
+   <div><div class="k">20年前（最も戻りやすい）</div><p>${pick(y-21)}<br>${pick(y-20)}<br>${pick(y-19)}</p></div>
+   <div><div class="k">30年前（ひとまわり上の世代の記憶）</div><p>${pick(y-31)}<br>${pick(y-30)}<br>${pick(y-29)}</p></div>`;
+}
+$("#yr").addEventListener("input", renderCalc);
+renderCalc();
+
+const CONF = {hi:["確度 高","hi"], mid:["確度 中","mid"], lo:["確度 低","lo"]};
+$("#fc").innerHTML = FORECASTS.map(f => `
+ <div class="fcard"><h4>${f.t}</h4>
+  <div class="meta"><span class="pill">${f.when}</span><span class="pill ${CONF[f.c][1]}">${CONF[f.c][0]}</span></div>
+  <p>${f.p}</p><div class="sig">${f.s}</div></div>`).join("");
+
+
+/* ===== ショーID・写真リンク ===== */
+const slug = t => t.toLowerCase().replace(/[^a-z0-9]/g, "");
+const showId = (b, s) => slug(b.n) + "-" + slug(s.s);
+const SHOWS = [];
+BRANDS.forEach((b, bi) => b.shows.forEach(s => { s.id = showId(b, s); s.bi = bi; SHOWS.push(s); }));
+function photoLink(b, s){
+  if (PHOTOS[s.id]) return {u:PHOTOS[s.id], l:"写真を見る（FASHIONSNAP・日本語）"};
+  const q = encodeURIComponent(`${b.n} ${s.s.replace(/–/g,"-")} runway ${s.t}`);
+  return {u:`https://www.google.com/search?tbm=isch&q=${q}`, l:"画像検索で見る（Google）"};
+}
+/* 逆引き：源 → それを参照したショー */
+const REFBY = {};
+Object.entries(INSP).forEach(([id, v]) => v.refs.forEach(r => (REFBY[r[0]] = REFBY[r[0]] || []).push(id)));
+const showById = id => SHOWS.find(s => s.id === id);
+const showName = id => { const s = showById(id); return s ? `${BRANDS[s.bi].jp} ${s.s}` : id; };
+
+/* ===== 詳細ページ ===== */
+function openDetail(id){
+  const s = showById(id); if(!s) return;
+  const b = BRANDS[s.bi], ins = INSP[id], ph = photoLink(b, s);
+  const chain = ins ? `<div class="chain">${ins.chain.map((c,i) => `<div class="node${i===ins.chain.length-1?" here":""}"><span class="cy">${c[0]}</span><span>${c[1]}</span></div>`).join('<span class="carr" aria-hidden="true">→</span>')}</div>` : "";
+  const refs = ins ? ins.refs.map(r => {
+    const src = SOURCES[r[0]]; if(!src) return "";
+    const others = (REFBY[r[0]] || []).filter(x => x !== id);
+    return `<article class="srccard" id="ref-${r[0]}">
+      <div class="srchead"><span class="cy">${src.y < 1900 ? src.y + "年ごろ" : src.y + "年"}</span><span class="kind k-${src.k}">${KIND[src.k]}</span></div>
+      <h4>${src.n}</h4>
+      <p>${src.d}</p>
+      <p class="how"><b>このショーでは</b>${r[1]}</p>
+      <div class="srclinks">
+        ${src.era !== null ? `<button class="linkbtn" data-era="${src.era}">年表で ${ERAS[src.era].y} を見る</button>` : ""}
+        ${others.length ? `<span>同じ源を参照：${others.map(o => `<a href="#${o}">${showName(o)}</a>`).join("、")}</span>` : ""}
+      </div></article>`;
+  }).join("") : `<p class="empty">このショーの着想の詳細は、まだ整理していません。</p>`;
+  $("#detail").innerHTML = `
+    <button class="back linkbtn" data-back="${s.bi}">← ${b.jp} のショー一覧へ戻る</button>
+    <div class="dhead">
+      <div class="show-meta"><span class="season">${b.n} · ${s.s}</span>${s.d ? `<span>${s.d}</span>` : ""}</div>
+      <h2>${s.t}</h2>
+      ${ins ? `<p class="concept">${ins.concept}</p>` : ""}
+    </div>
+    ${chain ? `<h3 class="sub">系譜の流れ</h3>${chain}` : ""}
+    <h3 class="sub">着想の源</h3>
+    <div class="srcgrid">${refs}</div>
+    <h3 class="sub">ショーの中身</h3>
+    <div class="dbody">
+      <figure class="fig big">${fig(s.sil, s.pal)}<div class="pal">${s.pal.map(c => `<span style="background:${c}"></span>`).join("")}</div><figcaption>模式図</figcaption></figure>
+      <div class="show-body">
+        <dl class="pts">${s.pts.map(p => `<div><dt>${p[0]}</dt><dd>${p[1]}</dd></div>`).join("")}</dl>
+        ${s.pro || s.con ? `<div class="evals">${s.pro ? `<div class="ev pro"><b>評価</b>${s.pro}</div>` : ""}${s.con ? `<div class="ev con"><b>異論・注意</b>${s.con}</div>` : ""}</div>` : ""}
+        ${s.ctx ? `<p class="ctx"><b>文脈</b>${s.ctx}</p>` : ""}
+        <div class="links">
+          <a class="photo" href="${ph.u}" target="_blank" rel="noopener">${ph.l} ↗</a>
+          <div class="src"><span>出典</span>${s.src.map(x => `<a href="${x[1]}" target="_blank" rel="noopener">${x[0]}</a>`).join("")}</div>
+        </div>
+      </div>
+    </div>`;
+  showTab("detail", true);
+  window.scrollTo({top:0});
+}
+$("#detail").addEventListener("click", e => {
+  const er = e.target.closest("[data-era]");
+  if (er) { gotoEra(+er.dataset.era); return; }
+  const bk = e.target.closest("[data-back]");
+  if (bk) { brandIdx = +bk.dataset.back; renderBrand(); history.replaceState(null, "", "#runway"); showTab("runway"); }
+});
+function gotoEra(i){
+  showTab("timeline"); applyThread("");
+  const el = document.getElementById("era-" + i);
+  if (el) { const d = el.querySelector("details"); if (d) d.open = true; el.scrollIntoView({block:"start"}); }
+}
+
+/* ===== 着想の地図（G） ===== */
+function renderSourceMap(){
+  const kinds = Object.keys(KIND);
+  const W = 920, H = 60 + kinds.length * 52, L = 150, R = 20;
+  const x = y => y < 1900 ? L + (Math.max(y,1400) - 1400) / 500 * 110 : L + 110 + (y - 1900) / 126 * (W - L - R - 110);
+  const ticks = [1400, 1600, 1800, 1900, 1925, 1950, 1975, 2000, 2026];
+  let svg = `<svg viewBox="0 0 ${W} ${H}" role="img" aria-label="参照される源を年代と種類で並べた図">`;
+  svg += `<rect x="${L}" y="20" width="110" height="${H-50}" fill="var(--bg)"/>`;
+  svg += `<text x="${L+55}" y="14" font-size="10" text-anchor="middle" fill="var(--muted)" font-family="DM Mono, monospace">1900年以前（圧縮）</text>`;
+  ticks.forEach(t => { svg += `<line x1="${x(t)}" y1="20" x2="${x(t)}" y2="${H-30}" stroke="var(--line)" stroke-width="1"/><text x="${x(t)}" y="${H-12}" font-size="11" text-anchor="middle" fill="var(--muted)" font-family="DM Mono, monospace">${t}</text>`; });
+  kinds.forEach((k, ki) => {
+    const cy = 46 + ki * 52;
+    svg += `<text x="${L-12}" y="${cy+4}" font-size="12" text-anchor="end" fill="var(--ink)" font-family="Zen Kaku Gothic New, sans-serif">${KIND[k]}</text>`;
+    Object.entries(SOURCES).filter(([,v]) => v.k === k).forEach(([id, v], j) => {
+      const n = (REFBY[id] || []).length, r = 4 + n * 2.2, off = (j % 3 - 1) * 9;
+      svg += `<a href="#src-${id}" aria-label="${v.n}"><circle cx="${x(v.y)}" cy="${cy + off}" r="${r}" fill="var(--k-${k})" fill-opacity=".85" stroke="var(--paper)" stroke-width="1.5"><title>${v.y} ${v.n}（${n}ショーが参照）</title></circle></a>`;
+    });
+  });
+  svg += `</svg>`;
+  $("#srcmap").innerHTML = svg;
+
+  $("#srclist").innerHTML = kinds.map(k => {
+    const items = Object.entries(SOURCES).filter(([,v]) => v.k === k).sort((a,b) => a[1].y - b[1].y);
+    return `<h3 class="sub"><span class="dot" style="background:var(--k-${k})"></span>${KIND[k]}</h3>
+      <div class="srcgrid">${items.map(([id, v]) => `<article class="srccard" id="src-${id}">
+        <div class="srchead"><span class="cy">${v.y < 1900 ? v.y + "年ごろ" : v.y + "年"}</span></div>
+        <h4>${v.n}</h4><p>${v.d}</p>
+        <div class="srclinks">
+          ${(REFBY[id]||[]).length ? `<span>参照したショー：${REFBY[id].map(o => `<a href="#${o}">${showName(o)}</a>`).join("、")}</span>` : ""}
+          ${v.era !== null ? `<button class="linkbtn" data-era="${v.era}">年表で ${ERAS[v.era].y} を見る</button>` : ""}
+        </div></article>`).join("")}</div>`;
+  }).join("");
+}
+renderSourceMap();
+$("#srclist").addEventListener("click", e => { const er = e.target.closest("[data-era]"); if (er) gotoEra(+er.dataset.era); });
+
+/* ===== ハッシュで詳細を開く ===== */
+function route(){
+  const h = location.hash.slice(1);
+  if (showById(h)) { openDetail(h); return true; }
+  if (h.startsWith("src-") && SOURCES[h.slice(4)]) {
+    showTab("sources");
+    const el = document.getElementById(h); if (el) { el.scrollIntoView({block:"center"}); el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1600); }
+    return true;
+  }
+  return false;
+}
+window.addEventListener("hashchange", route);
+
+function showTab(id){
+  const tabId = id === "detail" ? "runway" : id;
+  document.querySelectorAll("[data-tab]").forEach(b => b.setAttribute("aria-selected", b.dataset.tab===tabId));
+  document.querySelectorAll("[data-panel]").forEach(p => p.hidden = p.id !== id);
+  if (id !== "detail") { try{ localStorage.setItem("soui-tab", id); }catch(_){} }
+}
+document.querySelector("nav.tabs").addEventListener("click", e => {
+  const b = e.target.closest("[data-tab]"); if(b){ if(location.hash) history.replaceState(null, "", location.pathname + location.search); showTab(b.dataset.tab); }
+});
+let start = location.hash.slice(1);
+if(!document.getElementById(start) || !document.getElementById(start).hasAttribute("data-panel")){
+  try{ start = localStorage.getItem("soui-tab") || "timeline"; }catch(_){ start = "timeline"; }
+}
+if (!route()) showTab(start);
+</script>
+
+</body></html>
