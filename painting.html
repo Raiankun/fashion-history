@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@400;500&display=swap">
 <link rel="stylesheet" href="site.css">
 </head>
-<body>
+<body class="impression">
 
 <nav class="genre wrap" aria-label="分野">
   <a href="index.html">ファッション</a>
@@ -19,6 +19,7 @@
 </nav>
 
 <header class="hero wrap">
+  <div class="dabs" id="dabs" aria-hidden="true"></div>
   <div class="eyebrow">Painting Lineage — 1300 / 2026</div>
   <h1>絵画の系譜</h1>
   <p>ゴシックから現代美術まで21の流派を、文脈・見分けのサイン・代表作で整理しました。</p>
@@ -397,7 +398,7 @@ const imgSearch = w => `https://www.google.com/search?tbm=isch&q=${encodeURIComp
 const FASHION_ERA = ["1858–1910s","1920s","1930s","1940s","1950s","1960s","1970s","1980s","1990s","2000s","2010s","2020s"];
 /* 表：見出しを data-l に入れ、狭い画面では各セルの前に表示する */
 const table = (head, rows) => `<thead><tr>${head.map(h => `<th scope="col">${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c,i) => `<td data-l="${head[i]}"><span>${c}</span></td>`).join("")}</tr>`).join("")}</tbody>`;
-const pill = m => `<a class="pill" href="#${m.id}" style="--mc:${m.c}">${m.t}</a>`;
+const pill = m => `<a class="mpill" href="#${m.id}" style="--mc:${m.c}">${m.t}</a>`;
 
 /* 作品カード：パブリックドメイン（w[7]=1）は画像を読み込み、それ以外はリンクだけ */
 const card = (w, mi, wi) => `
@@ -462,6 +463,18 @@ async function loadImg(fig){
     const io = new IntersectionObserver(es => es.forEach(e => { if (e.isIntersecting){ io.unobserve(e.target); loadImg(e.target); } }), {rootMargin:"400px"});
     figs.forEach(f => io.observe(f));
   } else figs.forEach(loadImg);
+}
+
+/* ヘッダーの背景：点描のような筆触を散らす（毎回同じ配置になるよう疑似乱数を固定） */
+{
+  let s = 7; const rnd = () => (s = (s * 16807) % 2147483647) / 2147483647;
+  const C = ["#9DB8E0","#B7A6DD","#A9D1BE","#F2C6A0","#F4E3A1","#E7A9B9","#8FC1D9"];
+  let g = "";
+  for (let i = 0; i < 220; i++){
+    const x = rnd() * 1200, y = rnd() * 420, w = 10 + rnd() * 26, hh = 4 + rnd() * 7, r = -35 + rnd() * 70;
+    g += `<ellipse cx="${x.toFixed(0)}" cy="${y.toFixed(0)}" rx="${(w/2).toFixed(1)}" ry="${(hh/2).toFixed(1)}" fill="${C[i % C.length]}" opacity="${(0.35 + rnd() * 0.5).toFixed(2)}" transform="rotate(${r.toFixed(0)} ${x.toFixed(0)} ${y.toFixed(0)})"/>`;
+  }
+  $("#dabs").innerHTML = `<svg viewBox="0 0 1200 420" preserveAspectRatio="xMidYMid slice">${g}</svg>`;
 }
 
 let active = null;

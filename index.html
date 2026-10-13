@@ -40,7 +40,7 @@
   <section id="timeline" data-panel>
     <span class="kicker">Timeline</span>
     <h2>年代でたどる</h2>
-    <p class="lead">各年代の「＋ 詳しく」を開くと主な出来事・人物・現在への影響が見られます。系譜を選ぶと、その流れに関わる年代だけが強調されます。</p>
+    <p class="lead">「＋ 出来事と人物」で年表と人物の表が開きます。系譜を選ぶと、その流れに関わる年代だけが強調されます。</p>
     <div class="filter" id="filter"></div>
     <div class="thread-note" id="threadNote" hidden></div>
     <div class="eras" id="eras"></div>
@@ -943,19 +943,20 @@ document.addEventListener("click", e => {
   try { navigator.clipboard.writeText(url).then(() => { a.classList.add("copied"); setTimeout(() => a.classList.remove("copied"), 1400); }, () => {}); } catch(_) {}
 });
 
+/* 表：見出しを data-l に入れ、狭い画面では各セルの前に表示する（絵画ページと共通の作り） */
+const table = (head, rows) => `<thead><tr>${head.map(h => `<th scope="col">${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c,i) => `<td data-l="${head[i]}"><span>${c}</span></td>`).join("")}</tr>`).join("")}</tbody>`;
+
 $("#eras").innerHTML = ERAS.map((e,i) => `
- <article class="era" data-th="${e.th.join(" ")}" id="era-${i}">
-  <div class="swatch"><div class="years">${e.y}</div>${idTag("era-" + i)}<div class="cloth" style="background:${e.c}"></div></div>
+ <article class="era mv" data-th="${e.th.join(" ")}" id="era-${i}" style="--mc:${e.c}">
+  <div class="swatch"><div class="years">${e.y}</div><div class="cloth"></div>${idTag("era-" + i)}</div>
   <div class="era-body">
    <h3>${e.t}</h3>
    <p class="sum">${e.s}</p>
    <div class="tags">${e.th.map(t => `<span class="tag">${THREADS[t].name}</span>`).join("")}</div>
    <details>
-    <summary>詳しく</summary>
-    <div class="cols">
-     <div><h4>主な出来事</h4><ol class="events">${e.ev.map(v => `<li><span class="y">${v[0]}</span><span>${v[1]}</span></li>`).join("")}</ol></div>
-     <div><h4>キーパーソン</h4><p class="people">${e.p}</p><h4>現在への影響</h4><div class="legacy">${e.l}</div></div>
-    </div>
+    <summary>出来事と人物</summary>
+    <div class="tbl-wrap"><table class="tbl events">${table(["年","主な出来事"], e.ev.map(v => [`<span class="latin">${v[0]}</span>`, v[1]]))}</table></div>
+    <div class="tbl-wrap"><table class="tbl meta">${table(["項目","内容"], [["キーパーソン", e.p], ["現在への影響", e.l]])}</table></div>
    </details>
   </div>
  </article>`).join("");

@@ -308,8 +308,8 @@ ul.signs li{font-size:13px;line-height:1.6;padding:5px 12px;border-radius:999px;
 .works td:first-child{width:30%}
 .works td:first-child small{display:block;font-size:12px;color:var(--sub)}
 .works td:last-child{width:7.5em}
-.pill{display:inline-block;padding:2px 12px;border-radius:999px;background:color-mix(in srgb,var(--mc) 22%,var(--bg));text-decoration:none;font-size:13px;white-space:nowrap}
-.pill:hover{background:color-mix(in srgb,var(--mc) 38%,var(--bg))}
+.mpill{display:inline-block;padding:2px 12px;border-radius:999px;background:color-mix(in srgb,var(--mc) 22%,var(--bg));text-decoration:none;font-size:13px;white-space:nowrap}
+.mpill:hover{background:color-mix(in srgb,var(--mc) 38%,var(--bg))}
 .src-a{display:inline-block;font-size:12px;color:var(--sub);margin-right:10px;white-space:nowrap}
 @media (max-width:960px){
   .tbl,.tbl tbody,.tbl tr,.tbl td{display:block;width:100%}
@@ -326,4 +326,90 @@ ul.signs li{font-size:13px;line-height:1.6;padding:5px 12px;border-radius:999px;
 @media (max-width:760px){
   .gallery{grid-template-columns:repeat(2,minmax(0,1fr));gap:12px}
   .genre{gap:6px 18px;letter-spacing:.12em}
+}
+
+/* ===== 共通のポップな部品（ファッション・絵画の両ページ） ===== */
+.chip{padding:5px 14px;border-radius:999px;border:1px solid var(--hair);background:var(--bg)}
+.chip:hover{border-color:var(--ox);color:var(--ink)}
+.chip[aria-pressed="true"]{background:var(--ox);border-color:var(--ox);color:#fff}
+.filter,.brandbar{gap:8px}
+.brandbar{border-top:0;padding-top:0}
+.brandbar .chip{font-size:13px;letter-spacing:.1em}
+.thread-note{background:var(--tint);border-radius:12px;padding:12px 16px;margin:0 0 28px}
+.mv .cloth{width:56px;height:8px;border-radius:4px;background:var(--mc)}
+.tbl.events td:first-child{width:6.5em;white-space:nowrap;font-size:15px}
+.tbl.events .latin{font-family:var(--f-latin)}
+
+.threads{gap:20px}
+.thread{border:1px solid var(--hair);border-radius:16px;padding:22px 24px 24px;background:var(--bg)}
+.flow{gap:0;border-radius:12px;overflow:hidden;border:1px solid var(--hair)}
+.flow span.n{padding:8px 12px}
+.flow span.n:nth-child(even){background:var(--tint)}
+
+dl.gloss{border-top:0;gap:12px}
+.term{border:1px solid var(--hair);border-radius:14px;padding:16px 18px;background:var(--bg)}
+
+.lenses{border-top:0;display:grid;gap:10px}
+.lenses li{border:1px solid var(--hair);border-radius:14px;padding:16px 18px;background:var(--bg)}
+.lenses li::before{content:counter(l);display:grid;place-items:center;width:36px;height:36px;border-radius:50%;background:var(--ox);color:#fff;font-size:18px}
+.lenses li{grid-template-columns:52px minmax(0,1fr)}
+.now,.method{gap:12px}
+.now div,.method div{border:1px solid var(--hair);border-radius:14px;padding:16px 18px;background:var(--bg)}
+.sources{border-top:0}
+
+.seasonkey{border-top:0;gap:10px}
+.seasonkey span{background:var(--tint);border-radius:12px;padding:12px 14px}
+.mood{border-top:0}
+.showlist{border-top:0}
+.show{border:1px solid var(--hair);border-radius:18px;padding:24px;margin-bottom:16px;background:var(--bg)}
+.pal{gap:4px}
+.pal span{border-radius:50%;box-shadow:0 0 0 1px var(--hair)}
+dl.pts{gap:0;border:1px solid var(--hair);border-radius:14px;overflow:hidden}
+dl.pts div{padding:10px 14px}
+dl.pts div:nth-child(even){background:var(--tint)}
+.evals{border-top:0;padding-top:0;gap:12px}
+.ev{border-radius:14px;padding:12px 16px}
+.ev.pro{background:#E7F3EC}
+.ev.con{background:#FCE9E4}
+.ctx{background:var(--tint);border-radius:12px;padding:10px 14px}
+.more{display:inline-block;padding:4px 14px;border-radius:999px;background:var(--ox);color:#fff;text-decoration:none}
+.srcgrid{border-top:0;display:grid;gap:12px}
+.srccard{border:1px solid var(--hair);border-radius:16px;padding:20px;background:var(--bg)}
+.dbody{border-top:0}
+.fc{border-top:0;display:grid;gap:12px}
+.fcard{border:1px solid var(--hair);border-radius:16px;padding:20px;background:var(--bg)}
+.fcard .pill{padding:3px 12px;border-radius:999px;background:var(--tint)}
+.fcard .pill.hi{background:#E7F3EC}.fcard .pill.mid{background:#FFF3D6}.fcard .pill.lo{background:#FCE9E4}
+.calc{border:1px solid var(--hair);border-radius:16px;padding:20px 24px}
+.calc input[type=range]{accent-color:var(--ox)}
+@media (max-width:760px){
+  .show{padding:18px}
+  .lenses li{grid-template-columns:44px minmax(0,1fr)}
+}
+
+/* ===== 絵画ページ：印象派のテーマ =====
+   モネの睡蓮のような淡い色の重なりと、点描のような筆触（ダブ）を背景に置く */
+.impression{
+  --bg:#FCFAF4; --ink:#2F3545; --sub:#6C7385; --hair:#E4E2EC; --tint:#F2F1F8; --ox:#6E7FD0;
+  background:
+    radial-gradient(60vw 40vw at 8% 0%, rgba(207,227,242,.55), transparent 60%),
+    radial-gradient(50vw 40vw at 100% 12%, rgba(217,210,240,.5), transparent 60%),
+    radial-gradient(60vw 50vw at 0% 70%, rgba(220,235,214,.45), transparent 60%),
+    radial-gradient(50vw 50vw at 100% 90%, rgba(248,225,208,.45), transparent 60%),
+    var(--bg);
+  background-attachment:fixed;
+}
+.impression header.hero{position:relative;isolation:isolate}
+.impression .dabs{position:absolute;inset:-20px 0 0;z-index:-1;pointer-events:none;opacity:.75;overflow:hidden}
+.impression .dabs svg{width:100%;height:100%;display:block}
+.impression .hero h1{font-weight:400;background:linear-gradient(100deg,#4D63B8 0%,#8D6BB8 35%,#4F8F7A 70%,#C9813E 100%);-webkit-background-clip:text;background-clip:text;color:transparent}
+.impression nav.tabs{background:rgba(252,250,244,.82);-webkit-backdrop-filter:blur(10px);backdrop-filter:blur(10px)}
+.impression section>h2{display:inline-block;padding-bottom:6px;background:linear-gradient(90deg,rgba(110,127,208,.35),rgba(141,107,184,.25),rgba(79,143,122,.3)) left bottom/100% 6px no-repeat;border-radius:2px}
+.impression .eras{border-top:0}
+.impression .era.mv{border:0;border-radius:22px;padding:28px;margin-bottom:18px;background:rgba(255,255,255,.62);box-shadow:0 1px 0 var(--hair),0 10px 30px -18px color-mix(in srgb,var(--mc) 60%,transparent)}
+.impression .era.mv .cloth{height:10px;width:72px;border-radius:6px;background:radial-gradient(circle at 20% 50%,color-mix(in srgb,var(--mc) 70%,#fff) 0 30%,transparent 31%),radial-gradient(circle at 55% 40%,var(--mc) 0 32%,transparent 33%),radial-gradient(circle at 85% 60%,color-mix(in srgb,var(--mc) 60%,#fff) 0 30%,transparent 31%),color-mix(in srgb,var(--mc) 35%,#fff)}
+.impression .tbl,.impression .thread,.impression .term{background:rgba(255,255,255,.7)}
+.impression .wcard .thumb{border-radius:16px;box-shadow:0 8px 22px -14px rgba(47,53,69,.45)}
+@media (max-width:760px){
+  .impression .era.mv{padding:20px 18px;border-radius:18px}
 }
