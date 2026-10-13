@@ -668,3 +668,84 @@ ol.steps b{display:block;font-size:14.5px;margin-bottom:2px}
   .ef-arrow span br{display:none}
 }
 .detail-page ul.signs li{background:color-mix(in srgb,var(--mc,var(--ox)) 14%,#fff)}
+
+/* ===== 職場の健康診断ガイド（長文の資料） ===== */
+.guide-banner{display:block;margin:0 0 28px;padding:14px 18px;border-radius:16px;background:linear-gradient(90deg,var(--ox),#3E6C8F);color:#fff;text-decoration:none;font-size:14px;line-height:1.7}
+.guide-banner b{display:inline-block;background:#fff;color:var(--ox);border-radius:999px;padding:0 10px;margin-right:10px;font-size:12px}
+.guide-actions{display:flex;gap:10px;flex-wrap:wrap;grid-column:1/-1}
+.more-btn.ghost{background:#fff;color:var(--ox) !important;border:1px solid var(--ox);font:inherit;font-size:13px;cursor:pointer}
+.guide-layout{display:grid;grid-template-columns:220px minmax(0,1fr);gap:40px;align-items:start;padding-bottom:80px}
+.toc{position:sticky;top:20px;background:#fff;border:1px solid var(--hair);border-radius:16px;padding:16px 18px;font-size:13px}
+.toc ol{margin:8px 0 0;padding-left:1.4em;display:grid;gap:6px;counter-reset:none}
+.toc ol li::marker{color:var(--ox)}
+.toc a{text-decoration:none}
+.doc{min-width:0}
+.doc section{scroll-margin-top:20px;margin-bottom:64px}
+.doc h2{font-family:var(--f-jserif);font-weight:400;font-size:clamp(24px,3vw,32px);display:flex;align-items:center;gap:14px;margin:0 0 18px;padding-bottom:10px;border-bottom:2px solid var(--hair)}
+.doc h2 span{display:grid;place-items:center;width:40px;height:40px;border-radius:12px;background:var(--ox);color:#fff;font-family:var(--f-latin);font-size:20px;flex:none}
+.doc h3{font-family:var(--f-jserif);font-weight:400;font-size:20px;margin:34px 0 12px;padding-left:12px;border-left:4px solid var(--ox)}
+.doc p{font-size:15px;line-height:2;margin:0 0 12px;max-width:46em}
+.doc .lead2{font-size:16px;background:#fff;border:1px solid var(--hair);border-radius:14px;padding:14px 18px}
+.legend-row{font-size:12.5px;color:var(--sub);display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;margin:8px 0 16px}
+.gfig{margin:16px 0 20px}
+.gfig figcaption{font-size:12px;color:var(--sub);margin-top:8px}
+.venn{display:grid;grid-template-columns:1.3fr 1.2fr .9fr;gap:12px}
+.venn>div{border-radius:20px;padding:16px;border:2px solid}
+.venn b{font-family:var(--f-jserif);font-weight:500;font-size:17px;display:block}
+.venn small{font-size:11.5px;color:var(--sub)}
+.v-general{border-color:#3E6C8F;background:#EEF3F8}.v-special{border-color:#B5532F;background:#FBEFEA}.v-guide{border-color:#8A8A8A;border-style:dashed !important;background:#F5F5F3}
+.v-inner{display:flex;flex-wrap:wrap;gap:6px;margin-top:10px}
+.v-inner span{background:#fff;border-radius:999px;padding:3px 10px;font-size:12.5px}
+.v-inner .hl2{background:#3E6C8F;color:#fff}
+.tbl.cmp td:first-child{white-space:nowrap}
+.col-mid{display:block;background:#EEF3F8;border-radius:6px;padding:2px 6px;margin:-2px -6px}
+.lane{display:inline-block;font-size:11px;padding:1px 9px;border-radius:999px;white-space:nowrap;color:#fff}
+.lane-c{background:#7A7A7A}.lane-t{background:#3E6C8F}.lane-s{background:#B5532F}.lane-b{background:#5A6A5A}
+ol.story{list-style:none;padding:0;margin:0;position:relative}
+ol.story::before{content:"";position:absolute;left:96px;top:8px;bottom:8px;width:2px;background:var(--hair)}
+ol.story li{display:grid;grid-template-columns:80px minmax(0,1fr);gap:36px;margin-bottom:16px;position:relative}
+ol.story .sy{font-family:var(--f-latin);font-size:16px;white-space:nowrap;text-align:right;padding-top:2px;color:var(--ox)}
+ol.story li::after{content:"";position:absolute;left:91px;top:9px;width:12px;height:12px;border-radius:50%;background:var(--ox);box-shadow:0 0 0 3px #fff}
+ol.story b{font-family:var(--f-jserif);font-weight:500;font-size:16px}
+ol.story p{font-size:14px;margin:2px 0 0}
+.card .chk{margin-left:6px;vertical-align:4px}
+ol.decision{list-style:none;padding:0;margin:0;display:grid;gap:0}
+ol.decision li{display:grid;grid-template-columns:52px minmax(0,1fr);gap:14px;background:#fff;border:1px solid var(--hair);border-radius:14px;padding:14px 16px;position:relative;margin-bottom:22px}
+ol.decision li:not(:last-child)::after{content:"↓";position:absolute;left:30px;bottom:-22px;color:var(--ox);font-size:16px}
+.dq{display:grid;place-items:center;width:44px;height:44px;border-radius:50%;background:color-mix(in srgb,var(--ox) 14%,#fff);color:var(--ox);font-family:var(--f-latin);font-size:16px}
+ol.decision b{font-size:15px}
+ol.decision p{font-size:14px;margin:4px 0 0;color:#145F63}
+ol.decision small{display:block;font-size:12px;color:var(--sub);margin-top:2px}
+.tool{display:grid;grid-template-columns:minmax(0,1.3fr) minmax(0,1fr);gap:14px;background:#fff;border:1px solid var(--hair);border-radius:18px;padding:16px}
+.tool-q{display:grid;gap:6px;font-size:14px}
+.tool-q label{display:flex;gap:8px;align-items:flex-start;padding:6px 8px;border-radius:10px;cursor:pointer}
+.tool-q label:hover{background:var(--tint)}
+.tool-q input{margin-top:5px;accent-color:var(--ox)}
+.tool-a{background:color-mix(in srgb,var(--ox) 10%,#fff);border-radius:14px;padding:14px 16px;align-self:start;position:sticky;top:20px}
+.tool-a ul{margin:8px 0 0;padding-left:1.2em;font-size:14px;line-height:1.8}
+.inlist{margin:0;padding-left:1.3em}
+.note-list{font-size:13.5px;line-height:1.8;color:var(--sub);margin:12px 0}
+.rulebody p.rl-law{font-size:12.5px;color:var(--sub)}
+.rulebody .tbl td:first-child{width:11em}
+ul.checklist{list-style:none;padding:0;margin:0;display:grid;gap:8px}
+ul.checklist label{display:flex;gap:10px;align-items:flex-start;background:#fff;border:1px solid var(--hair);border-radius:12px;padding:10px 14px;font-size:14px;cursor:pointer}
+ul.checklist input{margin-top:5px;accent-color:var(--ox)}
+@media (max-width:960px){
+  .guide-layout{grid-template-columns:1fr}
+  .toc{position:static}
+  .venn{grid-template-columns:1fr}
+  .tool{grid-template-columns:1fr}
+  .tool-a{position:static}
+  .tbl.cmp td:first-child{white-space:normal}
+  .rulebody .tbl td:first-child{width:auto}
+}
+@media print{
+  .genre,.guide-actions,.toc,.tip,nav.tabs{display:none !important}
+  body{background:#fff !important}
+  .guide-layout{display:block}
+  .doc section{break-inside:auto;margin-bottom:28px}
+  .tbl tr,.card,ol.decision li{break-inside:avoid}
+  .chart-wrap{overflow:visible}
+  a{color:inherit}
+}
+.guide .doc h2{display:flex;background:none;border-radius:0;padding:0 0 10px}
