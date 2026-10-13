@@ -21,7 +21,7 @@
 <header class="hero wrap">
   <div class="eyebrow">Philosophy Lineage — 600 BC / 2026</div>
   <h1>思想の系譜</h1>
-  <p>古代ギリシャから現代まで、東洋と日本を含む15の時代を、問い・キーワード・人物で整理しました。</p>
+  <p>古代ギリシャから現代まで、東洋と日本を含む15の時代を、問い・人物・名著で整理しました。</p>
 </header>
 <div class="meander" aria-hidden="true"></div>
 
@@ -29,6 +29,7 @@
   <div class="wrap" role="tablist">
     <button role="tab" data-tab="timeline" aria-selected="true">年表</button>
     <button role="tab" data-tab="threads" aria-selected="false">6つの問い</button>
+    <button role="tab" data-tab="books" aria-selected="false">名著</button>
     <button role="tab" data-tab="read" aria-selected="false">読み方</button>
     <button role="tab" data-tab="glossary" aria-selected="false">用語集</button>
     <button role="tab" data-tab="links" aria-selected="false">絵画・ファッションと</button>
@@ -49,6 +50,18 @@
     <span class="kicker">Six Questions</span>
     <h2>繰り返し問われる6つの問い</h2>
     <div class="threads" id="threadList"></div>
+  </section>
+
+  <section id="books" data-panel hidden>
+    <span class="kicker">Great Books</span>
+    <h2>名著を読む</h2>
+    <p class="lead">青空文庫は著作権が切れた作品を無料で公開している電子図書館です。海外の原典は Project Gutenberg で英訳などが読めます。</p>
+    <div class="filter" id="bookFilter">
+      <button class="chip" data-aoz="" aria-pressed="true">すべて</button>
+      <button class="chip" data-aoz="1" aria-pressed="false">青空文庫で読めるものだけ</button>
+    </div>
+    <div class="tbl-wrap"><table class="tbl" id="bookTable"></table></div>
+    <p class="caption">名文のうち「原文」は日本語の原著から、「当サイト訳」は原典からの当サイトによる訳・要旨、「定訳」「書き下し文」は広く定着した訳です。</p>
   </section>
 
   <section id="read" data-panel hidden>
@@ -268,7 +281,8 @@ const MOVEMENTS = [
      ["龍樹（ナーガールジュナ）","150頃–250頃","『中論』","すべては関係の中にあり、固定した実体はない（空）","Nagarjuna"],
      ["西田幾多郎","1870–1945","『善の研究』","主観と客観が分かれる前の「純粋経験」","Kitaro_Nishida"],
      ["和辻哲郎","1889–1960","『風土』『倫理学』","人間は人と人の「間柄」の存在","Tetsuro_Watsuji"],
-     ["九鬼周造","1888–1941","『「いき」の構造』","江戸の美意識「いき」を哲学で分析","Kuki_Shūzō"]],
+     ["九鬼周造","1888–1941","『「いき」の構造』","江戸の美意識「いき」を哲学で分析","Kuki_Shūzō"],
+     ["三木清","1897–1945","『人生論ノート』『構想力の論理』","日常の言葉で幸福や孤独を論じた","Kiyoshi_Miki"]],
   l:"禅や「間」の考え方は、海外のデザインやマインドフルネスにも影響を与えています。",
   x:[["painting.html#mv-ukiyoe","絵画：「いき」の時代の浮世絵"]]}
 ];
@@ -360,6 +374,140 @@ const GLOSS = [
  ["空","Śūnyatā","仏教、特に龍樹の思想。すべては関係の中で成り立ち、固定した実体はないこと"]
 ];
 
+
+/* 名著と名文
+   q の種類（qn）：原文＝日本語の原著からの引用／当サイト訳＝原典（パブリックドメイン）からの当サイトによる訳・要旨／定訳＝広く定着した訳語
+   読む：青空文庫は図書カードを確認済み。それ以外は Project Gutenberg（英訳など）の検索結果 */
+const AOZORA = "https://www.aozora.gr.jp/cards/";
+const GUT = q => "https://www.gutenberg.org/ebooks/search/?query=" + encodeURIComponent(q);
+const BOOKS = [
+ {m:"ph-presocratic", t:"断片集", a:"ヘラクレイトス", y:"前500年ごろ", q:"同じ川に二度入ることはできない", qn:"当サイト訳（後世の引用による）",
+  sum:"本は残らず、他の著者が引用した断片だけが伝わります。万物は流れ変わり続け、対立するもの同士の緊張が世界の調和をつくると説きました。",
+  read:[["Gutenberg（英訳）", GUT("Heraclitus fragments")]]},
+ {m:"ph-classical", t:"ソクラテスの弁明", a:"プラトン", y:"前399年以降", q:"吟味されない生は、人間にとって生きるに値しない", qn:"当サイト訳",
+  sum:"死刑を求刑された裁判でのソクラテスの弁論。「ソクラテスより賢い者はいない」という神託を確かめるため賢者たちと問答し、自分は「知らないことを知っているとは思わない」点でだけ勝ると結論します。",
+  read:[["Gutenberg（英訳）", GUT("Apology Plato")]]},
+ {m:"ph-classical", t:"クリトン", a:"プラトン", y:"前399年以降", q:"大切なのは、ただ生きることではなく、よく生きることだ", qn:"当サイト訳",
+  sum:"処刑を待つソクラテスに、親友クリトンが脱獄を勧めます。ソクラテスは、不正に不正で応えてはならないとして、国の法に従うことを選びます。",
+  read:[["青空文庫", AOZORA + "000915/card4333.html"],["Gutenberg（英訳）", GUT("Crito Plato")]]},
+ {m:"ph-classical", t:"国家", a:"プラトン", y:"前375年ごろ", q:"哲学者が王となるか、王が哲学するのでなければ、国々の不幸はやまない", qn:"当サイト訳",
+  sum:"「正義とは何か」から始まり、魂の3つの部分と国家の3つの階級を重ね合わせます。洞窟の比喩で、真実を見た哲学者こそが統治すべきだと論じます。",
+  read:[["Gutenberg（英訳）", GUT("The Republic Plato")]]},
+ {m:"ph-classical", t:"ニコマコス倫理学", a:"アリストテレス", y:"前4世紀", q:"一羽のつばめが春をもたらすのではない", qn:"当サイト訳",
+  sum:"人間の最高の善は幸福（エウダイモニア）で、それは徳に基づく生涯にわたる活動だと論じます。徳は習慣で身につき、両極端の中間（中庸）にあります。",
+  read:[["Gutenberg（英訳）", GUT("Ethics Aristotle")]]},
+ {m:"ph-hellenistic", t:"人生の短さについて", a:"セネカ", y:"49年ごろ", q:"私たちは短い人生を与えられたのではない。自分で短くしているのだ", qn:"当サイト訳",
+  sum:"人生は短いのではなく、他人のための忙しさや見栄で浪費しているから短く感じる。過去に学び、自分のために時間を使えと説きます。",
+  read:[["Gutenberg（英訳）", GUT("Seneca shortness of life")]]},
+ {m:"ph-hellenistic", t:"自省録", a:"マルクス・アウレリウス", y:"170–180年ごろ", q:"宇宙は変化であり、人生は私たちの考えがつくるものだ", qn:"当サイト訳",
+  sum:"ローマ皇帝が戦陣で、自分自身に向けて書いたメモ。変えられないことに心を乱さず、今この瞬間の務めを果たせと繰り返します。",
+  read:[["Gutenberg（英訳）", GUT("Meditations Marcus Aurelius")]]},
+ {m:"ph-medieval", t:"告白", a:"アウグスティヌス", y:"397–400年ごろ", q:"あなたのうちに憩うまで、私たちの心は安らぎを得ない", qn:"当サイト訳",
+  sum:"若き日の放蕩と回心をつづった自伝。後半では「時間とは何か」を問い、過去・現在・未来は心の中の記憶・注意・期待だと論じます。",
+  read:[["Gutenberg（英訳）", GUT("Confessions Augustine")]]},
+ {m:"ph-medieval", t:"神学大全", a:"トマス・アクィナス", y:"1265–74年", q:"恩寵は自然を破壊せず、完成する", qn:"当サイト訳",
+  sum:"神の存在を示す「五つの道」など、信仰の内容を「問い→反論→回答」の形式で体系化した、中世スコラ学の頂点です。",
+  read:[["Gutenberg（英訳）", GUT("Summa Theologica")]]},
+ {m:"ph-renaissance", t:"君主論", a:"マキャヴェッリ", y:"1513年執筆", q:"愛されるより、恐れられるほうがはるかに安全である", qn:"当サイト訳",
+  sum:"新しく権力を得た君主が国を保つための実践の書。道徳より結果を重んじ、運命（フォルトゥナ）に立ち向かう力量（ヴィルトゥ）を説きます。",
+  read:[["Gutenberg（英訳）", GUT("The Prince Machiavelli")]]},
+ {m:"ph-renaissance", t:"エセー（随想録）", a:"モンテーニュ", y:"1580年", q:"私は何を知っているか（ク・セ・ジュ）", qn:"モンテーニュの銘",
+  sum:"自分自身を素材に、死、友情、教育、習慣などを自由に書き連ねた随想。断定を避け、人間の多様さを見つめる懐疑の精神が貫かれています。",
+  read:[["青空文庫（関根秀雄訳 第一巻）", AOZORA + "001848/card59469.html"],["Gutenberg（英訳）", GUT("Essays Montaigne")]]},
+ {m:"ph-rationalism", t:"方法序説", a:"デカルト", y:"1637年", q:"我思う、ゆえに我あり", qn:"定訳",
+  sum:"確実な知に至るための4つの規則を示し、少しでも疑えるものをすべて退けた末に、「考えている私」の存在を哲学の出発点に据えます。",
+  read:[["Gutenberg（英訳）", GUT("Discourse on Method Descartes")]]},
+ {m:"ph-rationalism", t:"省察", a:"デカルト", y:"1641年", q:"私はある、私は存在する", qn:"当サイト訳",
+  sum:"夢や悪霊の仮説まで持ち出してすべてを疑い、考える私、神の存在、物体の存在へと順に確実性を取り戻していきます。心身二元論の原典です。",
+  read:[["青空文庫（三木清訳）", AOZORA + "001029/card43291.html"],["Gutenberg（英訳）", GUT("Meditations Descartes")]]},
+ {m:"ph-rationalism", t:"パンセ", a:"パスカル", y:"1670年（没後刊行）", q:"人間は考える葦である", qn:"定訳",
+  sum:"キリスト教を弁護する本のための断章集。人間の偉大さと悲惨さ、神の存在に賭けるべきだという「賭け」の議論で知られます。",
+  read:[["Gutenberg（英訳）", GUT("Pensees Pascal")]]},
+ {m:"ph-empiricism", t:"統治二論", a:"ロック", y:"1689年", q:"すべての人は、自分自身の身体に対する所有権をもつ", qn:"当サイト訳",
+  sum:"人は生命・自由・財産の自然権を持ち、政府はそれを守るために人々から信託されたもの。信託を裏切る政府には抵抗してよいと論じます。",
+  read:[["Gutenberg（英訳）", GUT("Two Treatises of Government Locke")]]},
+ {m:"ph-empiricism", t:"人間本性論", a:"ヒューム", y:"1739–40年", q:"理性は情念の奴隷であり、またそうあるべきである", qn:"当サイト訳",
+  sum:"知識はすべて印象と観念から。原因と結果のつながりは観察できず、習慣がつくる期待にすぎないと論じ、カントを「独断のまどろみ」から目覚めさせました。",
+  read:[["Gutenberg（英訳）", GUT("Treatise of Human Nature Hume")]]},
+ {m:"ph-enlightenment", t:"リヴァイアサン", a:"ホッブズ", y:"1651年", q:"人の一生は、孤独で、貧しく、つらく、残酷で、短い", qn:"当サイト訳（自然状態の描写）",
+  sum:"国家のない自然状態は「万人の万人に対する闘争」。平和のために人々は自然権を一人の主権者に譲り渡す、という社会契約を論じます。",
+  read:[["Gutenberg（英訳）", GUT("Leviathan Hobbes")]]},
+ {m:"ph-enlightenment", t:"社会契約論", a:"ルソー", y:"1762年", q:"人間は自由なものとして生まれた。しかも至るところで鎖につながれている", qn:"当サイト訳",
+  sum:"自由を失わずに共同体をつくるには、全員が「一般意志」に従う契約が必要だと論じます。主権は人民にあり、分割も譲渡もできません。",
+  read:[["Gutenberg（英訳）", GUT("Social Contract Rousseau")]]},
+ {m:"ph-german", t:"純粋理性批判", a:"カント", y:"1781年", q:"内容なき思考は空虚であり、概念なき直観は盲目である", qn:"当サイト訳",
+  sum:"私たちは「物自体」を知ることはできず、時間・空間とカテゴリーという心の枠組みを通して現れたものだけを知る。認識が対象に従うのではなく、対象が認識に従うと考えました。",
+  read:[["Gutenberg（英訳）", GUT("Critique of Pure Reason Kant")]]},
+ {m:"ph-german", t:"永遠の平和へ", a:"カント", y:"1795年", q:"常備軍は、時とともに全廃されるべきである", qn:"当サイト訳",
+  sum:"戦争をなくすための条件を、平和条約の条文の形で示しました。共和制、国家の連合、世界市民の権利。国際連盟や国際連合の思想的な源流です。",
+  read:[["青空文庫", AOZORA + "000902/card46674.html"],["Gutenberg（英訳）", GUT("Perpetual Peace Kant")]]},
+ {m:"ph-german", t:"精神現象学", a:"ヘーゲル", y:"1807年", q:"真なるものは全体である", qn:"当サイト訳",
+  sum:"意識が素朴な感覚から出発し、対立と克服を繰り返して「絶対知」に至るまでの旅を描きます。「主人と奴隷」の弁証法が特に有名です。",
+  read:[["Gutenberg（英訳）", GUT("Hegel")]]},
+ {m:"ph-19c", t:"共産党宣言", a:"マルクス、エンゲルス", y:"1848年", q:"万国の労働者よ、団結せよ", qn:"定訳",
+  sum:"これまでの社会の歴史は階級闘争の歴史だと宣言し、資本主義が生んだブルジョワジーとプロレタリアートの対立が、やがて社会を変えると論じました。",
+  read:[["Gutenberg（英訳）", GUT("Communist Manifesto")]]},
+ {m:"ph-19c", t:"死に至る病", a:"キルケゴール", y:"1849年", q:"絶望こそ、死に至る病である", qn:"当サイト訳",
+  sum:"死に至る病とは絶望のこと。自分であろうとしないことも、自分であろうとして果たせないことも絶望だとし、神の前に立つ単独者としての生を説きます。",
+  read:[["Gutenberg", GUT("Kierkegaard")]]},
+ {m:"ph-19c", t:"自由論", a:"J・S・ミル", y:"1859年", q:"全人類が一人の意見を封じることは、一人が権力で全人類を黙らせるのと同じく不当である", qn:"当サイト訳（要旨）",
+  sum:"他人に危害を加えない限り、個人の自由に社会は干渉すべきでない（危害原理）。少数意見を封じれば、真理を確かめる機会も失われると論じます。",
+  read:[["Gutenberg（英語原文）", GUT("On Liberty Mill")]]},
+ {m:"ph-19c", t:"ツァラトゥストラはこう語った", a:"ニーチェ", y:"1883–85年", q:"人間は、動物と超人のあいだに張り渡された一本の綱である", qn:"当サイト訳",
+  sum:"山から下りた預言者ツァラトゥストラが、「神の死」の後を生きる人々に、自らを乗り越える「超人」と永劫回帰を説く、物語の形をとった哲学書です。",
+  read:[["青空文庫（ニーチェの作品一覧。本書は入力作業中）","https://www.aozora.gr.jp/index_pages/person1453.html"],["Gutenberg（英訳）", GUT("Thus Spake Zarathustra")]]},
+ {m:"ph-analytic", t:"論理哲学論考", a:"ウィトゲンシュタイン", y:"1921年", q:"語りえぬものについては、沈黙せねばならない", qn:"当サイト訳",
+  sum:"世界は事実の総体であり、言語は事実を写す像だとし、語りうることの限界を引きました。倫理や美は語れず、示されるしかないとされます。",
+  read:[["Gutenberg（英訳）", GUT("Tractatus Logico-Philosophicus")]]},
+ {m:"ph-existentialism", t:"存在と時間", a:"ハイデガー", y:"1927年", q:"", qn:"",
+  sum:"人間（現存在）は世界に投げ込まれ、ふだんは他人に合わせた「ひと」として生きている。自分の死を引き受けることで、本来の自己に向かうと論じます。",
+  read:[]},
+ {m:"ph-existentialism", t:"実存主義とは何か", a:"サルトル", y:"1946年", q:"実存は本質に先立つ", qn:"定訳",
+  sum:"講演の記録。ペーパーナイフと違い、人間は目的（本質）を持たずに存在し、選択を通じて自分をつくる。その自由には全人類への責任が伴うと語ります。",
+  read:[]},
+ {m:"ph-existentialism", t:"第二の性", a:"ボーヴォワール", y:"1949年", q:"人は女に生まれるのではない、女になるのだ", qn:"定訳",
+  sum:"女性は男性を基準とする社会で「他者」としてつくられてきた。生物学、歴史、神話、日常生活を検証し、女性の自由を論じた大著です。",
+  read:[]},
+ {m:"ph-existentialism", t:"シーシュポスの神話", a:"カミュ", y:"1942年", q:"幸福なシーシュポスを思い描かねばならない", qn:"当サイト訳",
+  sum:"永遠に岩を山頂へ押し上げる罰を受けたシーシュポスに人生を重ね、意味のなさ（不条理）を知ったうえで、反抗しながら生きることを肯定します。",
+  read:[]},
+ {m:"ph-structuralism", t:"神話作用", a:"バルト", y:"1957年", q:"", qn:"",
+  sum:"プロレス、ワイン、洗剤の広告など、日常の文化を素材にした短い批評集。「自然」に見えるものに潜むイデオロギー（神話）を読み解きます。",
+  read:[]},
+ {m:"ph-structuralism", t:"監獄の誕生", a:"フーコー", y:"1975年", q:"", qn:"",
+  sum:"公開処刑から監獄へ。近代の権力は身体を罰するより、監視と規律で「従順な身体」をつくるようになったと論じ、学校や工場にも同じ仕組みを見出しました。",
+  read:[]},
+ {m:"ph-contemporary", t:"正義論", a:"ロールズ", y:"1971年", q:"", qn:"",
+  sum:"無知のヴェールの下で人々が選ぶ原理として、①基本的な自由の平等、②格差は最も恵まれない人の利益になる場合にだけ許される（格差原理）、を導きます。",
+  read:[]},
+ {m:"ph-contemporary", t:"ジェンダー・トラブル", a:"バトラー", y:"1990年", q:"", qn:"",
+  sum:"生物学的な性（セックス）と社会的な性（ジェンダー）の区別そのものを問い直し、性別は繰り返される行為（パフォーマンス）でつくられると論じました。",
+  read:[]},
+ {m:"ph-east", t:"論語", a:"孔子と弟子たち", y:"前5世紀〜", q:"学びて時に之を習う、亦た説ばしからずや", qn:"書き下し文",
+  sum:"孔子と弟子たちの言行録。人を思いやる心（仁）と、それを形にするふるまい（礼）、そして学び続ける喜びを説きます。",
+  read:[["青空文庫（下村湖人『現代訳論語』）", AOZORA + "001097/card43785.html"]]},
+ {m:"ph-east", t:"老子（道徳経）", a:"老子", y:"前4世紀ごろ", q:"上善は水の如し", qn:"書き下し文",
+  sum:"名づけることのできない根源「道」に従い、作為を捨てて水のように柔らかく、争わずに生きることを説きます。",
+  read:[["Gutenberg（英訳）", GUT("Tao Te Ching")]]},
+ {m:"ph-east", t:"善の研究", a:"西田幾多郎", y:"1911年", q:"経験するというのは事実其儘に知るの意である。", qn:"原文",
+  sum:"主観と客観が分かれる前の「純粋経験」こそ唯一の実在だと論じ、善とは人格の実現だとしました。日本で最初の本格的な哲学書とされます。",
+  read:[["青空文庫", AOZORA + "000182/card946.html"]]},
+ {m:"ph-east", t:"「いき」の構造", a:"九鬼周造", y:"1930年", q:"垢抜して（諦）、張のある（意気地）、色っぽさ（媚態）", qn:"原文",
+  sum:"江戸の美意識「いき」を、媚態・意気地・諦めの3つの要素で分析。縞模様や鼠色・茶色・藍色など、何が「いき」な色柄かまで論じた、ファッション好きにも面白い一冊です。",
+  read:[["青空文庫", AOZORA + "000065/card393.html"]]},
+ {m:"ph-east", t:"人生論ノート", a:"三木清", y:"1941年", q:"幸福は人格である。", qn:"原文",
+  sum:"死、幸福、孤独、嫉妬、虚栄など、23のテーマを短い章で論じたエッセイ。戦時下に書かれ、今も読み継がれる哲学入門です。",
+  read:[["青空文庫", AOZORA + "000218/card46845.html"]]}
+];
+const isAozora = b => b.read.some(r => r[1].includes("aozora.gr.jp/cards/"));
+const bookCard = b => `
+  <article class="book">
+   <div class="bk-head"><b>『${b.t}』</b><span>${b.a}・${b.y}</span>${isAozora(b) ? `<span class="badge">青空文庫で読める</span>` : ""}</div>
+   ${b.q ? `<blockquote>「${b.q}」<cite>${b.qn}</cite></blockquote>` : ""}
+   <p>${b.sum}</p>
+   ${b.read.length ? `<div class="bk-links">${b.read.map(r => `<a class="${r[1].includes("aozora") ? "aoz" : ""}" href="${r[1]}" target="_blank" rel="noopener">${r[0]} ↗</a>`).join("")}</div>` : `<div class="bk-links"><span>著作権保護期間中のため、全文は書店・図書館で</span></div>`}
+  </article>`;
+
 const $ = s => document.querySelector(s);
 const esc = s => s.replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
 const idTag = id => `<a class="sid" href="#${id}" data-copy="${id}" title="このIDのリンクをコピー">#${id}</a>`;
@@ -381,6 +529,7 @@ $("#movements").innerHTML = MOVEMENTS.map(m => `
    <ul class="signs">${m.key.map(s => `<li>${s}</li>`).join("")}</ul>
    <div class="tbl-wrap"><table class="tbl people">${table(["人物","生没年","主著","ひとことで"], m.p.map(p => [
      `<a href="${srcUrl(p[4])}" target="_blank" rel="noopener"><b>${p[0]}</b></a>`, p[1], p[2], p[3]]))}</table></div>
+   ${BOOKS.some(b => b.m === m.id) ? `<h4 class="lbl">名著と名文</h4><div class="books">${BOOKS.filter(b => b.m === m.id).map(bookCard).join("")}</div>` : ""}
    <div class="tags">${m.th.map(t => `<span class="tag">${THREADS[t].name}</span>`).join("")}</div>
    <details>
     <summary>今への影響とつながり・出典</summary>
@@ -425,6 +574,20 @@ $("#pairs").innerHTML = table(["対立","こちら側","あちら側","代表"],
 $("#quotes").innerHTML = table(["言葉","人物","出典","意味"], QUOTES.map(q => [`<b class="quote">「${q[0]}」</b>`, q[1], q[2], q[3]]));
 $("#experiments").innerHTML = table(["思考実験","考えた人","設定","何を問うか","出典"], EXPERIMENTS.map(x => [`<b>${x[0]}</b>`, x[1], x[2], x[3], srcLink(x[4])]));
 $("#cross").innerHTML = table(["哲学","内容","行き先","出典"], CROSS.map(c => [`<b>${c[0]}</b>`, c[1], `<a href="${c[2]}">${c[3]} →</a>`, srcLink(c[4])]));
+
+
+function renderBooks(aozOnly){
+  document.querySelectorAll("#bookFilter .chip").forEach(c => c.setAttribute("aria-pressed", String(!!c.dataset.aoz === aozOnly)));
+  const list = BOOKS.filter(b => !aozOnly || isAozora(b));
+  $("#bookTable").innerHTML = table(["書名","著者・年","時代","読む"], list.map(b => {
+    const m = mvById(b.m);
+    return [`<b>『${b.t}』</b>${isAozora(b) ? ` <span class="badge">青空文庫</span>` : ""}<small>${b.sum}</small>`, `${b.a}<br><small>${b.y}</small>`,
+      `<a class="mpill" href="#${m.id}" style="--mc:${m.c}">${m.t}</a>`,
+      b.read.length ? b.read.map(r => `<a class="src-a" href="${r[1]}" target="_blank" rel="noopener">${r[0]} ↗</a>`).join("<br>") : `<small>書店・図書館で</small>`];
+  }));
+}
+$("#bookFilter").addEventListener("click", e => { const c = e.target.closest(".chip"); if (c) renderBooks(!!c.dataset.aoz); });
+renderBooks(false);
 
 function renderGloss(q){
   q = (q || "").trim().toLowerCase();
