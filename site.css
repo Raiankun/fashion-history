@@ -510,3 +510,11 @@ dl.kv small{display:block;font-size:11.5px;color:var(--sub)}
 @media (max-width:760px){
   .world-kv div{grid-template-columns:1fr;gap:4px}
 }
+.brandbar{flex-direction:column;gap:10px}
+.bgroup{display:flex;flex-wrap:wrap;align-items:center;gap:8px}
+.blabel{font-size:11px;letter-spacing:.2em;color:var(--sub);width:6.5em;flex:none}
+@media (max-width:760px){ .blabel{width:100%} }
+.bgroup{display:grid;grid-template-columns:6.5em minmax(0,1fr);align-items:start}
+.blabel{padding-top:8px}
+.bchips{display:flex;flex-wrap:wrap;gap:8px}
+@media (max-width:760px){ .bgroup{grid-template-columns:1fr;gap:6px} .blabel{padding-top:0} }
