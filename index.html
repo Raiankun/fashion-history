@@ -54,6 +54,10 @@ h3.sub .dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-r
 .caption{font-size:13px;color:var(--sub);margin:12px 0 0;max-width:46em}
 .notice{font-size:12px;color:var(--sub);margin-top:64px;max-width:52em;line-height:1.9}
 
+/* ページ内ID */
+.sid{font-size:11px;letter-spacing:.04em;color:var(--sub);text-decoration-color:transparent;font-family:ui-monospace,Menlo,Consolas,monospace;word-break:break-all;line-height:1.5}
+.sid:hover{color:var(--ink);text-decoration-color:var(--hair)}
+.sid.copied::after{content:" コピーしました";font-family:var(--f-body);color:var(--mark)}
 /* Met Open Access の実物資料 */
 .met{margin-top:20px}
 .met:empty{display:none}
@@ -1215,9 +1219,17 @@ const esc = s => s.replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'
 
 
 
+/* ページ内ID：表示してリンクにし、押すとURLをコピーする（VIDEOSの登録にも使う） */
+const idTag = id => `<a class="sid" href="#${id}" data-copy="${id}" title="このIDのリンクをコピー">#${id}</a>`;
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-copy]"); if (!a) return;
+  const url = location.href.split("#")[0] + "#" + a.dataset.copy;
+  try { navigator.clipboard.writeText(url).then(() => { a.classList.add("copied"); setTimeout(() => a.classList.remove("copied"), 1400); }, () => {}); } catch(_) {}
+});
+
 $("#eras").innerHTML = ERAS.map((e,i) => `
  <article class="era" data-th="${e.th.join(" ")}" id="era-${i}">
-  <div class="swatch"><div class="years">${e.y}</div><div class="cloth" style="background:${e.c}"></div></div>
+  <div class="swatch"><div class="years">${e.y}</div>${idTag("era-" + i)}<div class="cloth" style="background:${e.c}"></div></div>
   <div class="era-body">
    <h3>${e.t}</h3>
    <p class="sum">${e.s}</p>
@@ -1334,7 +1346,7 @@ function renderBrand(){
    <h4 style="margin-top:8px">ショーごとの解説（新しい順）</h4>
    <div class="showlist">${b.shows.slice().reverse().map(s => `
     <article class="show">
-     <div class="show-side"><span class="season">${s.s}</span>${s.d ? `<span class="when">${s.d}</span>` : ""}<div class="pal" aria-label="主な色">${s.pal.map(c => `<span style="background:${c}"></span>`).join("")}</div></div>
+     <div class="show-side"><span class="season">${s.s}</span>${idTag(s.id)}${s.d ? `<span class="when">${s.d}</span>` : ""}<div class="pal" aria-label="主な色">${s.pal.map(c => `<span style="background:${c}"></span>`).join("")}</div></div>
      <div class="show-body">
       <h5>${s.t}</h5>
       <dl class="pts">${s.pts.map(p => `<div><dt>${p[0]}</dt><dd>${p[1]}</dd></div>`).join("")}</dl>
@@ -1435,7 +1447,7 @@ function openDetail(id){
     <div class="srcgrid">${refs}</div>
     <h3 class="sub">ショーの中身</h3>
     <div class="dbody">
-      <div class="show-side"><span class="season">${s.s}</span>${s.d ? `<span class="when">${s.d}</span>` : ""}<div class="pal" aria-label="主な色">${s.pal.map(c => `<span style="background:${c}"></span>`).join("")}</div></div>
+      <div class="show-side"><span class="season">${s.s}</span>${idTag(s.id)}${s.d ? `<span class="when">${s.d}</span>` : ""}<div class="pal" aria-label="主な色">${s.pal.map(c => `<span style="background:${c}"></span>`).join("")}</div></div>
       <div class="show-body">
         <dl class="pts">${s.pts.map(p => `<div><dt>${p[0]}</dt><dd>${p[1]}</dd></div>`).join("")}</dl>
         ${s.pro || s.con ? `<div class="evals">${s.pro ? `<div class="ev pro"><b>評価</b>${s.pro}</div>` : ""}${s.con ? `<div class="ev con"><b>異論・注意</b>${s.con}</div>` : ""}</div>` : ""}
@@ -1502,6 +1514,7 @@ $("#srclist").addEventListener("click", e => { const er = e.target.closest("[dat
 function route(){
   const h = location.hash.slice(1);
   if (showById(h)) { openDetail(h); return true; }
+  if (/^era-\d+$/.test(h) && ERAS[+h.slice(4)]) { gotoEra(+h.slice(4)); return true; }
   if (h.startsWith("src-") && SOURCES[h.slice(4)]) {
     showTab("sources");
     const el = document.getElementById(h); if (el) { el.scrollIntoView({block:"center"}); el.classList.add("flash"); setTimeout(() => el.classList.remove("flash"), 1600); }
