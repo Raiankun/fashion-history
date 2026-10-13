@@ -1,0 +1,495 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>絵画の系譜</title>
+<meta name="description" content="ゴシックから現代美術まで、西洋絵画と浮世絵の流れを文脈・見分けのサイン・代表作でたどる学習用ページ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body>
+
+<nav class="genre wrap" aria-label="分野">
+  <a href="index.html">ファッション</a>
+  <a href="painting.html" aria-current="page">絵画</a>
+  <span class="soon">哲学（準備中）</span>
+</nav>
+
+<header class="hero wrap">
+  <div class="eyebrow">Painting Lineage — 1300 / 2026</div>
+  <h1>絵画の系譜</h1>
+  <p>ゴシックから現代美術まで21の流派を、文脈・見分けのサイン・代表作で整理しました。</p>
+</header>
+
+<nav class="tabs" aria-label="セクション">
+  <div class="wrap" role="tablist">
+    <button role="tab" data-tab="timeline" aria-selected="true">年表</button>
+    <button role="tab" data-tab="threads" aria-selected="false">4つの流れ</button>
+    <button role="tab" data-tab="read" aria-selected="false">見方</button>
+    <button role="tab" data-tab="glossary" aria-selected="false">用語集</button>
+    <button role="tab" data-tab="fashion" aria-selected="false">ファッションと絵画</button>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section id="timeline" data-panel>
+    <span class="kicker">Timeline</span>
+    <h2>流派でたどる</h2>
+    <p class="lead">「＋ 代表作」で作品の表が開きます。流れを選ぶと、関係する流派だけが強調されます。</p>
+    <div class="filter" id="filter"></div>
+    <div class="thread-note" id="threadNote" hidden></div>
+    <div class="eras" id="movements"></div>
+  </section>
+
+  <section id="threads" data-panel hidden>
+    <span class="kicker">Threads</span>
+    <h2>繰り返し現れる4つの流れ</h2>
+    <div class="threads" id="threadList"></div>
+  </section>
+
+  <section id="read" data-panel hidden>
+    <span class="kicker">How to Look</span>
+    <h2>絵の見方</h2>
+    <h3 class="sub">5つの手順</h3>
+    <div class="tbl-wrap"><table class="tbl" id="steps"></table></div>
+    <h3 class="sub">見分けのサイン</h3>
+    <p class="caption" style="margin:-8px 0 16px">流派名を押すと年表へ移動します。</p>
+    <div class="tbl-wrap"><table class="tbl" id="signs"></table></div>
+    <h3 class="sub">図像の意味</h3>
+    <div class="tbl-wrap"><table class="tbl" id="icons"></table></div>
+    <h3 class="sub">画家の署名</h3>
+    <div class="tbl-wrap"><table class="tbl" id="sigs"></table></div>
+  </section>
+
+  <section id="glossary" data-panel hidden>
+    <span class="kicker">Glossary</span>
+    <h2>用語集</h2>
+    <label for="q" class="eyebrow" style="display:block;margin-bottom:6px">用語を検索</label>
+    <input id="q" class="search" type="search" placeholder="例：スフマート、テンペラ、ヴァニタス">
+    <dl class="gloss" id="gloss"></dl>
+  </section>
+
+  <section id="fashion" data-panel hidden>
+    <span class="kicker">Painting × Fashion</span>
+    <h2>ファッションと絵画</h2>
+    <p class="lead">リンクからファッションの年表の該当年代へ移動できます。</p>
+    <div class="tbl-wrap"><table class="tbl" id="fx"></table></div>
+  </section>
+
+  <p class="notice">年代は目安です。所蔵先は2026年10月時点の情報で、変わることがあります。作品画像は著作権と所蔵館の規定に配慮し、外部の画像検索へのリンクにしています。</p>
+</main>
+
+<script>
+const THREADS = {
+ linecolor:{name:"線と色", q:"形を決めるのは輪郭か、色か。",
+  flow:[["1500","フィレンツェの素描 対 ヴェネツィアの色彩"],["1670s","アカデミーでプッサン派とルーベンス派が論争"],["1820s","アングル（線）対 ドラクロワ（色）"],["1905–07","マティス（色）とピカソ（形）"]],
+  note:"どちらかが勝ち切ることはなく、振り子のように行き来します。"},
+ realexpr:{name:"見たままと、感じたまま", q:"絵は現実を写す窓か、心を映す鏡か。",
+  flow:[["1427","マサッチオの線遠近法"],["1600","カラヴァッジョの生々しい写実"],["1839","写真の発明"],["1874","印象派、光の印象へ"],["1905–15","表現主義と抽象"],["1962","ポップアートが写真や印刷物を引用"]],
+  note:"写真に「写す」役割を奪われた絵画は、何を描くべきかを問い続けることになりました。"},
+ patron:{name:"誰が絵を買うのか", q:"注文主が変わると、主題も大きさも変わる。",
+  flow:[["中世〜","教会：祭壇画と壁画"],["16C","君主と教皇：権力の演出"],["17C","オランダ市民：市場で買う小さな絵"],["18–19C","サロン（官展）とアカデミー"],["1870s–","画商と画廊"],["20C後半–","美術館、オークション、ブランド"]],
+  note:"主題やサイズは、どこに飾られ、誰が払うかで決まってきました。"},
+ japan:{name:"日本との往来", q:"浮世絵がヨーロッパを変え、やがて日本に戻ってくる。",
+  flow:[["1830s","北斎・広重の風景版画"],["1867","パリ万博、ジャポニスムの流行"],["1887","ゴッホが広重を模写"],["1900","アール・ヌーヴォーと装飾性"],["1954","具体美術協会"],["2000","村上隆のスーパーフラット"]],
+  note:"平面性、余白、輪郭線は、西洋の画家が遠近法を手放す手がかりになりました。"}
+};
+
+/* w: [作品, 英題, 画家, 年, 所蔵, 見どころ]  fx: [ファッション年表の年代番号, 内容] */
+const MOVEMENTS = [
+ {id:"mv-early", y:"1300–1480", t:"ゴシックから初期ルネサンスへ", en:"Late Gothic & Early Renaissance", c:"#B08D3C", th:["realexpr","patron"],
+  ctx:"注文主は教会。絵は文字の読めない人に聖書を伝える道具でした。15世紀のフィレンツェで線遠近法が生まれます。",
+  sig:["金地の背景と後光（ゴシックの名残）","床や建物の線が一点に集まる","人物に影と重さがある","テンペラやフレスコのマットな質感"],
+  w:[["スクロヴェーニ礼拝堂の壁画","Scrovegni Chapel frescoes","ジョット","1305年ごろ","スクロヴェーニ礼拝堂（パドヴァ）","金地をやめて青空に。人物が泣き、抱き合う"],
+     ["聖三位一体","Holy Trinity Masaccio","マサッチオ","1427年ごろ","サンタ・マリア・ノヴェッラ聖堂（フィレンツェ）","線遠近法を本格的に使った最初期の作品"],
+     ["ヴィーナスの誕生","The Birth of Venus","ボッティチェリ","1485年ごろ","ウフィツィ美術館（フィレンツェ）","聖書以外の神話の裸婦を大画面に"]],
+  p:"ジョット、マサッチオ、フラ・アンジェリコ、ボッティチェリ",
+  l:"「画面の中に現実の空間をつくる」が、以後約450年の基本ルールに。"},
+ {id:"mv-north", y:"1420–1570", t:"北方ルネサンス", en:"Northern Renaissance", c:"#3E5641", th:["realexpr","patron"],
+  ctx:"フランドルやドイツでは商人も注文主に。油彩が磨かれ、宗教改革後は風景や農民が主題になります。",
+  sig:["髪の毛一本、布の織り目まで描く細密描写","油絵具の透明な層による宝石のような光沢","日用品に宗教的な意味が隠れている","後期は風景・農民・ことわざ"],
+  w:[["アルノルフィーニ夫妻像","The Arnolfini Portrait","ヤン・ファン・エイク","1434年","ナショナル・ギャラリー（ロンドン）","奥の凸面鏡に入口の二人が映る。鏡の上に署名"],
+     ["快楽の園","The Garden of Earthly Delights","ヒエロニムス・ボス","1490–1510年ごろ","プラド美術館（マドリード）","楽園・快楽・地獄の三連祭壇画"],
+     ["雪中の狩人","Hunters in the Snow","ピーテル・ブリューゲル（父）","1565年","美術史美術館（ウィーン）","宗教ではなく、農村の冬そのものが主役"]],
+  p:"ファン・エイク、ファン・デル・ウェイデン、デューラー、ボス、ブリューゲル",
+  l:"油彩がヨーロッパの標準に。物に意味を込める手法はオランダの静物画へ。"},
+ {id:"mv-high", y:"1490–1530", t:"盛期ルネサンス", en:"High Renaissance", c:"#8C6A4F", th:["linecolor","patron"],
+  ctx:"教皇と君主が競って芸術家を抱えました。解剖学や数学が絵画と結びつき、画家は職人から知識人へ。",
+  sig:["人物を三角形に安定して配置","輪郭を煙のようにぼかす（スフマート）","解剖学に基づく理想化された人体","古代ギリシャ・ローマの建築や彫刻の引用"],
+  w:[["最後の晩餐","The Last Supper","レオナルド・ダ・ヴィンチ","1495–98年","サンタ・マリア・デッレ・グラツィエ修道院（ミラノ）","遠近法の線がキリストの頭に集まる"],
+     ["モナ・リザ","Mona Lisa","レオナルド・ダ・ヴィンチ","1503–19年ごろ","ルーヴル美術館（パリ）","口元と目尻をぼかし、表情を決めきらない"],
+     ["システィーナ礼拝堂天井画","Sistine Chapel ceiling","ミケランジェロ","1508–12年","ヴァチカン宮殿（ローマ）","彫刻家の目で描いた筋肉の人体。「アダムの創造」を含む"],
+     ["アテナイの学堂","The School of Athens","ラファエロ","1509–11年","ヴァチカン宮殿（ローマ）","プラトンとアリストテレスを中心に古代の哲学者が集う"]],
+  p:"レオナルド・ダ・ヴィンチ、ミケランジェロ、ラファエロ",
+  l:"美術学校（アカデミー）は約300年、ラファエロを手本に教えました。"},
+ {id:"mv-venice", y:"1500–1576", t:"ヴェネツィア派", en:"Venetian School", c:"#9E2B25", th:["linecolor"],
+  ctx:"交易都市に東方の顔料が集まり、湿気に強い油彩とキャンバスが好まれました。素描のフィレンツェに対し、色で形をつくります。",
+  sig:["輪郭線より色の重なりで形をつくる","深い赤と金色、柔らかい肌","横たわる官能的な裸婦","物語より雰囲気を伝える風景"],
+  w:[["嵐（テンペスタ）","The Tempest Giorgione","ジョルジョーネ","1508年ごろ","アカデミア美術館（ヴェネツィア）","主題は今も謎。雷雲の空気が主役"],
+     ["ウルビーノのヴィーナス","Venus of Urbino","ティツィアーノ","1538年","ウフィツィ美術館（フィレンツェ）","女神を現実の寝室に。マネ「オランピア」の元ネタ"]],
+  p:"ベッリーニ、ジョルジョーネ、ティツィアーノ、ティントレット、ヴェロネーゼ",
+  l:"「線か色か」の論争の出発点。ルーベンスや印象派は色の系譜です。"},
+ {id:"mv-mannerism", y:"1520–1600", t:"マニエリスム", en:"Mannerism", c:"#C98FA0", th:["realexpr"],
+  ctx:"完成された調和の後、次の世代は意図的に型を崩しました。ローマ劫掠（1527年）や宗教改革の不安も背景とされます。",
+  sig:["首や手足が不自然に長い","ねじれたポーズ","ピンク・水色・黄緑の酸っぱい色","奥行きが不安定で、人物が詰め込まれる"],
+  w:[["長い首の聖母","Madonna with the Long Neck","パルミジャニーノ","1534–40年","ウフィツィ美術館（フィレンツェ）","聖母の首も幼子の体も異様に長い"],
+     ["十字架降架","Pontormo Deposition","ポントルモ","1525–28年","サンタ・フェリチタ聖堂（フィレンツェ）","十字架も地面もなく、人物が宙に浮く"],
+     ["オルガス伯爵の埋葬","The Burial of the Count of Orgaz","エル・グレコ","1586–88年","サント・トメ教会（トレド）","地上は写実、天上は炎のように伸びる人体"]],
+  p:"ポントルモ、パルミジャニーノ、ブロンズィーノ、エル・グレコ",
+  l:"20世紀の表現主義で再評価。エル・グレコはピカソらに影響しました。"},
+ {id:"mv-baroque", y:"1600–1700", t:"バロック", en:"Baroque", c:"#2B1E16", th:["realexpr","linecolor","patron"],
+  ctx:"カトリック教会は感情に訴える宗教画を求め、絶対王政は権力を演出する絵を求めました。劇場のような表現が広がります。",
+  sig:["闇に強い光が差す明暗法","斜めの対角線構図と、動きの途中の一瞬","聖人も普通の顔と汚れた足","見る人を場面に引き込む仕掛け"],
+  w:[["聖マタイの召命","The Calling of Saint Matthew","カラヴァッジョ","1599–1600年","サン・ルイジ・デイ・フランチェージ聖堂（ローマ）","酒場のような部屋に右上から一筋の光"],
+     ["キリスト降架","Rubens The Descent from the Cross","ルーベンス","1612–14年","聖母大聖堂（アントウェルペン）","白い布の上を崩れ落ちる体が対角線を描く"],
+     ["夜警","The Night Watch","レンブラント","1642年","アムステルダム国立美術館","集団肖像を、光と動きで劇の一場面に"],
+     ["ラス・メニーナス","Las Meninas","ディエゴ・ベラスケス","1656年","プラド美術館（マドリード）","画家、王女、鏡の国王夫妻。誰が誰を見ているのか"]],
+  p:"カラヴァッジョ、ルーベンス、レンブラント、ベラスケス、アルテミジア・ジェンティレスキ",
+  l:"映画や写真の照明に残る。「レンブラント・ライティング」はその名残。"},
+ {id:"mv-dutch", y:"1620–1680", t:"オランダ黄金時代", en:"Dutch Golden Age", c:"#4A6A8C", th:["patron","realexpr"],
+  ctx:"プロテスタントの共和国で教会の注文が消え、市民が市場で家に飾る絵を買いました。画家はジャンルごとに専門化します。",
+  sig:["家に飾れる小さめの画面","左の窓から入る光と静かな室内","手紙・地図・楽器など物語を想像させる小道具","頭蓋骨や消えたろうそくの静物（ヴァニタス）"],
+  w:[["真珠の耳飾りの少女","Girl with a Pearl Earring","ヨハネス・フェルメール","1665年ごろ","マウリッツハイス美術館（デン・ハーグ）","特定の人の肖像ではない人物習作（トローニー）"],
+     ["牛乳を注ぐ女","The Milkmaid Vermeer","ヨハネス・フェルメール","1658年ごろ","アムステルダム国立美術館","台所の女中を、光の粒で尊厳ある場面に"],
+     ["ヴァニタスの静物","Pieter Claesz Vanitas Still Life 1630","ピーテル・クラース","1630年","マウリッツハイス美術館（デン・ハーグ）","頭蓋骨と消えかけたろうそく。死を忘れるな"]],
+  p:"フェルメール、レンブラント、フランス・ハルス、ヤン・ステーン、ロイスダール",
+  l:"市場で絵を売る仕組みは、画廊やアートマーケットの原型です。"},
+ {id:"mv-rococo", y:"1720–1780", t:"ロココ", en:"Rococo", c:"#E3C4C4", th:["patron"],
+  ctx:"ルイ14世の死後、貴族はヴェルサイユからパリの私邸へ。恋愛や遊びを描いた軽い絵が好まれました。",
+  sig:["パステル調のピンク・水色・クリーム","S字・C字の曲線と貝殻の装飾","庭園での恋の戯れ（雅宴画）","絹のつやと、ふわりとした筆致"],
+  w:[["シテール島への巡礼","Pilgrimage to Cythera","アントワーヌ・ヴァトー","1717年","ルーヴル美術館（パリ）","この作品で「雅宴画」というジャンルが公認された"],
+     ["ポンパドゥール夫人","Boucher Madame de Pompadour 1756","フランソワ・ブーシェ","1756年","アルテ・ピナコテーク（ミュンヘン）","リボンとバラのドレスに、手には本"],
+     ["ぶらんこ","The Swing Fragonard","ジャン＝オノレ・フラゴナール","1767年ごろ","ウォレス・コレクション（ロンドン）","飛んでいく靴と、茂みからのぞく恋人"]],
+  p:"ヴァトー、ブーシェ、フラゴナール、シャルダン",
+  l:"革命で否定されたが、ファッションでは今も繰り返し引用されます。",
+  fx:[8,"ヴィヴィアン・ウエストウッドは1990年の「ポートレート」コレクションで、ブーシェの絵をコルセットにプリントしました。"]},
+ {id:"mv-neoclassic", y:"1760–1830", t:"新古典主義", en:"Neoclassicism", c:"#CFC8B8", th:["linecolor","patron"],
+  ctx:"ポンペイ発掘（1748年〜）と啓蒙思想を背景に、ロココへの反動として古代の美徳を描きました。ダヴィッドは革命とナポレオンの画家に。",
+  sig:["くっきりした輪郭と、筆跡のない滑らかな表面","古代の衣装・柱・彫刻のようなポーズ","横一列に並ぶ浮き彫りのような構図","義務・犠牲・愛国という道徳的主題"],
+  w:[["ホラティウス兄弟の誓い","Oath of the Horatii","ジャック＝ルイ・ダヴィッド","1784年","ルーヴル美術館（パリ）","剣を誓う兄弟と泣き崩れる女性たちの対比"],
+     ["ナポレオンの戴冠式","The Coronation of Napoleon","ジャック＝ルイ・ダヴィッド","1805–07年","ルーヴル美術館（パリ）","幅約10m。欠席した皇帝の母も描き込んだ演出"],
+     ["グランド・オダリスク","Grande Odalisque","ドミニク・アングル","1814年","ルーヴル美術館（パリ）","線の美しさのため、背中を不自然に引き伸ばした"]],
+  p:"ダヴィッド、アングル、アンゲリカ・カウフマン、ヴィジェ＝ルブラン",
+  l:"アカデミーとサロンの基準として19世紀後半まで権威を持ちました。",
+  fx:[0,"女性服も古代風の白いハイウエストのドレスに。約100年後、ポワレがこの様式を復活させ、コルセットからの解放につなげました。"]},
+ {id:"mv-romantic", y:"1800–1850", t:"ロマン主義", en:"Romanticism", c:"#5A3A2A", th:["linecolor","realexpr"],
+  ctx:"革命と戦争、産業化の不安の中で、理性より感情と個人の体験が重んじられました。",
+  sig:["うねる激しい筆致と強い色","嵐・海・山など人を圧倒する自然（崇高）","難破や戦争など同時代の事件","後ろ姿の人物越しに景色を見る構図"],
+  w:[["1808年5月3日","The Third of May 1808","フランシスコ・デ・ゴヤ","1814年","プラド美術館（マドリード）","英雄ではなく、名もない犠牲者が中心の戦争画"],
+     ["雲海の上の旅人","Wanderer above the Sea of Fog","カスパー・ダーヴィト・フリードリヒ","1818年ごろ","ハンブルク美術館","後ろ姿の男と一緒に霧の山を見下ろす"],
+     ["メデューズ号の筏","The Raft of the Medusa","テオドール・ジェリコー","1818–19年","ルーヴル美術館（パリ）","実際の海難事故を歴史画の大きさで"],
+     ["民衆を導く自由の女神","Liberty Leading the People","ウジェーヌ・ドラクロワ","1830年","ルーヴル美術館（パリ）","七月革命。女神と市民と少年が混ざる"],
+     ["雨、蒸気、速度","Rain, Steam and Speed","J. M. W. ターナー","1844年","ナショナル・ギャラリー（ロンドン）","機関車が光に溶ける。印象派の先取り"]],
+  p:"ゴヤ、ジェリコー、ドラクロワ、フリードリヒ、ターナー、コンスタブル",
+  l:"「芸術家は自分の感情を表す人」というイメージはここで生まれました。"},
+ {id:"mv-realism", y:"1848–1870", t:"写実主義", en:"Realism", c:"#6B5B45", th:["realexpr","patron"],
+  ctx:"1848年の革命と産業化の中、農民や労働者を歴史画と同じ大きさで描きました。写真の発明（1839年）も背景にあります。",
+  sig:["普通の人々を大画面で、理想化せずに","土色・灰色・黒の暗い色調","神話ではなく、今の生活","マネでは平坦な色面と、見返す人物"],
+  w:[["オルナンの埋葬","A Burial at Ornans","ギュスターヴ・クールベ","1849–50年","オルセー美術館（パリ）","村の葬式を幅6m超で。主役不在が反発を呼んだ"],
+     ["落穂拾い","The Gleaners Millet","ジャン＝フランソワ・ミレー","1857年","オルセー美術館（パリ）","静かな絵だが、当時は社会批判と受け取られた"],
+     ["オランピア","Olympia Manet","エドゥアール・マネ","1863年","オルセー美術館（パリ）","「ウルビーノのヴィーナス」の構図で同時代の娼婦を"]],
+  p:"クールベ、ミレー、ドーミエ、マネ",
+  l:"歴史画を頂点とする「主題の序列」が崩れ始めました。",
+  fx:[0,"ワースがパリに店を開いた1858年と同じ時代。マネやモネは流行のドレスの女性を積極的に描きました。"]},
+ {id:"mv-ukiyoe", y:"1760s–1900", t:"浮世絵とジャポニスム", en:"Ukiyo-e & Japonisme", c:"#2F4F7F", th:["japan","patron"],
+  ctx:"浮世絵は木版で大量に刷られた庶民の商品でした。開国後、パリ万博（1867年）などを機にヨーロッパで日本美術が大流行します。",
+  sig:["輪郭線で囲んだ平坦な色面","手前の物を大胆に切り取る構図","高い視点、斜めからの見下ろし","左右非対称と余白"],
+  w:[["冨嶽三十六景 神奈川沖浪裏","The Great Wave off Kanagawa","葛飾北斎","1831年ごろ","多くの刷りが現存（メトロポリタン美術館など）","輸入顔料ベロ藍（プルシアンブルー）の青"],
+     ["名所江戸百景 大はしあたけの夕立","Hiroshige Sudden Shower over Shin-Ohashi Bridge","歌川広重","1857年","多くの刷りが現存","雨を線の束で描く。ゴッホが1887年に模写"],
+     ["ラ・ジャポネーズ","La Japonaise Monet","クロード・モネ","1876年","ボストン美術館","赤い打掛の妻と、壁一面のうちわ"]],
+  p:"鈴木春信、喜多川歌麿、葛飾北斎、歌川広重 ／ ホイッスラー、モネ、ゴッホ",
+  l:"西洋が遠近法を手放す手がかりに。漫画やアニメの表現にもつながります。",
+  fx:[0,"着物はガウンとしてパリで流行し、ポワレの直線的な服づくりにも影響しました。"]},
+ {id:"mv-impression", y:"1874–1886", t:"印象派", en:"Impressionism", c:"#8FB3C9", th:["realexpr","patron","japan"],
+  ctx:"サロンに落選し続けた画家たちが1874年に自主展を開催。チューブ絵具と鉄道で屋外制作が可能になり、改造後のパリが主題に。",
+  sig:["短く分けて置いた、見える筆触","黒を使わず、影も青や紫","屋外の移ろう光、水面、木漏れ日","端で切れる、写真のような構図"],
+  w:[["印象、日の出","Impression, Sunrise","クロード・モネ","1872年","マルモッタン・モネ美術館（パリ）","この題が、運動全体の名前になった"],
+     ["ムーラン・ド・ラ・ギャレットの舞踏会","Bal du moulin de la Galette","ピエール＝オーギュスト・ルノワール","1876年","オルセー美術館（パリ）","木漏れ日が服にまだらに落ちる"],
+     ["パリの通り、雨","Paris Street; Rainy Day","ギュスターヴ・カイユボット","1877年","シカゴ美術館","改造で生まれた大通りと、最新の服装の男女"],
+     ["ゆりかご","The Cradle Morisot","ベルト・モリゾ","1872年","オルセー美術館（パリ）","第1回展に出品。家庭の内側を描いた"]],
+  p:"モネ、ルノワール、ドガ、ピサロ、シスレー、モリゾ、カイユボット、カサット",
+  l:"「完成度より見た瞬間の感覚」が近代美術の出発点に。画商と画廊の時代も本格化。",
+  fx:[0,"絵に当時の最新モードがそのまま描かれています。2012〜13年に「印象派、ファッション、そして近代」展が開かれました。"]},
+ {id:"mv-postimp", y:"1886–1905", t:"ポスト印象派", en:"Post-Impressionism", c:"#D9A441", th:["realexpr","japan"],
+  ctx:"印象派の次の世代が、それぞれ別の方向へ進みました。共通の様式ではなく、世代をまとめた呼び名です。",
+  sig:["スーラ：色の点を並べる点描","セザンヌ：積み木のような形の組み立て","ゴッホ：うねる筆致と黄と青の補色","ゴーガン：輪郭で囲んだ平坦な色面"],
+  w:[["グランド・ジャット島の日曜日の午後","A Sunday on La Grande Jatte","ジョルジュ・スーラ","1884–86年","シカゴ美術館","無数の点で描かれ、時間が止まったよう"],
+     ["サント＝ヴィクトワール山","Cezanne Mont Sainte-Victoire","ポール・セザンヌ","1880年代〜1906年（連作）","コートールド美術館（ロンドン）ほか","風景を色の面の組み立てに。キュビスムの源"],
+     ["星月夜","The Starry Night","フィンセント・ファン・ゴッホ","1889年","ニューヨーク近代美術館","療養院の窓の景色を、記憶と想像で"],
+     ["我々はどこから来たのか 我々は何者か 我々はどこへ行くのか","Where Do We Come From? What Are We? Where Are We Going?","ポール・ゴーガン","1897–98年","ボストン美術館","右から左へ、誕生から死までを読む"]],
+  p:"セザンヌ、ゴッホ、ゴーガン、スーラ、ロートレック",
+  l:"セザンヌ→キュビスム、ゴッホ→表現主義、ゴーガン→フォーヴィスム。20世紀の分かれ道。"},
+ {id:"mv-findesiecle", y:"1880–1910", t:"象徴主義と世紀末", en:"Symbolism & Fin de siècle", c:"#B8902E", th:["japan"],
+  ctx:"進歩の裏で不安と神秘への関心が高まり、夢・死・内面が描かれました。植物の曲線のアール・ヌーヴォーが絵画から服まで覆います。",
+  sig:["金箔や模様で埋めた装飾的な平面","死、夢、宿命の女","植物の茎のような長い曲線","絵画とポスター、工芸の境界が消える"],
+  w:[["接吻","The Kiss Klimt","グスタフ・クリムト","1907–08年","ベルヴェデーレ宮（ウィーン）","本物の金箔。男の衣は四角、女の衣は円の模様"],
+     ["叫び","The Scream Munch 1893","エドヴァルド・ムンク","1893年","ノルウェー国立美術館（オスロ）","叫んでいるのではなく「自然の叫び」を聞いている"],
+     ["ジスモンダ","Mucha Gismonda","アルフォンス・ミュシャ","1894年","ポスター（多くの刷りが現存）","サラ・ベルナールの舞台ポスターで一躍有名に"]],
+  p:"クリムト、ムンク、モロー、ルドン、ミュシャ、ビアズリー",
+  l:"「生活のすべてを美しく」という考えが、デザインという職業の原型に。",
+  fx:[0,"クリムトは伴侶とされるデザイナーのエミーリエ・フレーゲとともに、コルセットのいらない「改良服」を広めました。"]},
+ {id:"mv-fauve", y:"1905–1920", t:"フォーヴィスムと表現主義", en:"Fauvism & Expressionism", c:"#D6452B", th:["linecolor","realexpr"],
+  ctx:"1905年、原色の絵を見た批評家が「野獣（フォーヴ）」と呼びました。ドイツでは表現主義が不安や精神性を描き、抽象が生まれます。",
+  sig:["顔が緑、木が赤など現実と無関係な色","混ぜない純色","単純化・変形された形","粗く速い筆致"],
+  w:[["帽子の女","Woman with a Hat Matisse","アンリ・マティス","1905年","サンフランシスコ近代美術館","妻の顔を緑や紫で。命名のきっかけの展覧会に出品"],
+     ["ダンス","Matisse Dance 1910","アンリ・マティス","1910年","エルミタージュ美術館（サンクトペテルブルク）","青・緑・朱の3色だけ"],
+     ["コンポジションVII","Kandinsky Composition VII","ワシリー・カンディンスキー","1913年","トレチャコフ美術館（モスクワ）","音楽のように色と形を組み立てた初期抽象"]],
+  p:"マティス、ドラン、キルヒナー、カンディンスキー、フランツ・マルク",
+  l:"「色は物を写すためではない」が、抽象とグラフィックデザインの土台に。"},
+ {id:"mv-cubism", y:"1907–1930", t:"キュビスムと抽象", en:"Cubism & Abstraction", c:"#7A7A7A", th:["realexpr","linecolor"],
+  ctx:"セザンヌとアフリカの仮面に刺激され、ピカソとブラックは一点からの遠近法を解体。続いて何も描かない純粋な抽象が登場します。",
+  sig:["正面と横顔を同時に描く複数視点","物を幾何学的な面に分解","茶色や灰色に抑えた色（初期）","新聞紙などを貼るコラージュ","黒い格子と赤青黄だけの画面（モンドリアン）"],
+  w:[["アヴィニョンの娘たち","Les Demoiselles d'Avignon","パブロ・ピカソ","1907年","ニューヨーク近代美術館","顔の一部は仮面のよう。仲間にも理解されなかった"],
+     ["黒の正方形","Malevich Black Square","カジミール・マレーヴィチ","1915年","トレチャコフ美術館（モスクワ）","白地に黒い四角だけ。聖像画の位置に展示"],
+     ["赤・青・黄のコンポジション","Mondrian Composition with Red Blue and Yellow 1930","ピート・モンドリアン","1930年","チューリッヒ美術館","格子と三原色で普遍的な調和を目指した"]],
+  p:"ピカソ、ブラック、フアン・グリス、ソニア・ドローネー、マレーヴィチ、モンドリアン",
+  l:"抽象とグリッドは、建築、家具、グラフィック、ウェブデザインの基本語彙に。",
+  fx:[5,"1965年、イヴ・サンローランがモンドリアンの絵をジャージーのドレスにした「モンドリアン・ルック」を発表。"]},
+ {id:"mv-surreal", y:"1916–1945", t:"ダダとシュルレアリスム", en:"Dada & Surrealism", c:"#C2A07A", th:["realexpr"],
+  ctx:"第一次世界大戦が理性への信頼を壊し、ダダは芸術そのものを嘲笑しました。1924年の『シュルレアリスム宣言』は夢と無意識を源にします。",
+  sig:["写真のように精密な、ありえない光景","溶ける時計など意外な組み合わせ","夢のように空っぽで広い空間","絵と言葉の意味のずれ"],
+  w:[["泉","Duchamp Fountain 1917","マルセル・デュシャン","1917年","原作は紛失（複製が各地に）","既製品の便器に署名しただけ。絵画ではないが20世紀美術の分岐点"],
+     ["記憶の固執","The Persistence of Memory","サルバドール・ダリ","1931年","ニューヨーク近代美術館","24×33cmの小品。溶ける懐中時計"],
+     ["イメージの裏切り","The Treachery of Images","ルネ・マグリット","1929年","ロサンゼルス・カウンティ美術館","「これはパイプではない」。確かに、パイプの絵です"]],
+  p:"デュシャン、ダリ、マグリット、エルンスト、ミロ、デ・キリコ",
+  l:"コンセプチュアル・アート、広告、ミュージックビデオの非現実的な映像へ。",
+  fx:[2,"スキャパレリはダリと組み、ロブスターのドレスや靴を逆さにした帽子（1937年ごろ）を作りました。"]},
+ {id:"mv-abex", y:"1943–1960", t:"抽象表現主義", en:"Abstract Expressionism", c:"#1E2A3A", th:["realexpr","patron","japan"],
+  ctx:"戦争で亡命した芸術家が集まり、美術の中心はパリからニューヨークへ。画家は巨大なキャンバスに身体ごと向き合いました。",
+  sig:["人の背丈を超える巨大な画面","絵具を垂らした身体の動きの跡","中心も上下もない全面構成（オールオーヴァー）","大きな色の面がにじむ（カラーフィールド）"],
+  w:[["秋のリズム（ナンバー30）","Pollock Autumn Rhythm Number 30","ジャクソン・ポロック","1950年","メトロポリタン美術館（ニューヨーク）","床のキャンバスに絵具を垂らす。幅5m超"],
+     ["女I","de Kooning Woman I","ウィレム・デ・クーニング","1950–52年","ニューヨーク近代美術館","抽象全盛期の荒々しい女性像"],
+     ["シーグラム壁画","Rothko Seagram Murals","マーク・ロスコ","1958–59年","テート・モダン（ロンドン）ほか","レストラン用の注文を本人が破棄。暗い赤の色面"]],
+  p:"ポロック、デ・クーニング、ロスコ、ニューマン、リー・クラズナー、フランケンサーラー",
+  l:"描く行為そのものを重視する考えはパフォーマンス・アートへ。同時期に日本では具体美術協会（1954年〜）が活動。"},
+ {id:"mv-pop", y:"1956–1970", t:"ポップアート", en:"Pop Art", c:"#E2412F", th:["patron","realexpr"],
+  ctx:"大量消費とテレビ広告の時代、画家は商品・漫画・スターを絵画にしました。高尚な芸術と大衆文化の境界を取り払います。",
+  sig:["スープ缶、漫画、セレブなど消費の図像","シルクスクリーンによる反復","漫画の網点（ベンデイ・ドット）の拡大","平坦な原色、手の跡を消した仕上げ"],
+  w:[["一体何が今日の家庭をこれほどに変え、魅力的にしているのか","Just what is it that makes today's homes so different, so appealing?","リチャード・ハミルトン","1956年","テュービンゲン美術館","広告の切り抜きのコラージュ。「POP」の文字"],
+     ["キャンベルのスープ缶","Campbell's Soup Cans","アンディ・ウォーホル","1962年","ニューヨーク近代美術館","32種類の味を1枚ずつ、棚のように並べた"],
+     ["マリリン・ディプティック","Marilyn Diptych","アンディ・ウォーホル","1962年","テート（ロンドン）","左はカラー、右は色あせる白黒。スターと死"],
+     ["ワーム！","Whaam! Lichtenstein","ロイ・リキテンスタイン","1963年","テート（ロンドン）","戦争漫画の一コマを網点ごと拡大"]],
+  p:"ハミルトン、ウォーホル、リキテンスタイン、ジャスパー・ジョーンズ、ラウシェンバーグ",
+  l:"ブランドとアーティストのコラボ、セレブとアートの結びつきが当たり前に。",
+  fx:[5,"ウォーホルのスープ缶を刷った紙のドレス（1966〜67年ごろ）、サンローランの「ポップアート」コレクション（1966年）。1991年にはヴェルサーチがマリリンをドレスに。"]},
+ {id:"mv-contemporary", y:"1970–", t:"現代美術", en:"Contemporary Art", c:"#111111", th:["japan","patron","realexpr"],
+  ctx:"絵画は写真・映像・インスタレーションと並ぶ選択肢の一つに。ストリートの落書きが画廊に入り、日本のポップ・カルチャーも美術と結びつきました。",
+  sig:["絵画・写真・文字・立体が混ざる","グラフィティ、漫画、アニメの引用","人種・ジェンダー・アイデンティティの主題","ブランドとのコラボや巨額の落札額もニュースに"],
+  w:[["ベティ","Gerhard Richter Betty 1988","ゲルハルト・リヒター","1988年","セントルイス美術館","娘の写真を精密に描き写す。顔は背を向ける"],
+     ["無題（頭蓋骨）","Basquiat Untitled Skull 1981","ジャン＝ミシェル・バスキア","1981年","ブロード美術館（ロサンゼルス）","グラフィティ出身の画家による、むき出しの頭部"],
+     ["727","Takashi Murakami 727","村上隆","1996年","ニューヨーク近代美術館","キャラクター「DOB君」を日本画の技法で"]],
+  p:"リヒター、バスキア、キース・ヘリング、草間彌生、村上隆、ケリー・ジェームズ・マーシャル",
+  l:"絵画は見るだけでなく、所有し、身に着け、拡散するものにもなりました。",
+  fx:[9,"2003年、村上隆とルイ・ヴィトンのマルチカラー・モノグラムが大ヒット。2012年と2023年には草間彌生とのコラボも。"]}
+];
+
+const STEPS = [
+ ["何が描かれているか","人物、場所、物。視線がどこへ誘導されるか"],
+ ["どこに飾るための絵か","祭壇、宮殿、市民の家、展覧会。大きさが手がかり"],
+ ["どう描かれているか","輪郭、筆跡、光、色。下の「見分けのサイン」で流派を推定"],
+ ["持ち物や動植物の意味","下の「図像の意味」を参照"],
+ ["何への反発か","直前の流派と比べると、新しさが見える"]
+];
+
+/* [見えるもの, 推定される流派, ID] */
+const SIGNS = [
+ ["背景が金色で、人物が平たい","ゴシック","mv-early"],
+ ["床や建物の線が一点に集まる","初期ルネサンス","mv-early"],
+ ["輪郭がなく、煙のようにぼけている","盛期ルネサンス（スフマート）","mv-high"],
+ ["布の織り目まで見える細密さ","北方ルネサンス","mv-north"],
+ ["体が長く、色がピンクや水色","マニエリスム","mv-mannerism"],
+ ["真っ暗な背景に強い光","バロック","mv-baroque"],
+ ["小さな画面、窓からの光、静かな室内","オランダ黄金時代","mv-dutch"],
+ ["パステル色、庭でのデート","ロココ","mv-rococo"],
+ ["輪郭がくっきり、表面がつるつる","新古典主義","mv-neoclassic"],
+ ["嵐、難破、激しい筆","ロマン主義","mv-romantic"],
+ ["農民や労働者を暗い色で大きく","写実主義","mv-realism"],
+ ["輪郭線と平坦な色、大胆な切り取り","浮世絵・ジャポニスム","mv-ukiyoe"],
+ ["筆跡が見え、明るく、影が青い","印象派","mv-impression"],
+ ["点々で描かれている","ポスト印象派（スーラ）","mv-postimp"],
+ ["うねる筆と黄・青","ポスト印象派（ゴッホ）","mv-postimp"],
+ ["金箔と模様に体が溶ける","世紀末（クリムト）","mv-findesiecle"],
+ ["顔が緑、木が赤","フォーヴィスム","mv-fauve"],
+ ["正面と横顔が同時にある","キュビスム","mv-cubism"],
+ ["精密なのにありえない光景","シュルレアリスム","mv-surreal"],
+ ["巨大で、絵具が飛び散っている","抽象表現主義","mv-abex"],
+ ["商品やセレブの反復、網点","ポップアート","mv-pop"]
+];
+
+/* [モチーフ, 意味, よく見る場面] */
+const ICONS = [
+ ["頭蓋骨・砂時計・消えたろうそく","死を忘れるな、人生のはかなさ","オランダの静物画"],
+ ["白い百合","純潔、聖母マリア","受胎告知"],
+ ["青いマント","聖母マリア（高価なウルトラマリンで塗る）","聖母子像"],
+ ["鳩","聖霊、平和","受胎告知、キリストの洗礼"],
+ ["犬","忠誠、夫婦の誠実","夫婦の肖像"],
+ ["鍵","聖ペテロ（天国の鍵）","使徒の絵"],
+ ["矢が刺さった若者","聖セバスティアヌス（疫病除け）","ペスト流行期の宗教画"],
+ ["車輪","聖カタリナ","聖女の肖像"],
+ ["林檎","原罪／神話では美の審判の賞品","楽園、パリスの審判"],
+ ["ホタテ貝","ヴィーナス、または巡礼","「ヴィーナスの誕生」"],
+ ["鏡","虚栄、または真実","化粧する女性、「ラス・メニーナス」"],
+ ["むきかけのレモン","見た目は美しく中身は苦い","オランダの静物画"],
+ ["楽器","恋愛、はかない快楽","フェルメールの室内画"],
+ ["手紙","恋愛、離れた人とのつながり","フェルメールの室内画"],
+ ["孔雀","不死","キリスト降誕"]
+];
+
+/* [画家, 署名, ポイント] */
+const SIGS = [
+ ["ヤン・ファン・エイク","Johannes de eyck fuit hic 1434","「ファン・エイクここにありき」。鏡の上の壁に、証人のように書く"],
+ ["デューラー","AとDの組み文字","版画に入れたブランドロゴの先駆け"],
+ ["ミケランジェロ","「ピエタ」の帯に名前","署名したのはこの彫刻1点だけとされる"],
+ ["レンブラント","Rembrandt f.","1633年ごろから姓を外し、名前だけに"],
+ ["フェルメール","IVMeer など","組み文字。作品が少なく、真贋の議論が多い"],
+ ["葛飾北斎","画号が次々変わる","生涯に30以上の名を使った"],
+ ["ゴッホ","Vincent","姓ではなく名前。姓がフランス人に発音しにくかったためとされる"],
+ ["ピカソ","Picasso","初期は「P. Ruiz Picasso」。のちに母方の姓だけに"]
+];
+
+const GLOSS = [
+ ["テンペラ","Tempera","卵黄などで顔料を溶いた絵具。乾きが速く、マットな仕上がり。油彩以前の主流"],
+ ["フレスコ","Fresco","塗りたての漆喰に水で溶いた顔料で描く壁画技法。乾く前に描き終える必要がある"],
+ ["油彩","Oil painting","油で顔料を溶く。乾きが遅く、重ね塗りや透明な層が可能。15世紀のフランドルで発展"],
+ ["線遠近法","Linear perspective","平行線が一点（消失点）に集まるように描き、奥行きを表す方法"],
+ ["空気遠近法","Aerial perspective","遠くの物ほど青く、ぼんやり描いて奥行きを出す方法"],
+ ["スフマート","Sfumato","輪郭をぼかし、煙のように移り変わらせる技法。レオナルドが代表"],
+ ["キアロスクーロ","Chiaroscuro","明暗の対比で立体感を出すこと"],
+ ["テネブリズム","Tenebrism","闇の中に強い光を当てる極端な明暗法。カラヴァッジョが代表"],
+ ["インパスト","Impasto","絵具を厚く盛り上げる塗り方。ゴッホやレンブラントに見られる"],
+ ["グレーズ","Glazing","透明な絵具を薄く重ねて深い色と光沢を出す技法"],
+ ["祭壇画","Altarpiece","教会の祭壇の上や背後に置く宗教画。複数枚の板をつなぐものも多い"],
+ ["三連祭壇画","Triptych","3枚の板を蝶番でつないだ祭壇画。閉じると外側にも絵がある"],
+ ["図像学","Iconography","描かれた物の意味を、文献や慣習から読み解く研究"],
+ ["ヴァニタス","Vanitas","頭蓋骨などで人生のはかなさを示す静物画。ラテン語で「むなしさ」"],
+ ["主題の序列","Hierarchy of genres","アカデミーが定めた格付け。歴史画＞肖像画＞風俗画＞風景画＞静物画"],
+ ["風俗画","Genre painting","庶民の日常生活を描いた絵"],
+ ["トローニー","Tronie","特定の人物ではなく、表情や衣装を描いた人物習作"],
+ ["サロン","Salon","パリの官展。19世紀には画家の登竜門だった"],
+ ["落選展","Salon des Refusés","1863年、サロンの落選作を集めた展覧会。マネ「草上の昼食」が話題に"],
+ ["戸外制作","En plein air","アトリエではなく屋外で描くこと。印象派が広めた"],
+ ["点描","Pointillism","純色の小さな点を並べ、離れて見ると混ざって見える技法"],
+ ["補色","Complementary colors","色相環で向かい合う色（黄と青紫、赤と緑など）。並べると互いを強める"],
+ ["コラージュ","Collage","紙や布などを画面に貼る技法。キュビスムで本格化"],
+ ["レディメイド","Readymade","既製品をそのまま作品として示すこと。デュシャンが提唱"],
+ ["オールオーヴァー","All-over","中心を作らず、画面全体を均等に覆う構成"],
+ ["シルクスクリーン","Silkscreen","網目の版にインクを通して刷る印刷技法。ウォーホルが多用"],
+ ["ジャポニスム","Japonisme","19世紀後半のヨーロッパで流行した日本美術への熱狂と、その影響"],
+ ["来歴","Provenance","作品の所有者の歴史。真贋や略奪美術品の判断に重要"],
+ ["カタログ・レゾネ","Catalogue raisonné","ある画家の全作品を網羅した目録"]
+];
+
+const $ = s => document.querySelector(s);
+const esc = s => s.replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+const idTag = id => `<a class="sid" href="#${id}" data-copy="${id}" title="このIDのリンクをコピー">#${id}</a>`;
+const mvById = id => MOVEMENTS.find(m => m.id === id);
+const imgLink = w => `https://www.google.com/search?tbm=isch&q=${encodeURIComponent(w[1] + " " + w[2])}`;
+const FASHION_ERA = ["1858–1910s","1920s","1930s","1940s","1950s","1960s","1970s","1980s","1990s","2000s","2010s","2020s"];
+/* 表：見出しを data-l に入れ、スマホでは各セルの前に表示する */
+const table = (head, rows) => `<thead><tr>${head.map(h => `<th scope="col">${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c,i) => `<td data-l="${head[i]}"><span>${c}</span></td>`).join("")}</tr>`).join("")}</tbody>`;
+
+$("#movements").innerHTML = MOVEMENTS.map(m => `
+ <article class="era" data-th="${m.th.join(" ")}" id="${m.id}">
+  <div class="swatch"><div class="years">${m.y}</div><div class="cloth" style="background:${m.c}"></div>${idTag(m.id)}</div>
+  <div class="era-body">
+   <h3>${m.t}<span class="en">${m.en}</span></h3>
+   <p class="sum">${m.ctx}</p>
+   <h4 class="lbl">見分けのサイン</h4>
+   <ul class="signs">${m.sig.map(s => `<li>${s}</li>`).join("")}</ul>
+   <div class="tags">${m.th.map(t => `<span class="tag">${THREADS[t].name}</span>`).join("")}</div>
+   <details>
+    <summary>代表作</summary>
+    <div class="tbl-wrap"><table class="tbl works">${table(["作品","画家","年","所蔵","見どころ"], m.w.map(w => [
+      `<b>${w[0]}</b><a class="img" href="${imgLink(w)}" target="_blank" rel="noopener">画像 ↗</a>`, w[2], w[3], w[4], w[5]]))}</table></div>
+    <dl class="mv-meta">
+     <div><dt>主な画家</dt><dd>${m.p}</dd></div>
+     <div><dt>今への影響</dt><dd>${m.l}</dd></div>
+     ${m.fx ? `<div><dt>ファッション</dt><dd>${m.fx[1]} <a href="index.html#era-${m.fx[0]}">ファッション年表 ${FASHION_ERA[m.fx[0]]} →</a></dd></div>` : ""}
+    </dl>
+   </details>
+  </div>
+ </article>`).join("");
+
+let active = null;
+function renderFilter(){
+  $("#filter").innerHTML = `<button class="chip" data-t="" aria-pressed="${!active}">すべて</button>` +
+    Object.entries(THREADS).map(([k,v]) => `<button class="chip" data-t="${k}" aria-pressed="${active===k}">${v.name}</button>`).join("");
+}
+function applyThread(t){
+  active = t || null;
+  renderFilter();
+  document.querySelectorAll("#movements .era").forEach(el => el.classList.toggle("dim", !!active && !el.dataset.th.split(" ").includes(active)));
+  const n = $("#threadNote");
+  if (active){ n.hidden = false; n.innerHTML = `<b>${THREADS[active].name}</b> ── ${THREADS[active].note}`; }
+  else n.hidden = true;
+}
+$("#filter").addEventListener("click", e => { const b = e.target.closest(".chip"); if (b) applyThread(b.dataset.t); });
+renderFilter();
+
+$("#threadList").innerHTML = Object.entries(THREADS).map(([k,v]) => `
+ <div class="thread">
+  <h3>${v.name}</h3>
+  <p class="q">${v.q}</p>
+  <div class="flow">${v.flow.map(f => `<span class="n"><b>${f[0]}</b>${f[1]}</span>`).join("")}</div>
+  <p class="see">${v.note}<br><button class="linkbtn" data-goto="${k}">年表でこの流れを見る</button></p>
+ </div>`).join("");
+$("#threadList").addEventListener("click", e => {
+  const b = e.target.closest("[data-goto]"); if (!b) return;
+  showTab("timeline"); applyThread(b.dataset.goto); window.scrollTo({top:0});
+});
+
+$("#steps").innerHTML = table(["手順","見ること","ポイント"], STEPS.map((s,i) => [`<span class="num">${String(i+1).padStart(2,"0")}</span>`, s[0], s[1]]));
+$("#signs").innerHTML = table(["見えるもの","流派"], SIGNS.map(s => [s[0], `<a href="#${s[2]}">${s[1]}</a>`]));
+$("#icons").innerHTML = table(["モチーフ","意味","よく見る場面"], ICONS);
+$("#sigs").innerHTML = table(["画家","署名","ポイント"], SIGS.map(s => [s[0], `<span class="latin">${s[1]}</span>`, s[2]]));
+$("#fx").innerHTML = table(["絵画","ファッション","年表"], MOVEMENTS.filter(m => m.fx).map(m => [
+  `<a href="#${m.id}">${m.t}</a>`, m.fx[1], `<a href="index.html#era-${m.fx[0]}">${FASHION_ERA[m.fx[0]]} →</a>`]));
+
+function renderGloss(q){
+  q = (q || "").trim().toLowerCase();
+  const hits = GLOSS.filter(g => !q || g.join(" ").toLowerCase().includes(q));
+  $("#gloss").innerHTML = hits.length ? hits.map(g => `<div class="term"><dt>${esc(g[0])}<span class="en">${esc(g[1])}</span></dt><dd>${esc(g[2])}</dd></div>`).join("")
+    : `<p class="empty">「${esc(q)}」に一致する用語はありません。</p>`;
+}
+$("#q").addEventListener("input", e => renderGloss(e.target.value));
+renderGloss("");
+
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-copy]"); if (!a) return;
+  const url = location.href.split("#")[0] + "#" + a.dataset.copy;
+  try { navigator.clipboard.writeText(url).then(() => { a.classList.add("copied"); setTimeout(() => a.classList.remove("copied"), 1400); }, () => {}); } catch(_) {}
+});
+
+function showTab(id){
+  document.querySelectorAll("[data-tab]").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === id));
+  document.querySelectorAll("[data-panel]").forEach(p => p.hidden = p.id !== id);
+  try { localStorage.setItem("kaiga-tab", id); } catch(_) {}
+}
+document.querySelector("nav.tabs").addEventListener("click", e => {
+  const b = e.target.closest("[data-tab]"); if (!b) return;
+  if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+  showTab(b.dataset.tab);
+});
+function gotoMovement(id){
+  showTab("timeline"); applyThread("");
+  const el = document.getElementById(id);
+  if (el) { el.querySelector("details").open = true; el.scrollIntoView({block:"start"}); }
+}
+function route(){
+  const h = decodeURIComponent(location.hash.slice(1));
+  if (mvById(h)) { gotoMovement(h); return true; }
+  if (document.getElementById(h) && document.getElementById(h).hasAttribute("data-panel")) { showTab(h); return true; }
+  return false;
+}
+window.addEventListener("hashchange", route);
+if (!route()) {
+  let start = "timeline";
+  try { start = localStorage.getItem("kaiga-tab") || "timeline"; } catch(_) {}
+  showTab(document.getElementById(start) ? start : "timeline");
+}
+</script>
+</body>
+</html>
