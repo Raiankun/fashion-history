@@ -749,3 +749,51 @@ ul.checklist input{margin-top:5px;accent-color:var(--ox)}
   a{color:inherit}
 }
 .guide .doc h2{display:flex;background:none;border-radius:0;padding:0 0 10px}
+
+/* 歴史（history.html）：生成りの紙に朱と藍。日本史は朱、世界史は藍を基調に、時代ごとの色を帯とストーリー枠に使う */
+.chronicle{
+  --bg:#FBF7EF; --ink:#262330; --sub:#6E6A73; --hair:#E8E0D2; --tint:#F3ECDF; --ox:#C8442F; --ai:#2F4F8A;
+  background:
+    radial-gradient(70vw 45vw at 95% -10%, rgba(200,68,47,.09), transparent 60%),
+    radial-gradient(70vw 50vw at -10% 105%, rgba(47,79,138,.09), transparent 60%),
+    var(--bg);
+  background-attachment:fixed;
+}
+.chronicle .hero h1{font-weight:400;letter-spacing:.1em}
+.chronicle .hero h1::after{content:"";display:block;width:96px;height:6px;margin-top:18px;border-radius:3px;background:linear-gradient(90deg,var(--ox) 0 50%,var(--ai) 50% 100%)}
+.chronicle nav.tabs{background:rgba(251,247,239,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.chronicle section>h2{border-left:6px solid var(--ox);padding-left:14px}
+.chronicle #world>h2{border-left-color:var(--ai)}
+.chronicle .eras{border-top:0}
+.chronicle .era.mv{border:1px solid var(--hair);border-left:8px solid var(--mc);border-radius:18px;padding:28px;margin-bottom:18px;background:rgba(255,255,255,.78)}
+.chronicle .era.mv .years{font-family:var(--f-jserif);font-size:clamp(17px,1.8vw,21px);line-height:1.5;letter-spacing:.02em;color:var(--mc)}
+.chronicle .era.mv .cloth{width:48px;height:48px;border-radius:12px;transform:rotate(45deg) scale(.72);background:linear-gradient(135deg,color-mix(in srgb,var(--mc) 55%,#fff),var(--mc))}
+.chronicle .tbl th{background:color-mix(in srgb,var(--mc,var(--ox)) 14%,#fff)}
+.chronicle .tbl{background:rgba(255,255,255,.85)}
+.chronicle .tbl.events td:first-child{width:9.5em;white-space:normal;font-size:14px}
+.era-jump{display:flex;flex-wrap:wrap;gap:8px;margin:-24px 0 32px}
+.story{position:relative;margin:26px 0 8px;padding:26px 26px 18px;border-radius:18px;background:color-mix(in srgb,var(--mc) 9%,#fff);border:1px solid color-mix(in srgb,var(--mc) 28%,#fff)}
+.story .st-label{position:absolute;top:-12px;left:20px;font-family:var(--f-latin);font-style:italic;font-size:14px;letter-spacing:.06em;color:#fff;background:var(--mc);padding:1px 14px;border-radius:999px}
+.story h4{font-family:var(--f-jserif);font-size:clamp(19px,2.2vw,24px);line-height:1.6;margin:4px 0 6px}
+.story .st-q{margin:0 0 14px;color:var(--sub);font-size:14px}
+.story .st-q::before{content:"Q. ";font-family:var(--f-latin);font-style:italic;color:var(--mc)}
+.story p{margin:0 0 12px;max-width:42em}
+.story-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(250px,1fr));gap:14px}
+.st-card{display:flex;flex-direction:column;gap:6px;padding:18px 18px 16px;border-radius:16px;background:#fff;border:1px solid var(--hair);border-top:6px solid var(--mc);text-decoration:none;color:var(--ink);transition:transform .15s,box-shadow .15s}
+.st-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px -16px color-mix(in srgb,var(--mc) 70%,transparent)}
+.st-card .st-era{font-size:12px;color:var(--mc);letter-spacing:.06em}
+.st-card .st-era small{color:var(--sub);margin-left:8px}
+.st-card b{font-family:var(--f-jserif);font-weight:500;font-size:17px;line-height:1.6}
+.st-card .st-q{font-size:13px;color:var(--sub);line-height:1.8}
+.st-card .st-go{margin-top:auto;font-size:12.5px;color:var(--mc)}
+@media (max-width:760px){
+  .chronicle .era.mv{padding:20px 16px;border-left-width:6px}
+  .story{padding:24px 16px 12px}
+  .era-jump{margin-top:-16px}
+}
+@media (max-width:960px){
+  .chronicle .tbl.events td{display:block;width:100%}
+  .chronicle .tbl.events td::before{content:none}
+  .chronicle .tbl.events td:first-child{width:100%;font-size:13px;color:var(--mc,var(--ox))}
+  .chronicle .tbl.events tr{padding:10px 14px}
+}

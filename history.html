@@ -1,0 +1,163 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>歴史の系譜</title>
+<meta name="description" content="日本史と世界史を、教科書の年表と各時代のストーリーでたどる学習用ページ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body class="chronicle">
+
+<nav class="genre wrap" aria-label="分野">
+  <a href="index.html">ファッション</a>
+  <a href="painting.html">絵画</a>
+  <a href="philosophy.html">哲学</a>
+  <a href="history.html" aria-current="page">歴史</a>
+  <a href="https://raiankun.github.io/medical-history/">医療</a>
+</nav>
+
+<header class="hero wrap">
+  <div class="eyebrow">History · Japan &amp; the World</div>
+  <h1>歴史の系譜</h1>
+  <p>日本史と世界史を、それぞれ14の時代に分けました。教科書の年表で流れを押さえ、各時代のストーリーで人と出来事に近づきます。</p>
+</header>
+
+<nav class="tabs" aria-label="セクション">
+  <div class="wrap" role="tablist">
+    <button role="tab" data-tab="japan" aria-selected="true">日本史</button>
+    <button role="tab" data-tab="world" aria-selected="false">世界史</button>
+    <button role="tab" data-tab="same" aria-selected="false">同じころの日本と世界</button>
+    <button role="tab" data-tab="stories" aria-selected="false">ストーリー一覧</button>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section id="japan" data-panel>
+    <span class="kicker">Japanese History</span>
+    <h2>日本史</h2>
+    <p class="lead">時代を選ぶと、その時代へ移動します。</p>
+    <div class="era-jump" id="jpJump"></div>
+    <div class="eras" id="jpEras"></div>
+  </section>
+
+  <section id="world" data-panel hidden>
+    <span class="kicker">World History</span>
+    <h2>世界史</h2>
+    <p class="lead">時代を選ぶと、その時代へ移動します。</p>
+    <div class="era-jump" id="wJump"></div>
+    <div class="eras" id="wEras"></div>
+  </section>
+
+  <section id="same" data-panel hidden>
+    <span class="kicker">Meanwhile</span>
+    <h2>同じころの日本と世界</h2>
+    <p class="lead">同じ年、または数年以内に起きた出来事を並べました。時代の名前を押すと、その時代の年表へ移動します。</p>
+    <div class="tbl-wrap"><table class="tbl" id="sameTable"></table></div>
+  </section>
+
+  <section id="stories" data-panel hidden>
+    <span class="kicker">Stories</span>
+    <h2>ストーリー一覧</h2>
+    <p class="lead">各時代のストーリーだけを集めました。気になる問いから読めます。</p>
+    <h3 class="sub">日本史</h3>
+    <div class="story-grid" id="jpStories"></div>
+    <h3 class="sub">世界史</h3>
+    <div class="story-grid" id="wStories"></div>
+  </section>
+
+  <p class="notice">年代は高校の教科書で一般的な区分と年をもとにした目安で、古い時代ほど諸説があります。ストーリーは史料や研究で広く知られた逸話を選び、伝承や異説がある部分はそう書いています。出典は、各時代の「出典とつながり」に載せました。</p>
+</main>
+
+<script src="data/history.js"></script>
+<script>
+const $ = s => document.querySelector(s);
+const table = (head, rows) => `<thead><tr>${head.map(h => `<th scope="col">${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c,i) => `<td data-l="${head[i]}"><span>${c}</span></td>`).join("")}</tr>`).join("")}</tbody>`;
+const idTag = id => `<a class="sid" href="#${id}" data-copy="${id}" title="このIDのリンクをコピー">#${id}</a>`;
+/* 出典：http で始まればそのURL、"en:" で始まれば英語版、それ以外は日本語版ウィキペディアの記事名 */
+const srcUrl = s => s.startsWith("http") ? s : s.startsWith("en:") ? "https://en.wikipedia.org/wiki/" + encodeURIComponent(s.slice(3)) : "https://ja.wikipedia.org/wiki/" + encodeURIComponent(s);
+const srcName = s => s.startsWith("http") ? new URL(s).hostname.replace(/^www\./, "") : s.startsWith("en:") ? "Wikipedia（英語）：" + s.slice(3).replace(/_/g, " ") : "Wikipedia：" + s;
+const srcLink = s => `<a class="src-a" href="${srcUrl(s)}" target="_blank" rel="noopener">${srcName(s)} ↗</a>`;
+const ALL = [...JP_ERAS, ...WORLD_ERAS];
+const eraById = id => ALL.find(e => e.id === id);
+const tabOf = id => id.startsWith("jp-") ? "japan" : "world";
+
+const eraCard = e => `
+ <article class="era mv" id="${e.id}" style="--mc:${e.c}">
+  <div class="swatch"><div class="years">${e.y}</div><div class="cloth"></div>${idTag(e.id)}</div>
+  <div class="era-body">
+   <h3>${e.t}<span class="en">${e.en}</span></h3>
+   <p class="sum">${e.sum}</p>
+   <h4 class="lbl">教科書の年表</h4>
+   <div class="tbl-wrap"><table class="tbl events">${table(["年","できごと"], e.ev.map(v => [`<b>${v[0]}</b>`, v[1]]))}</table></div>
+   <div class="story">
+    <span class="st-label">Story</span>
+    <h4>${e.st.t}</h4>
+    <p class="st-q">${e.st.q}</p>
+    ${e.st.p.map(p => `<p>${p}</p>`).join("")}
+   </div>
+   <h4 class="lbl">キーワード</h4>
+   <ul class="signs">${e.key.map(k => `<li>${k}</li>`).join("")}</ul>
+   <details>
+    <summary>出典とつながり</summary>
+    <div class="tbl-wrap"><table class="tbl meta">${table(["項目","内容"], [
+      ["出典", e.src.map(srcLink).join("<br>")],
+      ...(e.x ? [["つながり", e.x.map(x => `<a href="${x[0]}">${x[1]} →</a>`).join("<br>")]] : [])])}</table></div>
+   </details>
+  </div>
+ </article>`;
+
+const jump = list => list.map(e => `<a class="mpill" href="#${e.id}" style="--mc:${e.c}">${e.t}</a>`).join("");
+$("#jpEras").innerHTML = JP_ERAS.map(eraCard).join("");
+$("#wEras").innerHTML = WORLD_ERAS.map(eraCard).join("");
+$("#jpJump").innerHTML = jump(JP_ERAS);
+$("#wJump").innerHTML = jump(WORLD_ERAS);
+
+const pill = id => { const e = id && eraById(id); return e ? `<a class="mpill" href="#${e.id}" style="--mc:${e.c}">${e.t}</a>` : ""; };
+$("#sameTable").innerHTML = table(["年","日本","世界","ひとこと"], SAME_TIME.map(r => [
+  `<b>${r[0]}</b>`, `${r[1]}<br>${pill(r[4])}`, `${r[2]}<br>${pill(r[5])}`, r[3]]));
+
+const storyCard = e => `
+ <a class="st-card" href="#${e.id}" style="--mc:${e.c}">
+  <span class="st-era">${e.t}<small>${e.y}</small></span>
+  <b>${e.st.t}</b>
+  <span class="st-q">${e.st.q}</span>
+  <span class="st-go">読む →</span>
+ </a>`;
+$("#jpStories").innerHTML = JP_ERAS.map(storyCard).join("");
+$("#wStories").innerHTML = WORLD_ERAS.map(storyCard).join("");
+
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-copy]"); if (!a) return;
+  const url = location.href.split("#")[0] + "#" + a.dataset.copy;
+  try { navigator.clipboard.writeText(url).then(() => { a.classList.add("copied"); setTimeout(() => a.classList.remove("copied"), 1400); }, () => {}); } catch(_) {}
+});
+
+function showTab(id){
+  document.querySelectorAll("[data-tab]").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === id));
+  document.querySelectorAll("[data-panel]").forEach(p => p.hidden = p.id !== id);
+  try { localStorage.setItem("rekishi-tab", id); } catch(_) {}
+}
+document.querySelector("nav.tabs").addEventListener("click", e => {
+  const b = e.target.closest("[data-tab]"); if (!b) return;
+  if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+  showTab(b.dataset.tab);
+});
+function route(){
+  const h = decodeURIComponent(location.hash.slice(1));
+  if (eraById(h)) { showTab(tabOf(h)); document.getElementById(h).scrollIntoView({block:"start"}); return true; }
+  if (document.getElementById(h) && document.getElementById(h).hasAttribute("data-panel")) { showTab(h); return true; }
+  return false;
+}
+window.addEventListener("hashchange", route);
+if (!route()) {
+  let start = "japan";
+  try { start = localStorage.getItem("rekishi-tab") || "japan"; } catch(_) {}
+  showTab(document.getElementById(start) ? start : "japan");
+}
+</script>
+</body>
+</html>
