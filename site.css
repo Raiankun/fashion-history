@@ -413,3 +413,37 @@ dl.pts div:nth-child(even){background:var(--tint)}
 @media (max-width:760px){
   .impression .era.mv{padding:20px 18px;border-radius:18px}
 }
+
+/* ===== 哲学ページ：古典のテーマ =====
+   大理石のような白地に、ギリシャの壺のテラコッタ色と墨の紺。雷文（メアンダー）の帯で区切る */
+.classic{
+  --bg:#F8F6F1; --ink:#1F2433; --sub:#6A6E7A; --hair:#E2DED4; --tint:#F0ECE3; --ox:#B5532F;
+  background:
+    radial-gradient(80vw 50vw at 90% -10%, rgba(181,83,47,.08), transparent 60%),
+    radial-gradient(70vw 50vw at -10% 110%, rgba(61,90,128,.08), transparent 60%),
+    var(--bg);
+  background-attachment:fixed;
+}
+.classic .hero h1{font-weight:400;letter-spacing:.1em}
+.classic .hero h1::after{content:"";display:block;width:72px;height:4px;background:var(--ox);margin-top:18px;border-radius:2px}
+.meander{height:18px;margin:0 clamp(16px,4vw,48px);opacity:.85;
+  background:url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='36' height='18' viewBox='0 0 36 18'%3E%3Cpath d='M0 17H6V1H22V13H12V7H17' fill='none' stroke='%23B5532F' stroke-width='2'/%3E%3Cpath d='M17 7V9M18 17H36' fill='none' stroke='%23B5532F' stroke-width='2'/%3E%3C/svg%3E") repeat-x left center/36px 18px}
+.classic nav.tabs{background:rgba(248,246,241,.9);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px);border-top:0}
+.classic section>h2{border-left:6px solid var(--ox);padding-left:14px}
+.classic .eras{border-top:0}
+.classic .era.mv{border:1px solid var(--hair);border-top:4px solid var(--mc);border-radius:6px 6px 16px 16px;padding:28px;margin-bottom:18px;background:rgba(255,255,255,.75)}
+.classic .era.mv .cloth{width:40px;height:40px;border-radius:50%;background:radial-gradient(circle at 35% 35%,color-mix(in srgb,var(--mc) 55%,#fff),var(--mc))}
+.classic .tbl th{background:color-mix(in srgb,var(--mc,var(--ox)) 14%,#fff)}
+.classic .tbl,.classic .thread,.classic .term{background:rgba(255,255,255,.8)}
+.bigq{font-family:var(--f-jserif);font-size:clamp(18px,2vw,22px);line-height:1.6;margin:4px 0 12px;padding-left:16px;border-left:3px solid var(--mc,var(--ox))}
+.tbl .quote{font-family:var(--f-jserif);font-weight:500}
+.tbl.people td:first-child{white-space:nowrap}
+.tbl.people td:first-child a{text-decoration:none}
+.tbl.people td:nth-child(2){white-space:nowrap;font-size:13px;color:var(--sub)}
+.tbl small{color:var(--sub);font-size:11.5px}
+@media (max-width:960px){
+  .tbl.people td:first-child,.tbl.people td:nth-child(2){white-space:normal}
+}
+@media (max-width:760px){
+  .classic .era.mv{padding:20px 18px}
+}

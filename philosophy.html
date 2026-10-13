@@ -1,0 +1,473 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>思想の系譜</title>
+<meta name="description" content="古代ギリシャから現代まで、東洋と日本を含む哲学の流れを、問い・キーワード・人物・思考実験でたどる学習用ページ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body class="classic">
+
+<nav class="genre wrap" aria-label="分野">
+  <a href="index.html">ファッション</a>
+  <a href="painting.html">絵画</a>
+  <a href="philosophy.html" aria-current="page">哲学</a>
+</nav>
+
+<header class="hero wrap">
+  <div class="eyebrow">Philosophy Lineage — 600 BC / 2026</div>
+  <h1>思想の系譜</h1>
+  <p>古代ギリシャから現代まで、東洋と日本を含む15の時代を、問い・キーワード・人物で整理しました。</p>
+</header>
+<div class="meander" aria-hidden="true"></div>
+
+<nav class="tabs" aria-label="セクション">
+  <div class="wrap" role="tablist">
+    <button role="tab" data-tab="timeline" aria-selected="true">年表</button>
+    <button role="tab" data-tab="threads" aria-selected="false">6つの問い</button>
+    <button role="tab" data-tab="read" aria-selected="false">読み方</button>
+    <button role="tab" data-tab="glossary" aria-selected="false">用語集</button>
+    <button role="tab" data-tab="links" aria-selected="false">絵画・ファッションと</button>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section id="timeline" data-panel>
+    <span class="kicker">Timeline</span>
+    <h2>時代と学派でたどる</h2>
+    <p class="lead">問いを選ぶと、関係する時代だけが強調されます。</p>
+    <div class="filter" id="filter"></div>
+    <div class="thread-note" id="threadNote" hidden></div>
+    <div class="eras" id="movements"></div>
+  </section>
+
+  <section id="threads" data-panel hidden>
+    <span class="kicker">Six Questions</span>
+    <h2>繰り返し問われる6つの問い</h2>
+    <div class="threads" id="threadList"></div>
+  </section>
+
+  <section id="read" data-panel hidden>
+    <span class="kicker">How to Read</span>
+    <h2>哲学の読み方</h2>
+    <h3 class="sub">5つの手順</h3>
+    <div class="tbl-wrap"><table class="tbl" id="steps"></table></div>
+    <h3 class="sub">対立する立場</h3>
+    <p class="caption" style="margin:-8px 0 16px">哲学の議論の多くは、この対立のどちらに立つか、どう乗り越えるかの話です。</p>
+    <div class="tbl-wrap"><table class="tbl" id="pairs"></table></div>
+    <h3 class="sub">有名な言葉</h3>
+    <div class="tbl-wrap"><table class="tbl" id="quotes"></table></div>
+    <h3 class="sub">思考実験</h3>
+    <div class="tbl-wrap"><table class="tbl" id="experiments"></table></div>
+  </section>
+
+  <section id="glossary" data-panel hidden>
+    <span class="kicker">Glossary</span>
+    <h2>用語集</h2>
+    <label for="q" class="eyebrow" style="display:block;margin-bottom:6px">用語を検索</label>
+    <input id="q" class="search" type="search" placeholder="例：イデア、弁証法、脱構築">
+    <dl class="gloss" id="gloss"></dl>
+    <p class="caption">出典：各用語の <a href="https://plato.stanford.edu/" target="_blank" rel="noopener">Stanford Encyclopedia of Philosophy</a> と Wikipedia の項目</p>
+  </section>
+
+  <section id="links" data-panel hidden>
+    <span class="kicker">Philosophy × Art × Fashion</span>
+    <h2>絵画・ファッションとのつながり</h2>
+    <p class="lead">行き先のリンクから、絵画とファッションの該当箇所へ移動できます。</p>
+    <div class="tbl-wrap"><table class="tbl" id="cross"></table></div>
+  </section>
+
+  <p class="notice">生没年と刊行年は目安で、古代の人物は推定を含みます。主著の邦題は代表的な訳題です。哲学者の肖像の多くは胸像の写真で、撮影者の著作権が残る場合があるため、このページには画像を載せていません。</p>
+</main>
+
+<script>
+const THREADS = {
+ being:{name:"存在", q:"本当にあるものは何か。",
+  flow:[["前6C","タレス：万物の根源は水"],["前4C","プラトン：変わらないイデアこそ実在"],["1641","デカルト：心と物体は別の実体"],["1677","スピノザ：神と自然は同じもの"],["1927","ハイデガー：「ある」とはそもそも何か"]],
+  note:"「何があるか」から「あるとはどういうことか」へ、問いそのものが深まっていきます。"},
+ knowledge:{name:"知識", q:"私たちはどうやって知るのか。",
+  flow:[["前4C","プラトン：知ることは思い出すこと"],["1690","ロック：心は白紙、知識は経験から"],["1739","ヒューム：因果関係は習慣にすぎない"],["1781","カント：認識の枠組みが対象をつくる"],["1921","ウィトゲンシュタイン：言語の限界が世界の限界"]],
+  note:"理性を信じる合理論と、経験を重んじる経験論の対立を、カントがまとめ直しました。"},
+ ethics:{name:"倫理", q:"どう生きるべきか、何が正しいか。",
+  flow:[["前4C","アリストテレス：徳と中庸"],["前3C","エピクロスとストア派：心の平静"],["1785","カント：結果ではなく義務"],["1789","ベンサム：最大多数の最大幸福"],["1883","ニーチェ：価値そのものを問い直す"],["1975","シンガー：動物も配慮の対象"]],
+  note:"「動機（義務）か、結果（幸福）か」という対立は、今のAIや医療の倫理にもそのまま現れます。"},
+ society:{name:"社会", q:"国家や権力は何によって正当化されるか。",
+  flow:[["前4C","プラトン：哲人王の国家"],["1532","マキャヴェッリ：理想より現実の権力"],["1651","ホッブズ：恐怖から結ぶ社会契約"],["1762","ルソー：人民の一般意志"],["1867","マルクス：経済が社会をつくる"],["1971","ロールズ：無知のヴェールと正義"]],
+  note:"社会契約の考え方は、近代の憲法と民主主義の土台になりました。"},
+ language:{name:"言語", q:"言葉は世界をどう切り分けるか。",
+  flow:[["1916","ソシュール：言葉の意味は差異で決まる"],["1921","ウィトゲンシュタイン：言語は世界の写し"],["1953","ウィトゲンシュタイン：意味は使い方"],["1957","バルト：日常に潜む神話"],["1967","デリダ：意味は決して確定しない"]],
+  note:"20世紀に哲学の中心が「意識」から「言語」へ移り、言語論的転回と呼ばれます。"},
+ self:{name:"自己", q:"私とは何か。心と身体はどう関係するか。",
+  flow:[["前5C","ソクラテス：汝自身を知れ"],["1637","デカルト：我思う、ゆえに我あり"],["1849","キルケゴール：この私の実存"],["1943","サルトル：人間は自由の刑に処されている"],["1949","ボーヴォワール：女は作られる"],["1990","バトラー：性別は行為の繰り返し"]],
+  note:"「与えられた本質」より「自分でつくる自己」へ。ファッションのアイデンティティ論にも直結します。"}
+};
+
+/* p: [人物, 生没年, 主著, ひとこと, 出典(Wikipedia記事名)]  x: [行き先URL, 表示名] */
+const MOVEMENTS = [
+ {id:"ph-presocratic", y:"前600–前400", t:"自然哲学", en:"Pre-Socratic Philosophy", c:"#5E7F8C", th:["being"],
+  src:["Pre-Socratic_philosophy","https://plato.stanford.edu/entries/presocratics/"],
+  q:"世界は何からできているのか。",
+  ctx:"ギリシャの植民都市で、神話に頼らず理屈で自然を説明しようとしたのが哲学の始まりです。",
+  key:["アルケー（万物の根源）","万物は流転する","あるものはある","原子"],
+  p:[["タレス","前624頃–前546頃","著作は残らず","万物の根源は水","Thales_of_Miletus"],
+     ["ヘラクレイトス","前540頃–前480頃","断片のみ","同じ川に二度入ることはできない","Heraclitus"],
+     ["パルメニデス","前515頃–没年不詳","詩『自然について』（断片）","変化は見かけにすぎない","Parmenides"],
+     ["デモクリトス","前460頃–前370頃","断片のみ","世界は原子と空虚でできている","Democritus"]],
+  l:"「目に見えるものの奥に、単純な原理がある」という発想は、自然科学の出発点になりました。"},
+ {id:"ph-classical", y:"前470–前322", t:"古典期ギリシャ", en:"Classical Greek Philosophy", c:"#B5532F", th:["being","knowledge","ethics","society","self"],
+  src:["Ancient_Greek_philosophy"],
+  q:"よく生きるとはどういうことか。",
+  ctx:"民主政のアテネで、ソクラテスは対話で常識を問い直し、死刑になりました。弟子のプラトン、その弟子のアリストテレスが体系をつくります。",
+  key:["無知の知","対話（問答法）","イデア","徳（アレテー）","中庸"],
+  p:[["ソクラテス","前470頃–前399","著作なし（プラトンの対話篇に登場）","知らないことを自覚することから始める","Socrates"],
+     ["プラトン","前427–前347","『国家』『饗宴』","真の実在は永遠不変のイデアにある","Plato"],
+     ["アリストテレス","前384–前322","『形而上学』『ニコマコス倫理学』","現実の観察から。幸福は徳ある活動","Aristotle"]],
+  l:"西洋哲学の問いの大半がここで出そろいました。「西洋哲学はプラトンへの脚注」とも言われます。",
+  x:[["painting.html#mv-high","絵画：ラファエロ「アテナイの学堂」"]]},
+ {id:"ph-hellenistic", y:"前323–後180", t:"ヘレニズムとローマ", en:"Hellenistic & Roman Philosophy", c:"#7C8C5E", th:["ethics","self"],
+  src:["Hellenistic_philosophy","https://plato.stanford.edu/entries/stoicism/"],
+  q:"不安な世の中で、どうすれば心穏やかに生きられるか。",
+  ctx:"都市国家が崩れて大帝国の時代になり、関心は国家より個人の心の持ち方へ移りました。",
+  key:["アタラクシア（心の平静）","アパテイア（情念からの自由）","自然に従って生きる","変えられるものと変えられないもの"],
+  p:[["エピクロス","前341–前270","『メノイケウス宛の手紙』","快楽とは、苦痛と不安がないこと","Epicurus"],
+     ["ゼノン（キティオンの）","前334頃–前262頃","断片のみ","ストア派の創始者","Zeno_of_Citium"],
+     ["セネカ","前4頃–後65","『人生の短さについて』","時間こそ最も貴重な財産","Seneca_the_Younger"],
+     ["マルクス・アウレリウス","121–180","『自省録』","皇帝が自分のために書いた修養の記録","Marcus_Aurelius"]],
+  l:"近年のストア哲学ブームのほか、認知行動療法の考え方にも影響を与えています。"},
+ {id:"ph-medieval", y:"400–1400", t:"中世の哲学", en:"Medieval Philosophy", c:"#6B4E3D", th:["being","knowledge"],
+  src:["Medieval_philosophy","https://plato.stanford.edu/entries/medieval-philosophy/"],
+  q:"信仰と理性はどう両立するか。",
+  ctx:"キリスト教会が学問を担い、イスラム世界が保存・翻訳したアリストテレスが12世紀以降のヨーロッパに戻ってきました。",
+  key:["信仰と理性","スコラ学","普遍論争","オッカムの剃刀"],
+  p:[["アウグスティヌス","354–430","『告白』『神の国』","内面を見つめることで神へ向かう","Augustine_of_Hippo"],
+     ["イブン・ルシュド","1126–1198","アリストテレス注釈","アリストテレス研究をヨーロッパに伝えた","Averroes"],
+     ["トマス・アクィナス","1225頃–1274","『神学大全』","理性と信仰は矛盾しない","Thomas_Aquinas"],
+     ["オッカムのウィリアム","1287頃–1347","『論理学大全』","必要以上に仮定を増やすな","William_of_Ockham"]],
+  l:"大学という制度と、論証を積み上げる学問の作法はこの時代にできました。",
+  x:[["painting.html#mv-early","絵画：教会が注文主だったゴシックの絵画"]]},
+ {id:"ph-renaissance", y:"1400–1600", t:"ルネサンスと人文主義", en:"Renaissance Humanism", c:"#C08A3E", th:["society","self"],
+  src:["Renaissance_humanism"],
+  q:"神ではなく、人間を中心に考えるとどうなるか。",
+  ctx:"古代ギリシャ・ローマの古典が再発見され、印刷術と宗教改革が権威を揺さぶりました。",
+  key:["人文主義","古典の再発見","現実主義の政治","懐疑"],
+  p:[["エラスムス","1466頃–1536","『痴愚神礼讃』","教会の腐敗を笑いで批判","Erasmus"],
+     ["マキャヴェッリ","1469–1527","『君主論』","君主は愛されるより恐れられよ","Niccolò_Machiavelli"],
+     ["モンテーニュ","1533–1592","『エセー』","私は何を知っているか？","Michel_de_Montaigne"]],
+  l:"モンテーニュの『エセー』は「エッセイ」というジャンルの語源です。",
+  x:[["painting.html#mv-high","絵画：盛期ルネサンス"]]},
+ {id:"ph-rationalism", y:"1630–1720", t:"大陸合理論", en:"Continental Rationalism", c:"#3D5A80", th:["being","knowledge","self"],
+  src:["Continental_rationalism","https://plato.stanford.edu/entries/rationalism-empiricism/"],
+  q:"絶対に疑えない知の土台はどこにあるか。",
+  ctx:"科学革命で古い権威が崩れる中、数学のように確実な知を理性によって打ち立てようとしました。",
+  key:["方法的懐疑","我思う、ゆえに我あり","心身二元論","神即自然","モナド"],
+  p:[["デカルト","1596–1650","『方法序説』『省察』","すべてを疑っても、疑う私は残る","René_Descartes"],
+     ["スピノザ","1632–1677","『エチカ』","神と自然は同じ一つのもの","Baruch_Spinoza"],
+     ["ライプニッツ","1646–1716","『モナドロジー』","この世界は可能な世界の中で最善","Gottfried_Wilhelm_Leibniz"]],
+  l:"「心と身体は別物か」という問いは、今も脳科学やAIの議論で続いています。",
+  x:[["painting.html#mv-dutch","絵画：デカルトもスピノザも暮らしたオランダの黄金時代"]]},
+ {id:"ph-empiricism", y:"1680–1780", t:"イギリス経験論", en:"British Empiricism", c:"#4F7A6A", th:["knowledge","society"],
+  src:["British_empiricism","https://plato.stanford.edu/entries/rationalism-empiricism/"],
+  q:"知識はすべて経験から来るのではないか。",
+  ctx:"実験と観察を重んじるイギリスの科学の伝統の中で、生まれつきの観念を否定しました。",
+  key:["タブラ・ラサ（白紙）","経験","存在するとは知覚されること","因果への懐疑"],
+  p:[["ロック","1632–1704","『人間知性論』『統治二論』","心は白紙、そして政府は人民の信託","John_Locke"],
+     ["バークリー","1685–1753","『人知原理論』","見られていないものは存在するのか","George_Berkeley"],
+     ["ヒューム","1711–1776","『人間本性論』","原因と結果のつながりは見えない","David_Hume"]],
+  l:"科学の方法論と、ロックの自由主義はアメリカ独立宣言にまで影響しました。"},
+ {id:"ph-enlightenment", y:"1650–1790", t:"社会契約と啓蒙", en:"Social Contract & Enlightenment", c:"#8C3B3B", th:["society"],
+  src:["Social_contract","Age_of_Enlightenment"],
+  q:"国家はなぜ、何のためにあるのか。",
+  ctx:"内戦や絶対王政への反発から、国家を「人々の約束（契約）」で説明する理論が生まれ、市民革命を支えました。",
+  key:["自然状態","社会契約","一般意志","三権分立"],
+  p:[["ホッブズ","1588–1679","『リヴァイアサン』","万人の万人に対する闘争を避けるため国家に従う","Thomas_Hobbes"],
+     ["モンテスキュー","1689–1755","『法の精神』","権力は分けて互いに抑える","Montesquieu"],
+     ["ヴォルテール","1694–1778","『哲学書簡』","寛容と言論の自由","Voltaire"],
+     ["ルソー","1712–1778","『社会契約論』『エミール』","人民の一般意志が主権者","Jean-Jacques_Rousseau"]],
+  l:"三権分立や国民主権など、今の憲法の基本原理の多くがここから来ています。",
+  x:[["painting.html#mv-neoclassic","絵画：革命の画家ダヴィッドの新古典主義"]]},
+ {id:"ph-german", y:"1781–1831", t:"カントとドイツ観念論", en:"Kant & German Idealism", c:"#2F4858", th:["knowledge","ethics","being"],
+  src:["German_idealism","https://plato.stanford.edu/entries/kant/"],
+  q:"私たちの認識は、世界をどう組み立てているのか。",
+  ctx:"カントは合理論と経験論を統合し、認識の枠組みそのものを問いました。ヘーゲルは歴史全体を理性の展開として描きます。",
+  key:["コペルニクス的転回","物自体","定言命法","弁証法","崇高"],
+  p:[["カント","1724–1804","『純粋理性批判』『判断力批判』","対象が認識に従う。人を手段としてだけ扱うな","Immanuel_Kant"],
+     ["フィヒテ","1762–1814","『全知識学の基礎』","自我が世界を立てる","Johann_Gottlieb_Fichte"],
+     ["ヘーゲル","1770–1831","『精神現象学』","対立を経てより高い段階へ進む（弁証法）","Georg_Wilhelm_Friedrich_Hegel"]],
+  l:"カントの「人間の尊厳」は人権思想の、ヘーゲルの弁証法はマルクスの土台になりました。",
+  x:[["painting.html#mv-romantic","絵画：カントやバークの「崇高」とロマン主義"]]},
+ {id:"ph-19c", y:"1789–1900", t:"功利主義・実存の先駆・社会批判", en:"Utilitarianism, Kierkegaard, Marx, Nietzsche", c:"#A4573B", th:["ethics","society","self"],
+  src:["Utilitarianism","Marxism","https://plato.stanford.edu/entries/nietzsche/"],
+  q:"近代社会の中で、個人はどう生き、社会はどう変わるべきか。",
+  ctx:"産業革命で豊かさと格差が広がり、幸福の計算、階級の分析、そして価値そのものへの疑いが生まれました。",
+  key:["最大多数の最大幸福","実存","疎外","階級闘争","神の死","ルサンチマン"],
+  p:[["ベンサム","1748–1832","『道徳および立法の諸原理序説』","快と苦の量で善悪を測る","Jeremy_Bentham"],
+     ["J・S・ミル","1806–1873","『自由論』『功利主義』","他人に害を与えない限り自由","John_Stuart_Mill"],
+     ["キルケゴール","1813–1855","『死に至る病』","客観的な真理より、私にとっての真理","Søren_Kierkegaard"],
+     ["マルクス","1818–1883","『資本論』","労働者は自分の労働から疎外される","Karl_Marx"],
+     ["ニーチェ","1844–1900","『ツァラトゥストラはこう語った』","神は死んだ。自分で価値をつくれ","Friedrich_Nietzsche"]],
+  l:"功利主義は政策の費用対効果の考え方に、マルクスは20世紀の政治に、ニーチェは実存主義に受け継がれました。",
+  x:[["painting.html#mv-realism","絵画：労働者を描いた写実主義"]]},
+ {id:"ph-analytic", y:"1879–1960", t:"分析哲学とプラグマティズム", en:"Analytic Philosophy & Pragmatism", c:"#3E6C8F", th:["language","knowledge"],
+  src:["Analytic_philosophy","Pragmatism","https://plato.stanford.edu/entries/wittgenstein/"],
+  q:"言葉と論理を正確に分析すれば、哲学の問題は解けるか。",
+  ctx:"英米では論理学と言語分析で哲学を厳密にする試みが、アメリカでは「役に立つかどうか」で真理を考える実用主義が広がりました。",
+  key:["言語論的転回","論理分析","言語ゲーム","プラグマティズム"],
+  p:[["ウィリアム・ジェームズ","1842–1910","『プラグマティズム』","役に立つ考えが真である","William_James"],
+     ["フレーゲ","1848–1925","『概念記法』","現代論理学の創始者","Gottlob_Frege"],
+     ["ラッセル","1872–1970","『数学原理』（共著）","哲学の問題を論理で解きほぐす","Bertrand_Russell"],
+     ["ウィトゲンシュタイン","1889–1951","『論理哲学論考』『哲学探究』","言葉の意味はその使い方","Ludwig_Wittgenstein"]],
+  l:"論理学はコンピューターと人工知能の理論的な土台になりました。"},
+ {id:"ph-existentialism", y:"1900–1960", t:"現象学と実存主義", en:"Phenomenology & Existentialism", c:"#3A4A78", th:["being","self"],
+  src:["https://plato.stanford.edu/entries/phenomenology/","https://plato.stanford.edu/entries/existentialism/"],
+  q:"意味のない世界で、人はどう生きるのか。",
+  ctx:"二つの世界大戦で理性と進歩への信頼が崩れ、「今ここに投げ出された私」から考える哲学が広がりました。",
+  key:["現象学","世界内存在","実存は本質に先立つ","自由と責任","不条理"],
+  p:[["フッサール","1859–1938","『イデーン』","先入観を括弧に入れ、経験そのものを記述する","Edmund_Husserl"],
+     ["ハイデガー","1889–1976","『存在と時間』","人は死に向かう存在","Martin_Heidegger"],
+     ["サルトル","1905–1980","『存在と無』","人間はまず存在し、自分を後からつくる","Jean-Paul_Sartre"],
+     ["ボーヴォワール","1908–1986","『第二の性』","人は女に生まれるのではない、女になるのだ","Simone_de_Beauvoir"],
+     ["カミュ","1913–1960","『シーシュポスの神話』『異邦人』","不条理を知りつつ生きる","Albert_Camus"]],
+  l:"ボーヴォワールの議論は、のちのフェミニズムの出発点の一つになりました。",
+  x:[["index.html#era-4","ファッション：戦後パリの黒いタートルネック"],["painting.html#mv-abex","絵画：抽象表現主義"]]},
+ {id:"ph-structuralism", y:"1955–1990", t:"構造主義とポスト構造主義", en:"Structuralism & Post-structuralism", c:"#7A4E8C", th:["language","society","self"],
+  src:["Structuralism","Post-structuralism","https://plato.stanford.edu/entries/derrida/"],
+  q:"私たちの考えは、見えない構造に決められていないか。",
+  ctx:"言語学をモデルに、個人の意識の背後にある社会や言語の「構造」を分析しました。その後、構造そのものの不安定さが問われます。",
+  key:["構造","記号","神話作用","脱構築","権力と知","シミュラークル"],
+  p:[["ソシュール","1857–1913","『一般言語学講義』（没後刊行）","意味は他の言葉との差異で決まる","Ferdinand_de_Saussure"],
+     ["レヴィ＝ストロース","1908–2009","『悲しき熱帯』","「未開」の思考にも高度な構造がある","Claude_Lévi-Strauss"],
+     ["バルト","1915–1980","『神話作用』『モードの体系』","広告やファッションも読み解ける記号","Roland_Barthes"],
+     ["フーコー","1926–1984","『監獄の誕生』","権力は見張られている意識の中で働く","Michel_Foucault"],
+     ["デリダ","1930–2004","『グラマトロジーについて』","意味は確定せず、ずれ続ける","Jacques_Derrida"],
+     ["ボードリヤール","1929–2007","『消費社会の神話と構造』『シミュラークルとシミュレーション』","モノではなく記号を消費している","Jean_Baudrillard"]],
+  l:"ファッション、広告、メディアを「読む」批評の道具として、今も使われています。",
+  x:[["index.html#era-7","ファッション：脱構築のデザイン"],["painting.html#mv-pop","絵画：ポップアート"]]},
+ {id:"ph-contemporary", y:"1970–", t:"現代の哲学", en:"Contemporary Philosophy", c:"#2E7D74", th:["ethics","society","self","being"],
+  src:["Contemporary_philosophy","https://plato.stanford.edu/entries/rawls/"],
+  q:"正義、ジェンダー、心、テクノロジーをどう考えるか。",
+  ctx:"哲学は医療、環境、AI、差別など、具体的な社会問題に直接関わるようになりました。",
+  key:["無知のヴェール","動物倫理","公共圏","ジェンダー・パフォーマティヴィティ","意識のハード・プロブレム"],
+  p:[["ロールズ","1921–2002","『正義論』","自分の立場を知らずに選ぶ社会のルール","John_Rawls"],
+     ["ハーバーマス","1929–","『公共性の構造転換』","理性的な対話が民主主義を支える","Jürgen_Habermas"],
+     ["シンガー","1946–","『動物の解放』","苦しむ能力があれば配慮の対象","Peter_Singer"],
+     ["バトラー","1956–","『ジェンダー・トラブル』","性別は繰り返される行為でつくられる","Judith_Butler"],
+     ["チャーマーズ","1966–","『意識する心』","脳の働きから主観的な経験はなぜ生まれるのか","David_Chalmers"]],
+  l:"AIの意識や権利、気候変動の責任など、新しい問いが次々に生まれています。",
+  x:[["index.html#era-10","ファッション：ジェンダーレスとSNSの時代"]]},
+ {id:"ph-east", y:"前6C–", t:"東洋と日本の思想", en:"Eastern & Japanese Thought", c:"#9B2F2F", th:["ethics","self","being"],
+  src:["Chinese_philosophy","Kyoto_School"],
+  q:"自己と世界の境目は、本当にあるのか。",
+  ctx:"中国の儒教と道家、インドの仏教が東アジアに広まり、近代日本では西洋哲学と東洋の伝統を結ぶ試みが生まれました。",
+  key:["仁と礼","道（タオ）","無為自然","空","純粋経験","いき"],
+  p:[["孔子","前551頃–前479","『論語』（弟子による言行録）","思いやり（仁）と礼による秩序","Confucius"],
+     ["老子","生没年不詳","『老子（道徳経）』","作為を捨て、自然に従う","Laozi"],
+     ["龍樹（ナーガールジュナ）","150頃–250頃","『中論』","すべては関係の中にあり、固定した実体はない（空）","Nagarjuna"],
+     ["西田幾多郎","1870–1945","『善の研究』","主観と客観が分かれる前の「純粋経験」","Kitaro_Nishida"],
+     ["和辻哲郎","1889–1960","『風土』『倫理学』","人間は人と人の「間柄」の存在","Tetsuro_Watsuji"],
+     ["九鬼周造","1888–1941","『「いき」の構造』","江戸の美意識「いき」を哲学で分析","Kuki_Shūzō"]],
+  l:"禅や「間」の考え方は、海外のデザインやマインドフルネスにも影響を与えています。",
+  x:[["painting.html#mv-ukiyoe","絵画：「いき」の時代の浮世絵"]]}
+];
+
+const STEPS = [
+ ["何を問うているか","答えより先に、問いを一文で言えるか"],
+ ["何を前提にしているか","当たり前とされていることを書き出す"],
+ ["誰に反論しているか","前の時代の誰と対立しているかで、主張の輪郭が見える"],
+ ["キーワードの定義","同じ言葉でも哲学者ごとに意味が違う"],
+ ["今の例に当てはめる","SNS、AI、仕事、ファッションなど身近な例で試す"]
+];
+
+/* [対立, A, B, 代表] */
+const PAIRS = [
+ ["知識の源","合理論：理性が確実な知を生む","経験論：知識は経験から","デカルト ／ ロック、ヒューム"],
+ ["世界の正体","観念論：心や精神が根本","唯物論：物質が根本","ヘーゲル ／ マルクス"],
+ ["正しさの基準","義務論：行為の動機と義務","功利主義：行為の結果と幸福","カント ／ ベンサム、ミル"],
+ ["人間の本質","本質主義：人には決まった本性がある","実存主義：本質は自分でつくる","アリストテレス ／ サルトル"],
+ ["主体か構造か","実存主義：自由な個人が出発点","構造主義：個人は構造に規定される","サルトル ／ レヴィ＝ストロース"],
+ ["自由はあるか","決定論：すべては原因で決まる","自由意志：選ぶ自由がある","スピノザ ／ カント"],
+ ["国家の役割","最小国家：自由を守るだけ","福祉・平等：格差を是正する","ノージック ／ ロールズ"]
+];
+
+/* [言葉, 人物, 出典, 意味] */
+const QUOTES = [
+ ["無知の知","ソクラテス","プラトン『ソクラテスの弁明』","知らないと自覚している点で、知ったつもりの人より賢い"],
+ ["我思う、ゆえに我あり","デカルト","『方法序説』（1637）","すべてを疑っても、疑っている私の存在は疑えない"],
+ ["人間は考える葦である","パスカル","『パンセ』（1670）","人は弱いが、考えることに尊厳がある"],
+ ["万人の万人に対する闘争","ホッブズ","『市民論』『リヴァイアサン』","国家がなければ、人は互いに争い合う"],
+ ["神は死んだ","ニーチェ","『悦ばしき知識』（1882）","絶対的な価値の基準が失われた時代の宣言"],
+ ["語りえぬものについては沈黙せねばならない","ウィトゲンシュタイン","『論理哲学論考』（1921）","言葉で論じられる範囲には限界がある"],
+ ["実存は本質に先立つ","サルトル","『実存主義とは何か』（1946）","人はまず存在し、何者になるかは自分で決める"],
+ ["人は女に生まれるのではない、女になるのだ","ボーヴォワール","『第二の性』（1949）","「女らしさ」は社会がつくる"]
+];
+
+/* [名前, 考えた人, 設定, 何を問うか, 出典] */
+const EXPERIMENTS = [
+ ["洞窟の比喩","プラトン","洞窟の壁の影だけを見て育った人が、外の世界に出たら","見ている世界は本物の影にすぎないのでは","Allegory_of_the_cave"],
+ ["テセウスの船","古代ギリシャの伝承","船の部品をすべて取り替えたら、同じ船か","時間がたっても「同じ」とはどういうことか","Ship_of_Theseus"],
+ ["トロッコ問題","フィリッパ・フット（1967）","5人を救うために、進路を切り替えて1人を犠牲にするか","結果か、行為そのものか","Trolley_problem"],
+ ["経験機械","ロバート・ノージック（1974）","望む快楽を一生体験できる機械につながるか","幸福は快楽だけで決まるのか","Experience_machine"],
+ ["無知のヴェール","ジョン・ロールズ（1971）","自分の性別も財産も才能も知らずに社会のルールを選ぶなら","公正な社会とは何か","Original_position"],
+ ["中国語の部屋","ジョン・サール（1980）","中国語を知らない人がマニュアル通りに完璧な返答をする","記号を処理できれば「理解」しているのか（AIへの問い）","Chinese_room"],
+ ["水槽の脳","ヒラリー・パトナム（1981）","自分は培養液の中の脳で、経験はすべて電気信号かもしれない","外の世界があると証明できるか","Brain_in_a_vat"],
+ ["哲学的ゾンビ","デイヴィッド・チャーマーズ（1996）","人とまったく同じに振る舞うが、内面の経験がない存在","意識は物理的な働きだけで説明できるか","Philosophical_zombie"]
+];
+
+/* [哲学, 内容, 行き先URL, 行き先名, 出典] */
+const CROSS = [
+ ["プラトンとアリストテレス","天を指すプラトンと地を示すアリストテレス。理想と現実という二人の違いを一枚で表す","painting.html#mv-high","絵画：盛期ルネサンス","The_School_of_Athens"],
+ ["新プラトン主義","メディチ家周辺で流行し、神話の美を通じて神的な美に至るという考えが、ボッティチェリの絵の背景にあるとされる","painting.html#mv-early","絵画：初期ルネサンス","Neoplatonism"],
+ ["崇高（バーク、カント）","人を圧倒する自然への畏れと快。フリードリヒやターナーの絵の理論的な背景","painting.html#mv-romantic","絵画：ロマン主義","Sublime_(philosophy)"],
+ ["ベンヤミン「複製技術時代の芸術作品」","複製で作品の「アウラ（一回きりの輝き）」が失われると論じた。ウォーホルの反復を読む鍵","painting.html#mv-pop","絵画：ポップアート","The_Work_of_Art_in_the_Age_of_Mechanical_Reproduction"],
+ ["ジンメル「流行」（1904）","流行は「みんなと同じでいたい」と「人と違いたい」の両方から生まれると分析","index.html#era-0","ファッション：1858–1910s","Georg_Simmel"],
+ ["実存主義","戦後パリのサン＝ジェルマン＝デ＝プレで、黒い服とタートルネックが知識人と若者の装いに","index.html#era-4","ファッション：1950s","Juliette_Gréco"],
+ ["バルト『モードの体系』（1967）","雑誌の言葉が服に意味を与える仕組みを記号論で分析","index.html#era-5","ファッション：1960s","Roland_Barthes"],
+ ["デリダの脱構築","「完成した服」の前提を崩す川久保玲やマルジェラの服は、しばしば脱構築と呼ばれた","index.html#era-7","ファッション：1980s","Deconstruction"],
+ ["ボードリヤールの消費社会論","人はモノではなく記号（ブランド）を消費する。ロゴ全盛期を読む視点","index.html#era-9","ファッション：2000s","Jean_Baudrillard"],
+ ["バトラーのジェンダー論","性別は繰り返しの装いと行為でつくられる。ジェンダーレスな服の理論的な背景","index.html#era-10","ファッション：2010s","Judith_Butler"],
+ ["九鬼周造『「いき」の構造』","江戸の美意識「いき」を、媚態・意気地・諦めの3要素で分析","painting.html#mv-ukiyoe","絵画：浮世絵","Kuki_Shūzō"]
+];
+
+const GLOSS = [
+ ["形而上学","Metaphysics","存在や実在、因果など、経験を超えた世界の根本を問う分野"],
+ ["存在論","Ontology","「何が存在するか」「存在するとはどういうことか」を問う分野"],
+ ["認識論","Epistemology","知識とは何か、どうすれば正しく知れるかを問う分野"],
+ ["倫理学","Ethics","善悪や正しい行為、よい生き方を問う分野"],
+ ["イデア","Idea / Form","プラトンの言う、変化する個物の背後にある永遠不変の本質"],
+ ["アレテー","Arete","古代ギリシャの「徳」。もののよさ、卓越性"],
+ ["中庸","Golden mean","アリストテレスの徳。勇気は無謀と臆病の中間、のように両極端を避けること"],
+ ["スコラ学","Scholasticism","中世の大学で発達した、論証を積み重ねる神学・哲学の方法"],
+ ["ア・プリオリ","A priori","経験に先立って成り立つ知。数学の真理など"],
+ ["超越論的","Transcendental","カントの用語。経験を可能にする条件そのものに関わること"],
+ ["定言命法","Categorical imperative","カントの道徳法則。条件抜きで「〜せよ」と命じる義務"],
+ ["弁証法","Dialectic","対立する考えのぶつかり合いから、より高い段階へ進む思考の運動"],
+ ["功利主義","Utilitarianism","行為の正しさを、結果として生む幸福の総量で判断する立場"],
+ ["社会契約","Social contract","国家の正当性を、人々の合意・契約から説明する考え"],
+ ["疎外","Alienation","人が自分のつくったものや労働から切り離され、よそよそしくなること"],
+ ["ルサンチマン","Ressentiment","ニーチェの用語。弱者が強者に抱く恨みが、価値の転倒を生むこと"],
+ ["永劫回帰","Eternal recurrence","ニーチェの思想。同じ人生が永遠に繰り返されても肯定できるか"],
+ ["現象学","Phenomenology","先入観を括弧に入れ、意識に現れる経験そのものを記述する方法"],
+ ["実存","Existence","一般的な人間の本質ではなく、今ここに生きるかけがえのないこの私"],
+ ["言語ゲーム","Language game","後期ウィトゲンシュタイン。言葉の意味は、生活の中の使われ方で決まる"],
+ ["構造主義","Structuralism","個々の要素ではなく、要素どうしの関係（構造）に注目する方法"],
+ ["脱構築","Deconstruction","デリダの方法。テキストの前提にある二項対立を揺さぶり、意味の不安定さを示す"],
+ ["シミュラークル","Simulacrum","ボードリヤールの用語。オリジナルのないコピー、現実より現実らしい記号"],
+ ["パノプティコン","Panopticon","中央の監視塔から全員を見渡せる監獄。フーコーが近代の権力のモデルとした"],
+ ["プラグマティズム","Pragmatism","考えの真偽を、実際に役立つか、どんな結果を生むかで判断する立場"],
+ ["空","Śūnyatā","仏教、特に龍樹の思想。すべては関係の中で成り立ち、固定した実体はないこと"]
+];
+
+const $ = s => document.querySelector(s);
+const esc = s => s.replace(/[&<>"]/g, m => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;"}[m]));
+const idTag = id => `<a class="sid" href="#${id}" data-copy="${id}" title="このIDのリンクをコピー">#${id}</a>`;
+const mvById = id => MOVEMENTS.find(m => m.id === id);
+/* 出典：http で始まればそのURL、それ以外は英語版ウィキペディアの記事名 */
+const srcUrl = s => s.startsWith("http") ? s : "https://en.wikipedia.org/wiki/" + encodeURIComponent(s);
+const srcName = s => !s.startsWith("http") ? "Wikipedia" : s.includes("plato.stanford.edu") ? "Stanford Encyclopedia" : new URL(s).hostname.replace(/^www\./, "");
+const srcLink = s => `<a class="src-a" href="${srcUrl(s)}" target="_blank" rel="noopener">${srcName(s)} ↗</a>`;
+const table = (head, rows) => `<thead><tr>${head.map(h => `<th scope="col">${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c,i) => `<td data-l="${head[i]}"><span>${c}</span></td>`).join("")}</tr>`).join("")}</tbody>`;
+
+$("#movements").innerHTML = MOVEMENTS.map(m => `
+ <article class="era mv" data-th="${m.th.join(" ")}" id="${m.id}" style="--mc:${m.c}">
+  <div class="swatch"><div class="years">${m.y}</div><div class="cloth"></div>${idTag(m.id)}</div>
+  <div class="era-body">
+   <h3>${m.t}<span class="en">${m.en}</span></h3>
+   <p class="bigq">${m.q}</p>
+   <p class="sum">${m.ctx}</p>
+   <h4 class="lbl">キーワード</h4>
+   <ul class="signs">${m.key.map(s => `<li>${s}</li>`).join("")}</ul>
+   <div class="tbl-wrap"><table class="tbl people">${table(["人物","生没年","主著","ひとことで"], m.p.map(p => [
+     `<a href="${srcUrl(p[4])}" target="_blank" rel="noopener"><b>${p[0]}</b></a>`, p[1], p[2], p[3]]))}</table></div>
+   <div class="tags">${m.th.map(t => `<span class="tag">${THREADS[t].name}</span>`).join("")}</div>
+   <details>
+    <summary>今への影響とつながり・出典</summary>
+    <div class="tbl-wrap"><table class="tbl meta">${table(["項目","内容"], [
+      ["今への影響", m.l],
+      ...(m.x ? [["つながり", m.x.map(x => `<a href="${x[0]}">${x[1]} →</a>`).join("<br>")]] : []),
+      ["出典", m.src.map(srcLink).join(" ") + "<br><small>人物名のリンク先は各人物の Wikipedia 記事</small>"]])}</table></div>
+   </details>
+  </div>
+ </article>`).join("");
+
+let active = null;
+function renderFilter(){
+  $("#filter").innerHTML = `<button class="chip" data-t="" aria-pressed="${!active}">すべて</button>` +
+    Object.entries(THREADS).map(([k,v]) => `<button class="chip" data-t="${k}" aria-pressed="${active===k}">${v.name}</button>`).join("");
+}
+function applyThread(t){
+  active = t || null;
+  renderFilter();
+  document.querySelectorAll("#movements .era").forEach(el => el.classList.toggle("dim", !!active && !el.dataset.th.split(" ").includes(active)));
+  const n = $("#threadNote");
+  if (active){ n.hidden = false; n.innerHTML = `<b>${THREADS[active].name}</b> ── ${THREADS[active].q}${THREADS[active].note}`; }
+  else n.hidden = true;
+}
+$("#filter").addEventListener("click", e => { const b = e.target.closest(".chip"); if (b) applyThread(b.dataset.t); });
+renderFilter();
+
+$("#threadList").innerHTML = Object.entries(THREADS).map(([k,v]) => `
+ <div class="thread">
+  <h3>${v.name}</h3>
+  <p class="q">${v.q}</p>
+  <div class="flow">${v.flow.map(f => `<span class="n"><b>${f[0]}</b>${f[1]}</span>`).join("")}</div>
+  <p class="see">${v.note}<br><button class="linkbtn" data-goto="${k}">年表でこの問いを見る</button></p>
+ </div>`).join("");
+$("#threadList").addEventListener("click", e => {
+  const b = e.target.closest("[data-goto]"); if (!b) return;
+  showTab("timeline"); applyThread(b.dataset.goto); window.scrollTo({top:0});
+});
+
+$("#steps").innerHTML = table(["手順","見ること","ポイント"], STEPS.map((s,i) => [`<span class="num">${i+1}</span>`, `<b>${s[0]}</b>`, s[1]]));
+$("#pairs").innerHTML = table(["対立","こちら側","あちら側","代表"], PAIRS.map(p => [`<b>${p[0]}</b>`, p[1], p[2], p[3]]));
+$("#quotes").innerHTML = table(["言葉","人物","出典","意味"], QUOTES.map(q => [`<b class="quote">「${q[0]}」</b>`, q[1], q[2], q[3]]));
+$("#experiments").innerHTML = table(["思考実験","考えた人","設定","何を問うか","出典"], EXPERIMENTS.map(x => [`<b>${x[0]}</b>`, x[1], x[2], x[3], srcLink(x[4])]));
+$("#cross").innerHTML = table(["哲学","内容","行き先","出典"], CROSS.map(c => [`<b>${c[0]}</b>`, c[1], `<a href="${c[2]}">${c[3]} →</a>`, srcLink(c[4])]));
+
+function renderGloss(q){
+  q = (q || "").trim().toLowerCase();
+  const hits = GLOSS.filter(g => !q || g.join(" ").toLowerCase().includes(q));
+  $("#gloss").innerHTML = hits.length ? hits.map(g => `<div class="term"><dt>${esc(g[0])}<span class="en">${esc(g[1])}</span></dt><dd>${esc(g[2])}</dd></div>`).join("")
+    : `<p class="empty">「${esc(q)}」に一致する用語はありません。</p>`;
+}
+$("#q").addEventListener("input", e => renderGloss(e.target.value));
+renderGloss("");
+
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-copy]"); if (!a) return;
+  const url = location.href.split("#")[0] + "#" + a.dataset.copy;
+  try { navigator.clipboard.writeText(url).then(() => { a.classList.add("copied"); setTimeout(() => a.classList.remove("copied"), 1400); }, () => {}); } catch(_) {}
+});
+
+function showTab(id){
+  document.querySelectorAll("[data-tab]").forEach(b => b.setAttribute("aria-selected", b.dataset.tab === id));
+  document.querySelectorAll("[data-panel]").forEach(p => p.hidden = p.id !== id);
+  try { localStorage.setItem("tetsugaku-tab", id); } catch(_) {}
+}
+document.querySelector("nav.tabs").addEventListener("click", e => {
+  const b = e.target.closest("[data-tab]"); if (!b) return;
+  if (location.hash) history.replaceState(null, "", location.pathname + location.search);
+  showTab(b.dataset.tab);
+});
+function gotoMovement(id){
+  showTab("timeline"); applyThread("");
+  const el = document.getElementById(id);
+  if (el) { el.querySelector("details").open = true; el.scrollIntoView({block:"start"}); }
+}
+function route(){
+  const h = decodeURIComponent(location.hash.slice(1));
+  if (mvById(h)) { gotoMovement(h); return true; }
+  if (document.getElementById(h) && document.getElementById(h).hasAttribute("data-panel")) { showTab(h); return true; }
+  return false;
+}
+window.addEventListener("hashchange", route);
+if (!route()) {
+  let start = "timeline";
+  try { start = localStorage.getItem("tetsugaku-tab") || "timeline"; } catch(_) {}
+  showTab(document.getElementById(start) ? start : "timeline");
+}
+</script>
+</body>
+</html>
