@@ -21,7 +21,7 @@
 
 <header class="hero wrap">
   <div class="dabs" id="dabs" aria-hidden="true"></div>
-  <div class="eyebrow">Painting Lineage — 1300 / 2026</div>
+  <div class="eyebrow">Painting Lineage · 1300 / 2026</div>
   <h1>絵画の系譜</h1>
   <p>ゴシックから現代美術まで21の流派を、文脈・見分けのサイン・代表作で整理しました。</p>
 </header>
@@ -93,7 +93,7 @@
     <div class="tbl-wrap"><table class="tbl" id="fx"></table></div>
   </section>
 
-  <p class="notice">年代は目安です。所蔵先は2026年10月時点の情報です。画像は、作者の死後70年を過ぎたパブリックドメインの作品だけを、ウィキペディア（Wikimedia Commons）から閲覧時に読み込んで表示しています。画像を押すと出典ページが開きます。著作権保護期間中の作品は画像検索へのリンクにしています。</p>
+  <p class="notice">年代は目安です。所蔵先は2026年10月時点の情報です。画像は、作者の死後70年を過ぎたパブリックドメインの作品に限り、ウィキペディア（Wikimedia Commons）から閲覧時に読み込みます。画像を押すと出典ページが開きます。著作権保護期間中の作品は画像検索へのリンクにしています。</p>
 </main>
 
 <script src="data/painting.js"></script>
@@ -316,7 +316,7 @@ function applyThread(t){
   renderFilter();
   document.querySelectorAll("#movements .era").forEach(el => el.classList.toggle("dim", !!active && !el.dataset.th.split(" ").includes(active)));
   const n = $("#threadNote");
-  if (active){ n.hidden = false; n.innerHTML = `<b>${THREADS[active].name}</b> ── ${THREADS[active].note}`; }
+  if (active){ n.hidden = false; n.innerHTML = `<b>${THREADS[active].name}</b>：${THREADS[active].note}`; }
   else n.hidden = true;
 }
 $("#filter").addEventListener("click", e => { const b = e.target.closest(".chip"); if (b) applyThread(b.dataset.t); });

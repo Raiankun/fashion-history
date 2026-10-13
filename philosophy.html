@@ -20,7 +20,7 @@
 </nav>
 
 <header class="hero wrap">
-  <div class="eyebrow">Philosophy Lineage — 600 BC / 2026</div>
+  <div class="eyebrow">Philosophy Lineage · 600 BC / 2026</div>
   <h1>思想の系譜</h1>
   <p>古代ギリシャから現代まで、東洋と日本を含む15の時代を、問い・人物・名著で整理しました。</p>
 </header>
@@ -113,7 +113,7 @@ const THREADS = {
   note:"「動機（義務）か、結果（幸福）か」という対立は、今のAIや医療の倫理にもそのまま現れます。"},
  society:{name:"社会", q:"国家や権力は何によって正当化されるか。",
   flow:[["前4C","プラトン：哲人王の国家"],["1532","マキャヴェッリ：理想より現実の権力"],["1651","ホッブズ：恐怖から結ぶ社会契約"],["1762","ルソー：人民の一般意志"],["1867","マルクス：経済が社会をつくる"],["1971","ロールズ：無知のヴェールと正義"]],
-  note:"社会契約の考え方は、近代の憲法と民主主義の土台になりました。"},
+  note:"社会契約の考え方は、近代の憲法と民主主義の基礎になりました。"},
  language:{name:"言語", q:"言葉は世界をどう切り分けるか。",
   flow:[["1916","ソシュール：言葉の意味は差異で決まる"],["1921","ウィトゲンシュタイン：言語は世界の写し"],["1953","ウィトゲンシュタイン：意味は使い方"],["1957","バルト：日常に潜む神話"],["1967","デリダ：意味は決して確定しない"]],
   note:"20世紀に哲学の中心が「意識」から「言語」へ移り、言語論的転回と呼ばれます。"},
@@ -263,7 +263,7 @@ function applyThread(t){
   renderFilter();
   document.querySelectorAll("#movements .era").forEach(el => el.classList.toggle("dim", !!active && !el.dataset.th.split(" ").includes(active)));
   const n = $("#threadNote");
-  if (active){ n.hidden = false; n.innerHTML = `<b>${THREADS[active].name}</b> ── ${THREADS[active].q}${THREADS[active].note}`; }
+  if (active){ n.hidden = false; n.innerHTML = `<b>${THREADS[active].name}</b>：${THREADS[active].q}${THREADS[active].note}`; }
   else n.hidden = true;
 }
 $("#filter").addEventListener("click", e => { const b = e.target.closest(".chip"); if (b) applyThread(b.dataset.t); });
