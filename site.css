@@ -808,3 +808,90 @@ ul.checklist input{margin-top:5px;accent-color:var(--ox)}
 .chronicle .opening{font-family:var(--f-jserif);font-size:15px;line-height:1.9}
 .chronicle .tbl.style-steps td:first-child{width:8.5em}
 #styleSamples td:first-child{white-space:nowrap}
+
+/* 豆知識・図のカード（歴史・芸能・文学） */
+.trivia{margin:18px 0 6px;padding:18px 20px 10px;border-radius:16px;background:#fff;border:2px dashed color-mix(in srgb,var(--mc,var(--ox)) 45%,#fff);position:relative}
+.trivia .tv-label{display:inline-flex;align-items:center;gap:6px;font-size:12px;letter-spacing:.14em;color:var(--mc,var(--ox));margin-bottom:6px}
+.trivia .tv-label::before{content:"?";display:inline-grid;place-items:center;width:22px;height:22px;border-radius:50%;background:var(--mc,var(--ox));color:#fff;font-family:var(--f-latin);font-size:14px;letter-spacing:0}
+.trivia ul{margin:0;padding:0;list-style:none}
+.trivia li{position:relative;padding:0 0 8px 18px;font-size:14px;line-height:1.85}
+.trivia li::before{content:"";position:absolute;left:2px;top:.75em;width:7px;height:7px;border-radius:2px;transform:rotate(45deg);background:color-mix(in srgb,var(--mc,var(--ox)) 60%,#fff)}
+.fig-card{margin:0 0 36px;padding:18px 18px 14px;border-radius:20px;background:rgba(255,255,255,.82);border:1px solid var(--hair)}
+.fig-card figcaption{display:flex;flex-direction:column;gap:2px;margin-bottom:10px}
+.fig-card figcaption b{font-family:var(--f-jserif);font-weight:500;font-size:17px}
+.fig-card figcaption span{font-size:12.5px;color:var(--sub)}
+.fig-card .chart-wrap{border:0;padding:4px 0}
+.chart .note{font-size:12.5px;fill:var(--ox);font-weight:500}
+.chart .bandl{font-size:12px;fill:#fff;pointer-events:none}
+.chart .nodel{font-size:14px;fill:var(--ink)}
+.chart .edgel{font-size:11.5px;fill:var(--sub)}
+.chart .stg{font-size:12px;fill:var(--ink)}
+.chart .stg.s{font-size:11px;fill:var(--sub)}
+
+/* 歴史：古地図の経緯線と、年輪 */
+.p-history{
+  background:
+    radial-gradient(70vw 45vw at 95% -10%, rgba(200,68,47,.09), transparent 60%),
+    radial-gradient(70vw 50vw at -10% 105%, rgba(47,79,138,.09), transparent 60%),
+    linear-gradient(rgba(47,79,138,.05) 1px, transparent 1px) 0 0/72px 72px,
+    linear-gradient(90deg, rgba(47,79,138,.05) 1px, transparent 1px) 0 0/72px 72px,
+    var(--bg);
+  background-attachment:fixed;
+}
+.p-history .hero{position:relative;isolation:isolate;overflow:hidden}
+.p-history .hero::before{content:"";position:absolute;z-index:-1;right:0;top:-40px;width:min(440px,80vw);aspect-ratio:1;border-radius:50%;
+  background:repeating-radial-gradient(circle, transparent 0 15px, rgba(200,68,47,.14) 15px 16.5px, transparent 16.5px 27px, rgba(47,79,138,.10) 27px 28px);
+  -webkit-mask:radial-gradient(circle, #000 45%, transparent 70%);mask:radial-gradient(circle, #000 45%, transparent 70%)}
+
+/* 芸能：定式幕の三色と、青海波 */
+.p-geino{
+  --bg:#FBF6EE;
+  background-color:var(--bg);
+  background-image:
+    radial-gradient(circle at 100% 150%, var(--bg) 24%, #F0E4D2 24%, #F0E4D2 28%, var(--bg) 28%, var(--bg) 36%, #F0E4D2 36%, #F0E4D2 40%, transparent 40%, transparent),
+    radial-gradient(circle at 0 150%, var(--bg) 24%, #F0E4D2 24%, #F0E4D2 28%, var(--bg) 28%, var(--bg) 36%, #F0E4D2 36%, #F0E4D2 40%, transparent 40%, transparent),
+    radial-gradient(circle at 50% 100%, #F0E4D2 10%, var(--bg) 10%, var(--bg) 23%, #F0E4D2 23%, #F0E4D2 30%, var(--bg) 30%, var(--bg) 43%, #F0E4D2 43%, #F0E4D2 50%, var(--bg) 50%, var(--bg) 63%, #F0E4D2 63%, #F0E4D2 71%, transparent 71%, transparent),
+    radial-gradient(circle at 100% 50%, #F0E4D2 5%, var(--bg) 5%, var(--bg) 15%, #F0E4D2 15%, #F0E4D2 20%, var(--bg) 20%, var(--bg) 29%, #F0E4D2 29%, #F0E4D2 34%, var(--bg) 34%, var(--bg) 44%, #F0E4D2 44%, #F0E4D2 49%, transparent 49%, transparent),
+    radial-gradient(circle at 0 50%, #F0E4D2 5%, var(--bg) 5%, var(--bg) 15%, #F0E4D2 15%, #F0E4D2 20%, var(--bg) 20%, var(--bg) 29%, #F0E4D2 29%, #F0E4D2 34%, var(--bg) 34%, var(--bg) 44%, #F0E4D2 44%, #F0E4D2 49%, transparent 49%, transparent);
+  background-size:100px 50px;
+}
+.p-geino::before{content:"";display:block;height:14px;background:repeating-linear-gradient(90deg,#1E1B18 0 72px,#B4532A 72px 144px,#2F6B4A 144px 216px)}
+.p-geino .hero h1{background:linear-gradient(90deg,#1E1B18,#B4532A 55%,#2F6B4A);-webkit-background-clip:text;background-clip:text;color:transparent}
+.p-geino .hero h1::after{background:repeating-linear-gradient(90deg,#1E1B18 0 32px,#B4532A 32px 64px,#2F6B4A 64px 96px)}
+.p-geino nav.tabs{background:rgba(251,246,238,.94)}
+
+/* 文学：原稿用紙のマス目と、縦書きの一文 */
+.p-bungaku{
+  --bg:#FCFAF4;
+  background:
+    linear-gradient(rgba(176,84,58,.075) 1px, transparent 1px) 0 0/30px 30px,
+    linear-gradient(90deg, rgba(176,84,58,.075) 1px, transparent 1px) 0 0/30px 30px,
+    var(--bg);
+}
+.p-bungaku .hero{position:relative}
+.p-bungaku .hero .tate{position:absolute;right:clamp(16px,4vw,48px);top:24px;writing-mode:vertical-rl;font-family:var(--f-jserif);font-size:clamp(18px,2.2vw,26px);letter-spacing:.3em;line-height:1.9;color:rgba(176,84,58,.55);max-height:380px;pointer-events:none}
+.p-bungaku .hero h1::after{background:#B0543A}
+.p-bungaku nav.tabs{background:rgba(252,250,244,.94)}
+@media (max-width:760px){
+  .p-bungaku .hero .tate{display:none}
+  .p-bungaku .hero p{padding-right:40px}
+}
+.chart a text{text-decoration:none}.chart a:hover text{text-decoration:underline}
+.writer-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(240px,1fr));gap:14px}
+.wr-card{display:grid;grid-template-columns:52px 1fr;gap:4px 14px;padding:16px;border-radius:16px;background:#fff;border:1px solid var(--hair);text-decoration:none;color:var(--ink);transition:transform .15s,box-shadow .15s}
+.wr-card:hover{transform:translateY(-2px);box-shadow:0 10px 24px -16px color-mix(in srgb,var(--mc) 70%,transparent)}
+.wr-face{grid-row:span 3;display:grid;place-items:center;width:52px;height:52px;border-radius:50%;background:var(--mc);color:#fff;font-family:var(--f-jserif);font-size:24px}
+.wr-name{font-family:var(--f-jserif);font-size:18px;line-height:1.4}
+.wr-name small{display:block;font-family:var(--f-latin);font-size:12.5px;color:var(--sub)}
+.wr-school{font-size:11.5px;color:var(--mc);letter-spacing:.06em}
+.wr-catch{grid-column:1 / -1;font-size:13px;color:var(--sub);line-height:1.8;margin-top:4px}
+.wr-hero{position:relative}
+.wr-face.big{width:120px;height:120px;font-size:56px;grid-row:auto;box-shadow:0 14px 30px -18px var(--mc)}
+.wr-hero .tate{position:absolute;right:0;top:0;writing-mode:vertical-rl;font-family:var(--f-jserif);font-size:clamp(16px,1.8vw,22px);letter-spacing:.25em;line-height:1.9;color:color-mix(in srgb,var(--mc) 60%,transparent);max-height:300px;overflow:hidden;pointer-events:none}
+.stat b.sm{font-size:clamp(16px,1.8vw,20px);line-height:1.5}
+@media (max-width:760px){
+  .wr-hero .tate{display:none}
+  .wr-face.big{width:84px;height:84px;font-size:40px}
+}
+.detail-page .wr-hero ~ .stats .stat b{color:var(--mc)}
+@media (min-width:761px){ .p-bungaku .hero p{margin-right:110px} }

@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@400;500&display=swap">
 <link rel="stylesheet" href="site.css">
 </head>
-<body class="chronicle">
+<body class="chronicle p-bungaku">
 
 <nav class="genre wrap" aria-label="分野">
   <a href="index.html">ファッション</a>
@@ -25,12 +25,14 @@
 <header class="hero wrap">
   <div class="eyebrow">Japanese Literature · 712 / 2026</div>
   <h1>文学の系譜</h1>
-  <p>上代から現代までの日本文学の流れ、白樺派などの流派、文語から口語への文体の変化をまとめました。</p>
+  <p>上代から現代までの日本文学の流れ、20人の作家、白樺派などの流派、文語から口語への文体の変化をまとめました。</p>
+  <div class="tate" aria-hidden="true">吾輩は猫である。<br>名前はまだ無い。</div>
 </header>
 
 <nav class="tabs" aria-label="セクション">
   <div class="wrap" role="tablist">
     <button role="tab" data-tab="flow" aria-selected="true">時代ごとの流れ</button>
+    <button role="tab" data-tab="writers" aria-selected="false">作家</button>
     <button role="tab" data-tab="schools" aria-selected="false">近代の流派</button>
     <button role="tab" data-tab="style" aria-selected="false">文語から口語へ</button>
     <button role="tab" data-tab="stories" aria-selected="false">ストーリー一覧</button>
@@ -44,6 +46,21 @@
     <p class="lead">9つの時代に分けました。時代を選ぶと、その時代へ移動します。</p>
     <div class="era-jump" id="bJump"></div>
     <div class="eras" id="bEras"></div>
+  </section>
+
+  <section id="writers" data-panel hidden>
+    <span class="kicker">Writers</span>
+    <h2>作家</h2>
+    <p class="lead">20人の作家に、それぞれ専用のページがあります。カードを押すと、要点・年譜の図・代表作・豆知識・影響関係を見られます。</p>
+    <div class="writer-grid" id="writerGrid"></div>
+    <figure class="fig-card" style="margin-top:36px">
+      <figcaption><b>図1　何歳で亡くなったか</b><span>近代の作家には、40歳になる前に亡くなった人が多くいます（濃い色の棒）。古典の作家は生没年に諸説あるため除いています。</span></figcaption>
+      <div class="chart-wrap"><svg id="ageChart" class="chart" role="img" aria-label="近代の作家が亡くなった年齢の横棒グラフ"></svg></div>
+    </figure>
+    <figure class="fig-card">
+      <figcaption><b>図2　近代の作家が生きた時代</b><span>棒は生まれてから亡くなるまで。同じ縦の位置が同じ年です。名前や棒を押すと作家のページへ移動します。</span></figcaption>
+      <div class="chart-wrap"><svg id="lifeChart" class="chart" role="img" aria-label="近代の作家の生没年を横棒で並べた図"></svg></div>
+    </figure>
   </section>
 
   <section id="schools" data-panel hidden>
@@ -75,9 +92,40 @@
 </main>
 
 <script src="data/bungaku.js"></script>
+<script src="data/writers.js"></script>
 <script src="data/chronicle-ui.js"></script>
 <script>
-$("#bEras").innerHTML = BUN_ERAS.map(e => eraCard(e, "主な作品と出来事")).join("");
+const wPills = e => { const ws = WRITERS.filter(w => w.era === e.id); return ws.length ? `<h4 class="lbl">この時代の作家</h4><div class="era-jump" style="margin:0">${ws.map(w => `<a class="mpill" href="writer.html?id=${w.id}" style="--mc:${w.c}">${w.n} →</a>`).join("")}</div>` : ""; };
+$("#bEras").innerHTML = BUN_ERAS.map(e => eraCard(e, "主な作品と出来事", wPills(e))).join("");
+$("#writerGrid").innerHTML = WRITERS.map(w => `
+ <a class="wr-card" href="writer.html?id=${w.id}" style="--mc:${w.c}">
+  <span class="wr-face">${w.n.slice(0,1)}</span>
+  <span class="wr-name">${w.n}<small>${w.b}–${w.d}</small></span>
+  <span class="wr-school">${w.school}</span>
+  <span class="wr-catch">${w.catch}</span>
+ </a>`).join("");
+(function(){
+  const list = WRITERS.filter(w => w.b >= 1850).map(w => ({w, age: w.d - w.b})).sort((a, b) => a.age - b.age);
+  const W = 900, L = 120, R = 50, row = 26, H = list.length * row + 30, xmax = 90, x = v => L + v / xmax * (W - L - R);
+  let g = "";
+  for (let t = 0; t <= 90; t += 10) g += `<line x1="${x(t)}" y1="6" x2="${x(t)}" y2="${H-22}" stroke="var(--hair)"/><text x="${x(t)}" y="${H-6}" text-anchor="middle" class="ax">${t}歳</text>`;
+  list.forEach((r, i) => { const y = 8 + i * row, young = r.age < 40;
+    g += `<a href="writer.html?id=${r.w.id}"><text x="${L-10}" y="${y+14}" text-anchor="end" class="rl">${r.w.n}</text>
+      <rect class="hit" x="${L}" y="${y+3}" width="${x(r.age)-L}" height="16" rx="4" fill="${young ? "#B0543A" : "color-mix(in srgb,#B0543A 28%,#fff)"}" data-tip="<b>${r.w.n}</b><br>${r.w.b}–${r.w.d}年、${r.age}歳ごろ"/></a>
+      <text x="${x(r.age)+6}" y="${y+15}" class="ax">${r.age}</text>`; });
+  const svg = $("#ageChart"); svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.innerHTML = g;
+})();
+(function(){
+  const list = WRITERS.filter(w => w.b >= 1850).sort((a, b) => a.b - b.b);
+  const W = 900, L = 120, R = 20, row = 26, top = 30, y0 = 1860, y1 = 1975, H = top + list.length * row + 30, x = v => L + (v - y0) / (y1 - y0) * (W - L - R);
+  let g = "";
+  [[1868,"明治"],[1912,"大正"],[1926,"昭和"],[1945,"終戦"]].forEach(p => g += `<line x1="${x(p[0])}" y1="${top-10}" x2="${x(p[0])}" y2="${H-24}" stroke="#B0543A" stroke-dasharray="3 4" opacity=".6"/><text x="${x(p[0])+4}" y="${top-14}" class="note">${p[1]}</text>`);
+  for (let t = 1870; t <= 1970; t += 10) g += `<text x="${x(t)}" y="${H-8}" text-anchor="middle" class="ax">${t}</text>`;
+  list.forEach((w, i) => { const y = top + i * row;
+    g += `<a href="writer.html?id=${w.id}"><text x="${L-10}" y="${y+14}" text-anchor="end" class="rl">${w.n}</text>
+      <rect class="hit" x="${x(w.b)}" y="${y+3}" width="${x(w.d)-x(w.b)}" height="16" rx="4" fill="${w.c}" data-tip="<b>${w.n}</b><br>${w.b}–${w.d}年<br>${w.school}"/></a>`; });
+  const svg = $("#lifeChart"); svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.innerHTML = g;
+})();
 $("#bJump").innerHTML = jump(BUN_ERAS);
 $("#bStories").innerHTML = BUN_ERAS.map(storyCard).join("");
 const aozora = n => `https://www.google.com/search?q=${encodeURIComponent("site:aozora.gr.jp " + n)}`;

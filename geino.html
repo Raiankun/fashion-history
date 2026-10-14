@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@400;500&display=swap">
 <link rel="stylesheet" href="site.css">
 </head>
-<body class="chronicle">
+<body class="chronicle p-geino">
 
 <nav class="genre wrap" aria-label="分野">
   <a href="index.html">ファッション</a>
@@ -46,6 +46,15 @@
     <h2>5つの芸能を比べる</h2>
     <p class="lead">始まり、演じ手、言葉と音、初めて見るならどれか、どこで見られるかを並べました。名前を押すと、その芸能のページへ移動します。</p>
     <div class="tbl-wrap"><table class="tbl" id="gCompare"></table></div>
+    <figure class="fig-card" style="margin-top:32px">
+      <figcaption><b>図1　5つの芸能のあゆみ</b><span>線は始まりから今まで。点にマウスを重ねる（スマホはタップ）と出来事が出ます。</span></figcaption>
+      <div class="chart-wrap"><svg id="gTimeline" class="chart" role="img" aria-label="能・歌舞伎・人形浄瑠璃・落語・講談の始まりと主な出来事を年代順に並べた図"></svg></div>
+    </figure>
+    <figure class="fig-card">
+      <figcaption><b>図2　芸能どうしの関係</b><span>矢印は、演目や題材が移った向き。番号を押すと内容が出ます。芸能の名前を押すとそのタブへ移動します。</span></figcaption>
+      <div class="chart-wrap" id="gRelation"></div>
+      <div class="tbl-wrap" style="margin-top:12px"><table class="tbl" id="gRelTable"></table></div>
+    </figure>
     <h3 class="sub">5つのストーリー</h3>
     <div class="story-grid" id="gStories"></div>
   </section>
@@ -65,16 +74,35 @@
 </main>
 
 <script src="data/geino.js"></script>
+<script src="data/geino-figs.js"></script>
 <script src="data/chronicle-ui.js"></script>
 <script>
 const works = g => `<h4 class="lbl">有名な演目</h4><div class="tbl-wrap"><table class="tbl works-g">${table(["演目","内容"], g.works.map(w => [`<b>${w[0]}</b>`, w[1]]))}</table></div>`;
 GEINO.forEach(g => {
-  $("#" + g.id.slice(2)).innerHTML = eraCard(g, "歴史", works(g));
+  const stage = g => STAGES[g.id] ? `<figure class="fig-card" style="margin:22px 0 0"><figcaption><b>図　${STAGES[g.id].t}</b><span>${STAGES[g.id].cap}　各部分にマウスを重ねる（スマホはタップ）と説明が出ます。</span></figcaption><div class="chart-wrap">${STAGES[g.id].svg}</div></figure>` : "";
+  $("#" + g.id.slice(2)).innerHTML = eraCard(g, "歴史", works(g) + stage(g));
 });
 $("#gCompare").innerHTML = table(["芸能","始まり","演じ手","言葉と音","初めての一本","主な劇場"], GEINO_COMPARE.map((r,i) => [
   `<a class="mpill" href="#${GEINO[i].id}" style="--mc:${GEINO[i].c}">${r[0]}</a>`, r[1], r[2], r[3], `<b>${r[4]}</b>`, r[5]]));
 $("#gWords").innerHTML = table(["言葉","芸能","由来"], GEINO_WORDS.map(w => [`<b>${w[0]}</b>`, w[1], w[2]]));
 $("#gStories").innerHTML = GEINO.map(storyCard).join("");
+$("#gRelation").innerHTML = RELATION_SVG.svg;
+$("#gRelTable").innerHTML = table(["番号","向き","内容"], RELATION_SVG.edges.map(e => [`<span class="num">${e[0]}</span>`, `<b>${e[1]}</b>`, e[2]]));
+(function(){
+  const START = {"g-noh":1374,"g-kabuki":1603,"g-bunraku":1590,"g-rakugo":1623,"g-kodan":1650};
+  const W = 900, L = 120, R = 20, x0 = 1350, x1 = 2026, row = 52, H = GEINO.length * row + 40;
+  const x = v => L + (v - x0) / (x1 - x0) * (W - L - R);
+  let g = "";
+  for (let t = 1400; t <= 2000; t += 100) g += `<line x1="${x(t)}" y1="10" x2="${x(t)}" y2="${H-26}" stroke="var(--hair)"/><text x="${x(t)}" y="${H-8}" text-anchor="middle" class="ax">${t}</text>`;
+  GEINO.forEach((a, i) => {
+    const y = 34 + i * row;
+    g += `<a href="#${a.id}"><text x="${L-12}" y="${y+5}" text-anchor="end" class="rl">${a.t.replace("（能楽）","").replace("（文楽）","")}</text></a>`;
+    g += `<line x1="${x(START[a.id])}" y1="${y}" x2="${x(x1)}" y2="${y}" stroke="${a.c}" stroke-width="8" stroke-linecap="round" opacity=".35"/>`;
+    a.ev.forEach(v => { const yr = yearOf(v[0]); if (yr == null || yr < x0) return;
+      g += `<circle class="hit" cx="${x(yr)}" cy="${y}" r="7" fill="${a.c}" stroke="#fff" stroke-width="2" data-tip="<b>${v[0]}</b><br>${v[1]}"/>`; });
+  });
+  const svg = $("#gTimeline"); svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.innerHTML = g;
+})();
 initTabs("geino-tab", "overview", id => id.startsWith("g-") ? id.slice(2) : null);
 </script>
 </body>

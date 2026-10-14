@@ -1,0 +1,129 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>作家を知る</title>
+<meta name="description" content="日本の作家の生涯、要点、言葉、代表作、豆知識、影響関係を図表でまとめたページ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body class="chronicle p-bungaku detail-page">
+
+<nav class="genre wrap" aria-label="分野">
+  <a href="index.html">ファッション</a>
+  <a href="painting.html">絵画</a>
+  <a href="philosophy.html">哲学</a>
+  <a href="history.html">歴史</a>
+  <a href="geino.html">芸能</a>
+  <a href="bungaku.html" aria-current="page">文学</a>
+  <a href="https://raiankun.github.io/medical-history/">医療</a>
+</nav>
+
+<main class="wrap" id="page"></main>
+
+<script src="data/bungaku.js"></script>
+<script src="data/writers.js"></script>
+<script src="data/chronicle-ui.js"></script>
+<script>
+const id = new URLSearchParams(location.search).get("id") || WRITERS[0].id;
+const idx = Math.max(0, WRITERS.findIndex(w => w.id === id));
+const w = WRITERS[idx], era = BUN_ERAS.find(e => e.id === w.era), age = w.d - w.b;
+document.title = `${w.n}｜作家を知る`;
+const aozora = n => `https://www.google.com/search?q=${encodeURIComponent("site:aozora.gr.jp " + n)}`;
+
+/* 図1：生涯と作品（上：出来事、下：作品） */
+function lifeChart(){
+  const W = 900, H = 200, L = 30, R = 30, Y = 100, born = w.b, end = w.d;
+  const x = y => L + (y - born) / Math.max(1, end - born) * (W - L - R);
+  const step = (end - born) > 60 ? 10 : 5;
+  let g = `<rect x="${L}" y="${Y-4}" width="${W-L-R}" height="8" rx="4" fill="color-mix(in srgb,var(--mc) 40%,#fff)"/>`;
+  for (let t = Math.ceil(born / step) * step; t <= end; t += step) g += `<line x1="${x(t)}" y1="${Y+6}" x2="${x(t)}" y2="${Y+12}" stroke="var(--sub)"/><text x="${x(t)}" y="${Y+26}" text-anchor="middle" class="ax">${t}</text>`;
+  w.life.forEach((e, i) => { const h = 24 + (i % 3) * 20;
+    g += `<line x1="${x(e[0])}" y1="${Y-6}" x2="${x(e[0])}" y2="${Y-h}" stroke="var(--sub)"/><circle class="hit" cx="${x(e[0])}" cy="${Y-h}" r="7" fill="var(--ink)" stroke="#fff" stroke-width="2" data-tip="<b>${e[0]}年（${e[0]-born}歳ごろ）</b><br>${e[1]}"/>`; });
+  w.works.forEach((v, i) => { const h = 44 + (i % 3) * 18;
+    g += `<line x1="${x(v[1])}" y1="${Y+6}" x2="${x(v[1])}" y2="${Y+h}" stroke="var(--mc)"/><rect class="hit" x="${x(v[1])-7}" y="${Y+h-7}" width="14" height="14" rx="4" fill="var(--mc)" stroke="#fff" stroke-width="2" data-tip="<b>${v[0]}</b><br>${v[1]}年（${v[1]-born}歳ごろ）"/>`; });
+  g += `<text x="${L}" y="14" class="lg"><tspan class="dot-ink">●</tspan> 人生の出来事　<tspan class="dot-mc">■</tspan> 作品</text>`;
+  return `<svg viewBox="0 0 ${W} ${H+20}" class="chart" role="img" aria-label="${w.n}の生涯の出来事と作品を年代順に並べた図">${g}</svg>`;
+}
+/* 図3：同時代の作家 */
+function peersChart(){
+  const lo = w.b - 90, hi = w.d + 90;
+  const list = WRITERS.filter(p => p.d >= lo && p.b <= hi).sort((a, b) => a.b - b.b);
+  const min = Math.min(...list.map(p => p.b)), max = Math.max(...list.map(p => p.d));
+  const W = 900, L = 130, R = 20, RH = 26, H = list.length * RH + 40;
+  const x = y => L + (y - min) / Math.max(1, max - min) * (W - L - R);
+  const step = max - min > 200 ? 50 : 10;
+  let g = "";
+  for (let t = Math.ceil(min / step) * step; t <= max; t += step) g += `<line x1="${x(t)}" y1="10" x2="${x(t)}" y2="${H-24}" stroke="var(--hair)"/><text x="${x(t)}" y="${H-8}" text-anchor="middle" class="ax">${t}</text>`;
+  g += `<rect x="${x(w.b)}" y="10" width="${x(w.d)-x(w.b)}" height="${H-34}" fill="color-mix(in srgb,var(--mc) 10%,transparent)"/>`;
+  list.forEach((p, i) => { const me = p.id === w.id, y = 14 + i * RH;
+    g += `<a href="writer.html?id=${p.id}"><text x="${L-10}" y="${y+12}" text-anchor="end" class="rl${me ? " me" : ""}">${p.n}</text><rect class="hit" x="${x(p.b)}" y="${y+2}" width="${Math.max(4, x(p.d)-x(p.b))}" height="14" rx="4" fill="${me ? "var(--mc)" : "color-mix(in srgb,var(--sub) 35%,#fff)"}" data-tip="<b>${p.n}</b><br>${p.b}–${p.d}年<br>${p.school}"/></a>`; });
+  return `<svg viewBox="0 0 ${W} ${H}" class="chart" role="img" aria-label="${w.n}と同じ時代の作家の生涯の比較">${g}</svg>`;
+}
+const flow = (from, to) => `<div class="flowmap">
+  <div class="fcol">${from.map(t => `<span class="fnode">${t}</span>`).join("")}</div>
+  <div class="farrow" aria-hidden="true">→</div>
+  <div class="fcol"><span class="fnode me">${w.n}</span></div>
+  <div class="farrow" aria-hidden="true">→</div>
+  <div class="fcol">${to.map(t => `<span class="fnode">${t}</span>`).join("")}</div>
+ </div>
+ <div class="flowkey"><span>影響を受けた</span><span></span><span>影響を与えた</span></div>`;
+
+const timeline = [...w.life.map(e => [e[0], e[1], "出来事"]), ...w.works.map(v => [v[1], `『${v[0]}』`, "作品"])].sort((a, b) => a[0] - b[0]);
+const prev = WRITERS[(idx - 1 + WRITERS.length) % WRITERS.length], next = WRITERS[(idx + 1) % WRITERS.length];
+
+$("#page").style.setProperty("--mc", w.c);
+$("#page").innerHTML = `
+ <a class="back linkbtn" href="bungaku.html#writers">← 作家の一覧へ</a>
+ <header class="dp-hero wr-hero">
+  <span class="wr-face big">${w.n.slice(0,1)}</span>
+  <div>
+   <div class="eyebrow">${w.en}</div>
+   <h1>${w.n}</h1>
+   <div class="dp-meta"><span>${w.yomi}</span><span>${w.b}–${w.d}年</span><a class="mpill" href="bungaku.html#${era.id}" style="--mc:${era.c}">${era.t}</a></div>
+  </div>
+  ${w.q ? `<div class="tate" aria-hidden="true">${w.q[0].replace(/／/g, "　")}</div>` : ""}
+ </header>
+ <p class="dp-lead">${w.catch}</p>
+
+ <div class="stats">
+  <div class="stat"><b>${w.b}</b><span>生まれた年</span><small>${w.life[0][1]}</small></div>
+  <div class="stat"><b>${age}歳</b><span>亡くなった年齢</span><small>${w.d}年${w.b < 1800 ? "（諸説あり）" : ""}</small></div>
+  <div class="stat"><b class="sm">${w.school}</b><span>流派・分野</span><small>代表作 ${w.works.length}点を下に掲載</small></div>
+ </div>
+
+ <h2 class="dp-h">要点</h2>
+ <ol class="points">${w.pts.map(p => `<li>${p}</li>`).join("")}</ol>
+
+ ${w.q ? `<h2 class="dp-h">言葉・一節</h2><figure class="bigquote"><blockquote>「${w.q[0]}」</blockquote><figcaption>${w.n}　${w.q[1]}</figcaption></figure>` : ""}
+
+ <h2 class="dp-h">豆知識</h2>
+ ${triviaBox(w.tr)}
+
+ <h2 class="dp-h">図1　生涯と作品</h2>
+ <p class="caption">点にマウスを重ねる（スマホはタップ）と内容が出ます。</p>
+ <div class="chart-wrap">${lifeChart()}</div>
+ <div class="tbl-wrap" style="margin-top:14px"><table class="tbl timeline">${table(["年","年齢","種類","内容"], timeline.map(t => [`<span class="latin">${t[0]}</span>`, `${t[0] - w.b}歳`, `<span class="kind-${t[2] === "作品" ? "w" : "l"}">${t[2]}</span>`, t[1]]))}</table></div>
+
+ <h2 class="dp-h">代表作</h2>
+ <div class="tbl-wrap"><table class="tbl">${table(["作品","年","内容","読む"], w.works.map(v => [`<b>『${v[0]}』</b>`, `${v[1]}年<br><small>${v[1] - w.b}歳ごろ</small>`, v[2],
+   w.pd ? `<a class="aoz-s" href="${aozora(w.n + " " + v[0])}" target="_blank" rel="noopener">青空文庫で探す</a>` : `<small>著作権の保護期間中</small>`]))}</table></div>
+
+ <h2 class="dp-h">図2　影響の流れ</h2>
+ ${flow(w.from, w.to)}
+
+ <h2 class="dp-h">図3　同時代の作家</h2>
+ <p class="caption">前後90年に生きた、このサイトで紹介している作家との比較です。帯は${w.n}の生涯。名前や棒を押すとその作家のページへ移動します。</p>
+ <div class="chart-wrap">${peersChart()}</div>
+
+ <nav class="pager">
+  <a href="writer.html?id=${prev.id}">← ${prev.n}</a>
+  <a href="writer.html?id=${next.id}">${next.n} →</a>
+ </nav>
+ <p class="notice">出典：${w.src.map(s => srcLink(s)).join("、")}。生没年と年齢は目安で、古典の作家には諸説があります。「青空文庫で探す」は、青空文庫の中を検索するリンクです。</p>`;
+</script>
+</body>
+</html>

@@ -10,7 +10,7 @@
 <link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@400;500&display=swap">
 <link rel="stylesheet" href="site.css">
 </head>
-<body class="chronicle">
+<body class="chronicle p-history">
 
 <nav class="genre wrap" aria-label="分野">
   <a href="index.html">ファッション</a>
@@ -43,6 +43,11 @@
     <h2>日本史</h2>
     <p class="lead">時代を選ぶと、その時代へ移動します。</p>
     <div class="era-jump" id="jpJump"></div>
+    <figure class="fig-card">
+      <figcaption><b>図1　日本の人口の移り変わり</b><span>背景の色は時代。点にマウスを重ねる（スマホはタップ）と数字が出ます。</span></figcaption>
+      <div class="chart-wrap"><svg id="jpPop" class="chart" role="img" aria-label="西暦200年ごろから現在までの日本の推計人口の折れ線グラフ"></svg></div>
+      <p class="caption">出典：江戸時代までは鬼頭宏『人口から読む日本の歴史』などの推計、明治以降は国勢調査と総務省統計局の人口推計。縄文時代の人口は、ピークの約4300年前でも約26万人と推計されています（小山修三による）。</p>
+    </figure>
     <div class="eras" id="jpEras"></div>
   </section>
 
@@ -51,6 +56,11 @@
     <h2>世界史</h2>
     <p class="lead">時代を選ぶと、その時代へ移動します。</p>
     <div class="era-jump" id="wJump"></div>
+    <figure class="fig-card">
+      <figcaption><b>図1　世界の人口の移り変わり</b><span>10億人に届くまで数十万年かかった人口は、その後約200年で8倍になりました。</span></figcaption>
+      <div class="chart-wrap"><svg id="wPop" class="chart" role="img" aria-label="西暦1年から現在までの世界の推計人口の折れ線グラフ"></svg></div>
+      <p class="caption">出典：国連「World Population Prospects」と、HYDE などの歴史人口の推計。古い時代の数字は幅のある推計です。</p>
+    </figure>
     <div class="eras" id="wEras"></div>
   </section>
 
@@ -58,7 +68,11 @@
     <span class="kicker">Meanwhile</span>
     <h2>同じころの日本と世界</h2>
     <p class="lead">同じ年、または数年以内に起きた出来事を並べました。時代の名前を押すと、その時代の年表へ移動します。</p>
-    <div class="tbl-wrap"><table class="tbl" id="sameTable"></table></div>
+    <figure class="fig-card">
+      <figcaption><b>図　日本と世界の時代の並び</b><span>上が日本、下が世界。同じ縦の位置が同じ年です。前500年より前に始まる時代は、左端から描いています。</span></figcaption>
+      <div class="chart-wrap"><svg id="eraBands" class="chart" role="img" aria-label="日本史と世界史の時代区分を同じ年の軸に並べた図"></svg></div>
+    </figure>
+    <div class="tbl-wrap" style="margin-top:28px"><table class="tbl" id="sameTable"></table></div>
   </section>
 
   <section id="stories" data-panel hidden>
@@ -91,6 +105,54 @@ $("#sameTable").innerHTML = table(["年","日本","世界","ひとこと"], SAME
 
 $("#jpStories").innerHTML = JP_ERAS.map(storyCard).join("");
 $("#wStories").innerHTML = WORLD_ERAS.map(storyCard).join("");
+
+/* 図：人口の折れ線。pts は [年, 万人]、bands は背景の時代 [始, 終, 色, 名前] */
+function popChart(el, pts, unit, bands, notes){
+  const W = 900, H = 300, L = 72, R = 24, T = 20, B = 40, x0 = pts[0][0], x1 = 2026;
+  const ymax = Math.max(...pts.map(p => p[1])) * 1.12;
+  const x = v => L + (v - x0) / (x1 - x0) * (W - L - R), y = v => T + (1 - v / ymax) * (H - T - B);
+  let g = "";
+  (bands || []).forEach((b, i) => { const a = Math.max(x0, b[0]); if (b[1] <= x0) return;
+    g += `<rect x="${x(a)}" y="${T}" width="${x(b[1]) - x(a)}" height="${H-T-B}" fill="${b[2]}" opacity="${i % 2 ? .10 : .17}"/>`;
+    if (x(b[1]) - x(a) > 34) g += `<text x="${(x(a)+x(b[1]))/2}" y="${H-B+30}" text-anchor="middle" class="ax">${b[3]}</text>`; });
+  const raw = ymax / 5, mag = Math.pow(10, Math.floor(Math.log10(raw))), step = [1,2,5,10].map(k => k * mag).find(v => v >= raw);
+  for (let v = 0; v < ymax; v += step) g += `<line x1="${L}" y1="${y(v)}" x2="${W-R}" y2="${y(v)}" stroke="var(--hair)"/><text x="${L-8}" y="${y(v)+4}" text-anchor="end" class="ax">${v ? unit(v) : 0}</text>`;
+  for (let t = Math.ceil(x0 / 200) * 200; t <= x1; t += 200) g += `<text x="${x(t)}" y="${H-B+14}" text-anchor="middle" class="ax">${t}</text>`;
+  g += `<polyline points="${pts.map(p => `${x(p[0])},${y(p[1])}`).join(" ")}" fill="none" stroke="var(--ink)" stroke-width="2.5" stroke-linejoin="round"/>`;
+  pts.forEach(p => g += `<circle class="hit" cx="${x(p[0])}" cy="${y(p[1])}" r="6" fill="var(--ox)" stroke="#fff" stroke-width="2" data-tip="<b>${p[0]}年</b><br>約${unit(p[1], true)}"/>`);
+  (notes || []).forEach(n => g += `<text x="${x(n[0])}" y="${y(n[1]) - 14}" text-anchor="${n[3] || "middle"}" class="note">${n[2]}</text>`);
+  el.setAttribute("viewBox", `0 0 ${W} ${H}`); el.innerHTML = g;
+}
+const SPAN = {"jp-yayoi":[-1000,250],"jp-kofun":[250,592],"jp-asuka":[592,710],"jp-nara":[710,794],"jp-heian":[794,1185],"jp-kamakura":[1185,1333],"jp-muromachi":[1336,1573],"jp-azuchi":[1573,1603],"jp-edo":[1603,1868],"jp-meiji":[1868,1912],"jp-taisho":[1912,1945],"jp-showa":[1945,1989],"jp-heisei":[1989,2026],"jp-jomon":[-14000,-1000],
+  "w-orient":[-3500,-330],"w-greece":[-800,-146],"w-rome":[-753,476],"w-china":[-221,220],"w-islam":[610,1258],"w-medieval":[476,1450],"w-mongol":[1206,1368],"w-renaissance":[1350,1600],"w-reformation":[1517,1648],"w-revolution":[1640,1815],"w-industrial":[1760,1914],"w-wars":[1914,1945],"w-coldwar":[1945,1991],"w-global":[1991,2026]};
+const SHORT = {"w-orient":"オリエント","w-renaissance":"ルネサンス","w-reformation":"宗教改革","w-industrial":"産業革命","w-mongol":"モンゴル","w-china":"秦・漢","w-islam":"イスラーム","w-medieval":"中世ヨーロッパ","w-greece":"ギリシャ","w-rome":"ローマ","w-revolution":"市民革命","jp-taisho":"大正・戦前"};
+const man = (v, long) => v >= 10000 ? `${(v/10000).toFixed(long ? 2 : (v % 10000 ? 1 : 0))}億人` : `${Math.round(v)}万人`;
+popChart($("#jpPop"), [[200,59.5],[725,451],[800,551],[900,644],[1150,684],[1600,1227],[1721,3128],[1846,3230],[1873,3330],[1920,5596],[1950,8320],[1967,10000],[2008,12808],[2024,12380]],
+  man, JP_ERAS.filter(e => SPAN[e.id]).map(e => [SPAN[e.id][0], SPAN[e.id][1], e.c, e.t.replace("時代","").replace("〜昭和戦前","")]),
+  [[1721,3128,"江戸の前半に約2.5倍"],[2008,12808,"2008年がピーク","end"]]);
+const oku = v => `${v < 100000 ? (v/10000).toFixed(1).replace(/\.0$/, "") : Math.round(v/10000)}億人`;
+popChart($("#wPop"), [[1,25000],[1000,30000],[1500,46000],[1800,100000],[1900,160000],[1927,200000],[1960,300000],[1974,400000],[1987,500000],[1999,600000],[2011,700000],[2022,800000]],
+  oku, null, [[1780,100000,"1800年ごろ10億人","end"],[2022,800000,"2022年に80億人","end"]]);
+(function(){
+  const W = 900, L = 70, R = 16, x0 = -500, x1 = 2026, x = v => L + (Math.max(x0, v) - x0) / (x1 - x0) * (W - L - R);
+  const rows = [], place = e => { const [a, b] = SPAN[e.id]; let r = rows.findIndex(end => end <= a); if (r < 0) { rows.push(b); r = rows.length - 1; } else rows[r] = b; return r; };
+  let g = "", y = 28;
+  for (let t = 0; t <= 2000; t += 250) g += `<line x1="${x(t)}" y1="18" x2="${x(t)}" y2="230" stroke="var(--hair)"/><text x="${x(t)}" y="12" text-anchor="middle" class="ax">${t}</text>`;
+  const lane = (list, label, top) => {
+    rows.length = 0; const placed = list.map(e => [e, place(e)]);
+    g += `<text x="${L-10}" y="${top + 18}" text-anchor="end" class="rl">${label}</text>`;
+    placed.forEach(([e, r]) => { const [a, b] = SPAN[e.id], yy = top + r * 26, w = x(b) - x(a);
+      g += `<rect class="hit" x="${x(a)}" y="${yy}" width="${Math.max(3, w - 2)}" height="22" rx="5" fill="${e.c}" data-tip="<b>${e.t}</b><br>${e.y}"/>`;
+      const name = SHORT[e.id] || e.t.replace("時代",""), fit = Math.floor((w - 10) / 12.5);
+      if (fit >= 2) g += `<text x="${x(a) + 6}" y="${yy + 15}" class="bandl">${name.length > fit ? name.slice(0, fit) : name}</text>`; });
+    return rows.length;
+  };
+  const n1 = lane(JP_ERAS.filter(e => e.id !== "jp-jomon"), "日本", 22);
+  const top2 = 22 + n1 * 26 + 18;
+  const n2 = lane(WORLD_ERAS, "世界", top2);
+  const H = top2 + n2 * 26 + 10;
+  const svg = $("#eraBands"); svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.innerHTML = g.replace(/y2="230"/g, `y2="${H}"`);
+})();
 
 initTabs("rekishi-tab", "japan", id => id.startsWith("jp-") ? "japan" : id.startsWith("w-") ? "world" : null);
 </script>

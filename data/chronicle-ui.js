@@ -14,6 +14,10 @@ const storyBox = st => `
     <p class="st-q">${st.q}</p>
     ${st.p.map(p => `<p>${p}</p>`).join("")}
    </div>`;
+const triviaBox = tr => `
+   <div class="trivia"><span class="tv-label">豆知識</span>
+    <ul>${tr.map(t => `<li>${t}</li>`).join("")}</ul>
+   </div>`;
 const metaBox = e => `
    <details>
     <summary>出典とつながり</summary>
@@ -32,6 +36,7 @@ const eraCard = (e, evLabel = "教科書の年表", extra = "") => `
    <div class="tbl-wrap"><table class="tbl events">${table(["年","できごと"], e.ev.map(v => [`<b>${v[0]}</b>`, v[1]]))}</table></div>
    ${extra}
    ${storyBox(e.st)}
+   ${e.tr ? triviaBox(e.tr) : ""}
    ${e.watch ? `<h4 class="lbl">見方のポイント</h4><div class="tbl-wrap"><table class="tbl watch">${table(["ポイント","見るところ"], e.watch.map((w,i) => [`<span class="num">${i+1}</span><b>${w[0]}</b>`, w[1]]))}</table></div>` : ""}
    <h4 class="lbl">キーワード</h4>
    <ul class="signs">${e.key.map(k => `<li>${k}</li>`).join("")}</ul>
@@ -81,3 +86,18 @@ function initTabs(storageKey, defaultTab, tabFor){
   }
   return showTab;
 }
+
+/* 図のツールチップ：data-tip を持つ要素に重ねる・タップすると表示 */
+(function(){
+  const tip = document.createElement("div"); tip.className = "tip"; tip.hidden = true; tip.setAttribute("role", "tooltip");
+  document.body.appendChild(tip);
+  document.addEventListener("pointerover", e => {
+    const t = e.target.closest("[data-tip]"); if (!t) { tip.hidden = true; return; }
+    tip.innerHTML = t.dataset.tip; tip.hidden = false;
+    const r = t.getBoundingClientRect(), w = tip.offsetWidth;
+    tip.style.left = Math.max(8, Math.min(innerWidth - w - 8, r.left + r.width / 2 - w / 2)) + "px";
+    tip.style.top = (r.top + scrollY - tip.offsetHeight - 10) + "px";
+  });
+})();
+/* 年号の文字列から最初の西暦を取り出す（「前」がつけば負の数） */
+const yearOf = s => { const m = String(s).match(/(前)?(\d{1,4})年/); return m ? (m[1] ? -m[2] : +m[2]) : null; };
