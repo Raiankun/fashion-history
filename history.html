@@ -23,7 +23,7 @@
 <header class="hero wrap">
   <div class="eyebrow">History · Japan &amp; the World</div>
   <h1>歴史の系譜</h1>
-  <p>日本史と世界史を、それぞれ14の時代に分けました。教科書の年表で流れを押さえ、各時代のストーリーで人と出来事に近づきます。能や歌舞伎など日本の芸能もまとめています。</p>
+  <p>日本史と世界史を、それぞれ14の時代に分けました。教科書の年表で流れを押さえ、各時代のストーリーで人と出来事に近づきます。能や歌舞伎など日本の芸能と、日本文学の流れもまとめています。</p>
 </header>
 
 <nav class="tabs" aria-label="セクション">
@@ -31,6 +31,7 @@
     <button role="tab" data-tab="japan" aria-selected="true">日本史</button>
     <button role="tab" data-tab="world" aria-selected="false">世界史</button>
     <button role="tab" data-tab="geino" aria-selected="false">日本芸能</button>
+    <button role="tab" data-tab="bungaku" aria-selected="false">日本文学</button>
     <button role="tab" data-tab="same" aria-selected="false">同じころの日本と世界</button>
     <button role="tab" data-tab="stories" aria-selected="false">ストーリー一覧</button>
   </div>
@@ -66,6 +67,32 @@
     <div class="tbl-wrap"><table class="tbl" id="gWords"></table></div>
   </section>
 
+  <section id="bungaku" data-panel hidden>
+    <span class="kicker">Japanese Literature</span>
+    <h2>日本文学</h2>
+    <p class="lead">上代から現代までの流れ、白樺派などの流派、文語から口語への文体の変化をまとめました。</p>
+    <div class="era-jump">
+      <a class="mpill" href="#b-flow" style="--mc:#8A3B3B">時代ごとの流れ</a>
+      <a class="mpill" href="#b-schools" style="--mc:#A0607A">近代の流派</a>
+      <a class="mpill" href="#b-style" style="--mc:#2E8A8A">文語から口語へ</a>
+    </div>
+    <h3 class="sub" id="b-flow" style="margin-top:0">時代ごとの流れ</h3>
+    <div class="era-jump" id="bJump" style="margin-top:0"></div>
+    <div class="eras" id="bEras"></div>
+
+    <h3 class="sub" id="b-schools">近代の流派</h3>
+    <p class="caption" style="margin:-8px 0 16px">明治以降の主な流派の活動時期を並べました（始まりと終わりは目安です）。色は明治・大正・昭和戦前・戦後の区分です。</p>
+    <div class="chart-wrap"><svg id="schoolChart" class="chart" role="img" aria-label="明治から昭和までの日本文学の主な流派の活動時期を横棒で示した図"></svg></div>
+    <div class="tbl-wrap" style="margin-top:20px"><table class="tbl" id="schoolTable"></table></div>
+    <p class="caption">作家名の「青空」は、青空文庫で作品を探せるリンクです（著作権の保護期間が終わった作家のみ）。</p>
+
+    <h3 class="sub" id="b-style">文語から口語へ</h3>
+    <p class="caption" style="margin:-8px 0 16px">書き言葉（文語）と話し言葉（口語）が分かれていた日本語は、明治の言文一致運動を経て、今の口語文になりました。</p>
+    <div class="tbl-wrap"><table class="tbl events style-steps" id="styleSteps"></table></div>
+    <h3 class="sub">冒頭の一文で比べる</h3>
+    <div class="tbl-wrap"><table class="tbl" id="styleSamples"></table></div>
+  </section>
+
   <section id="same" data-panel hidden>
     <span class="kicker">Meanwhile</span>
     <h2>同じころの日本と世界</h2>
@@ -83,6 +110,8 @@
     <div class="story-grid" id="wStories"></div>
     <h3 class="sub">日本芸能</h3>
     <div class="story-grid" id="gStories"></div>
+    <h3 class="sub">日本文学</h3>
+    <div class="story-grid" id="bStories"></div>
   </section>
 
   <p class="notice">年代は高校の教科書で一般的な区分と年をもとにした目安で、古い時代ほど諸説があります。劇場の情報は2026年10月時点の目安です。ストーリーは史料や研究で広く知られた逸話を選び、伝承や異説がある部分はそう書いています。出典は、各時代の「出典とつながり」に載せました。</p>
@@ -90,6 +119,7 @@
 
 <script src="data/history.js"></script>
 <script src="data/geino.js"></script>
+<script src="data/bungaku.js"></script>
 <script>
 const $ = s => document.querySelector(s);
 const table = (head, rows) => `<thead><tr>${head.map(h => `<th scope="col">${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c,i) => `<td data-l="${head[i]}"><span>${c}</span></td>`).join("")}</tr>`).join("")}</tbody>`;
@@ -98,9 +128,9 @@ const idTag = id => `<a class="sid" href="#${id}" data-copy="${id}" title="こ�
 const srcUrl = s => s.startsWith("http") ? s : s.startsWith("en:") ? "https://en.wikipedia.org/wiki/" + encodeURIComponent(s.slice(3)) : "https://ja.wikipedia.org/wiki/" + encodeURIComponent(s);
 const srcName = s => s.startsWith("http") ? new URL(s).hostname.replace(/^www\./, "") : s.startsWith("en:") ? "Wikipedia（英語）：" + s.slice(3).replace(/_/g, " ") : "Wikipedia：" + s;
 const srcLink = s => `<a class="src-a" href="${srcUrl(s)}" target="_blank" rel="noopener">${srcName(s)} ↗</a>`;
-const ALL = [...JP_ERAS, ...WORLD_ERAS, ...GEINO];
+const ALL = [...JP_ERAS, ...WORLD_ERAS, ...GEINO, ...BUN_ERAS];
 const eraById = id => ALL.find(e => e.id === id);
-const tabOf = id => id.startsWith("jp-") ? "japan" : id.startsWith("g-") ? "geino" : "world";
+const tabOf = id => id.startsWith("jp-") ? "japan" : id.startsWith("g-") ? "geino" : id.startsWith("b-") ? "bungaku" : "world";
 
 const eraCard = e => `
  <article class="era mv" id="${e.id}" style="--mc:${e.c}">
@@ -181,6 +211,31 @@ $("#gCompare").innerHTML = table(["芸能","始まり","演じ手","言葉と音
   `<a class="mpill" href="#${GEINO[i].id}" style="--mc:${GEINO[i].c}">${r[0]}</a>`, r[1], r[2], r[3], `<b>${r[4]}</b>`, r[5]]));
 $("#gWords").innerHTML = table(["言葉","芸能","由来"], GEINO_WORDS.map(w => [`<b>${w[0]}</b>`, w[1], w[2]]));
 $("#gStories").innerHTML = GEINO.map(storyCard).join("");
+
+$("#bEras").innerHTML = BUN_ERAS.map(eraCard).join("");
+$("#bJump").innerHTML = jump(BUN_ERAS);
+$("#bStories").innerHTML = BUN_ERAS.map(storyCard).join("");
+const aozora = n => `https://www.google.com/search?q=${encodeURIComponent("site:aozora.gr.jp " + n)}`;
+$("#schoolTable").innerHTML = table(["流派","時期","主な作家","代表作","特徴","拠点"], SCHOOLS.map(r => [
+  `<b>${r[0]}</b>`, `${r[1]}〜${r[2]}年ごろ`,
+  r[3].map(a => a[1] ? `${a[0]} <a class="aoz-s" href="${aozora(a[0])}" target="_blank" rel="noopener">青空</a>` : a[0]).join("<br>"),
+  r[4], r[5], r[6]]));
+(function(){
+  const W = 900, L = 190, R = 20, row = 26, top = 30, y0 = 1880, y1 = 1980, H = top + SCHOOLS.length * row + 10;
+  const x = y => L + (y - y0) / (y1 - y0) * (W - L - R);
+  let g = "";
+  for (let y = y0; y <= y1; y += 10) g += `<line x1="${x(y)}" y1="${top-8}" x2="${x(y)}" y2="${H-6}" stroke="var(--hair)"/><text x="${x(y)}" y="${top-14}" text-anchor="middle" class="ax">${y}</text>`;
+  [[1868,1912,"明治"],[1912,1926,"大正"],[1926,1945,"昭和戦前"],[1945,1980,"戦後"]].forEach(p => {
+    const a = Math.max(x(p[0]), x(y0)); g += `<text x="${(a + x(p[1])) / 2}" y="${H+14}" text-anchor="middle" class="ax">${p[2]}</text>`; });
+  SCHOOLS.forEach((r, i) => {
+    const yy = top + i * row;
+    g += `<text x="${L-10}" y="${yy+14}" text-anchor="end" class="rl">${r[0]}</text>
+      <rect x="${x(r[1])}" y="${yy+4}" width="${Math.max(6, x(r[2]) - x(r[1]))}" height="14" rx="4" fill="${r[7]}"><title>${r[0]}：${r[1]}〜${r[2]}年ごろ</title></rect>`;
+  });
+  const svg = $("#schoolChart"); svg.setAttribute("viewBox", `0 0 ${W} ${H+22}`); svg.innerHTML = g;
+})();
+$("#styleSteps").innerHTML = table(["年","作品・出来事","文体"], STYLE_STEPS.map(r => [`<b>${r[0]}</b>`, r[1], r[2]]));
+$("#styleSamples").innerHTML = table(["年","作品","文体","冒頭","ひとこと"], STYLE_SAMPLES.map(r => [`<b>${r[0]}</b>`, r[1], `<span class="mpill" style="--mc:${/口語/.test(r[2]) ? "#2E8A8A" : "#8A3B3B"}">${r[2]}</span>`, `<span class="opening">${r[3]}</span>`, r[4]]));
 
 document.addEventListener("click", e => {
   const a = e.target.closest("[data-copy]"); if (!a) return;

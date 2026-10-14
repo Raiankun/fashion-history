@@ -804,3 +804,7 @@ ul.checklist input{margin-top:5px;accent-color:var(--ox)}
   .chronicle .tbl.works-g td,.chronicle .tbl.watch td{display:block;width:100%}
   .chronicle .tbl.works-g td::before,.chronicle .tbl.watch td::before{content:none}
 }
+.aoz-s{display:inline-block;font-size:10.5px;line-height:1.5;padding:0 7px;border-radius:999px;background:#2E6B4F;color:#fff !important;text-decoration:none;vertical-align:1px}
+.chronicle .opening{font-family:var(--f-jserif);font-size:15px;line-height:1.9}
+.chronicle .tbl.style-steps td:first-child{width:8.5em}
+#styleSamples td:first-child{white-space:nowrap}
