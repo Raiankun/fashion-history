@@ -1,0 +1,106 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>文学の系譜</title>
+<meta name="description" content="上代から現代までの日本文学の流れ、白樺派などの流派、文語から口語への変化をまとめた学習用ページ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body class="chronicle">
+
+<nav class="genre wrap" aria-label="分野">
+  <a href="index.html">ファッション</a>
+  <a href="painting.html">絵画</a>
+  <a href="philosophy.html">哲学</a>
+  <a href="history.html">歴史</a>
+  <a href="geino.html">芸能</a>
+  <a href="bungaku.html" aria-current="page">文学</a>
+  <a href="https://raiankun.github.io/medical-history/">医療</a>
+</nav>
+
+<header class="hero wrap">
+  <div class="eyebrow">Japanese Literature · 712 / 2026</div>
+  <h1>文学の系譜</h1>
+  <p>上代から現代までの日本文学の流れ、白樺派などの流派、文語から口語への文体の変化をまとめました。</p>
+</header>
+
+<nav class="tabs" aria-label="セクション">
+  <div class="wrap" role="tablist">
+    <button role="tab" data-tab="flow" aria-selected="true">時代ごとの流れ</button>
+    <button role="tab" data-tab="schools" aria-selected="false">近代の流派</button>
+    <button role="tab" data-tab="style" aria-selected="false">文語から口語へ</button>
+    <button role="tab" data-tab="stories" aria-selected="false">ストーリー一覧</button>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section id="flow" data-panel>
+    <span class="kicker">Timeline</span>
+    <h2>時代ごとの流れ</h2>
+    <p class="lead">9つの時代に分けました。時代を選ぶと、その時代へ移動します。</p>
+    <div class="era-jump" id="bJump"></div>
+    <div class="eras" id="bEras"></div>
+  </section>
+
+  <section id="schools" data-panel hidden>
+    <span class="kicker">Literary Schools</span>
+    <h2>近代の流派</h2>
+    <p class="lead">明治以降の主な流派の活動時期を並べました。始まりと終わりは目安です。色は明治・大正・昭和戦前・戦後の区分です。</p>
+    <div class="chart-wrap"><svg id="schoolChart" class="chart" role="img" aria-label="明治から昭和までの日本文学の主な流派の活動時期を横棒で示した図"></svg></div>
+    <div class="tbl-wrap" style="margin-top:20px"><table class="tbl" id="schoolTable"></table></div>
+    <p class="caption">作家名の「青空」は、青空文庫の中を検索するリンクです（著作権の保護期間が終わった作家のみ）。</p>
+  </section>
+
+  <section id="style" data-panel hidden>
+    <span class="kicker">From Classical to Colloquial</span>
+    <h2>文語から口語へ</h2>
+    <p class="lead">書き言葉（文語）と話し言葉（口語）が分かれていた日本語は、明治の言文一致運動を経て、今の口語文になりました。</p>
+    <div class="tbl-wrap"><table class="tbl events style-steps" id="styleSteps"></table></div>
+    <h3 class="sub">冒頭の一文で比べる</h3>
+    <div class="tbl-wrap"><table class="tbl" id="styleSamples"></table></div>
+  </section>
+
+  <section id="stories" data-panel hidden>
+    <span class="kicker">Stories</span>
+    <h2>ストーリー一覧</h2>
+    <p class="lead">各時代のストーリーだけを集めました。気になる問いから読めます。</p>
+    <div class="story-grid" id="bStories"></div>
+  </section>
+
+  <p class="notice">年代と流派の時期は一般的な文学史の区分にもとづく目安で、本によって数え方が異なります。ストーリーは史料や研究で広く知られた逸話を選び、伝承や異説がある部分はそう書いています。出典は、各時代の「出典とつながり」に載せました。</p>
+</main>
+
+<script src="data/bungaku.js"></script>
+<script src="data/chronicle-ui.js"></script>
+<script>
+$("#bEras").innerHTML = BUN_ERAS.map(e => eraCard(e, "主な作品と出来事")).join("");
+$("#bJump").innerHTML = jump(BUN_ERAS);
+$("#bStories").innerHTML = BUN_ERAS.map(storyCard).join("");
+const aozora = n => `https://www.google.com/search?q=${encodeURIComponent("site:aozora.gr.jp " + n)}`;
+$("#schoolTable").innerHTML = table(["流派","時期","主な作家","代表作","特徴","拠点"], SCHOOLS.map(r => [
+  `<b>${r[0]}</b>`, `${r[1]}〜${r[2]}年ごろ`,
+  r[3].map(a => a[1] ? `${a[0]} <a class="aoz-s" href="${aozora(a[0])}" target="_blank" rel="noopener">青空</a>` : a[0]).join("<br>"),
+  r[4], r[5], r[6]]));
+(function(){
+  const W = 900, L = 190, R = 20, row = 26, top = 30, y0 = 1880, y1 = 1980, H = top + SCHOOLS.length * row + 10;
+  const x = y => L + (y - y0) / (y1 - y0) * (W - L - R);
+  let g = "";
+  for (let y = y0; y <= y1; y += 10) g += `<line x1="${x(y)}" y1="${top-8}" x2="${x(y)}" y2="${H-6}" stroke="var(--hair)"/><text x="${x(y)}" y="${top-14}" text-anchor="middle" class="ax">${y}</text>`;
+  [[1868,1912,"明治"],[1912,1926,"大正"],[1926,1945,"昭和戦前"],[1945,1980,"戦後"]].forEach(p => {
+    const a = Math.max(x(p[0]), x(y0)); g += `<text x="${(a + x(p[1])) / 2}" y="${H+14}" text-anchor="middle" class="ax">${p[2]}</text>`; });
+  SCHOOLS.forEach((r, i) => {
+    const yy = top + i * row;
+    g += `<text x="${L-10}" y="${yy+14}" text-anchor="end" class="rl">${r[0]}</text><rect x="${x(r[1])}" y="${yy+4}" width="${Math.max(6, x(r[2]) - x(r[1]))}" height="14" rx="4" fill="${r[7]}"><title>${r[0]}：${r[1]}〜${r[2]}年ごろ</title></rect>`;
+  });
+  const svg = $("#schoolChart"); svg.setAttribute("viewBox", `0 0 ${W} ${H+22}`); svg.innerHTML = g;
+})();
+$("#styleSteps").innerHTML = table(["年","作品・出来事","文体"], STYLE_STEPS.map(r => [`<b>${r[0]}</b>`, r[1], r[2]]));
+$("#styleSamples").innerHTML = table(["年","作品","文体","冒頭","ひとこと"], STYLE_SAMPLES.map(r => [`<b>${r[0]}</b>`, r[1], `<span class="mpill" style="--mc:${/口語/.test(r[2]) ? "#2E8A8A" : "#8A3B3B"}">${r[2]}</span>`, `<span class="opening">${r[3]}</span>`, r[4]]));
+initTabs("bungaku-tab", "flow", id => id.startsWith("b-") ? "flow" : null);
+</script>
+</body>
+</html>

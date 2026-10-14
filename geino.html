@@ -1,0 +1,81 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>芸能の系譜</title>
+<meta name="description" content="能・狂言、歌舞伎、人形浄瑠璃、落語、講談の歴史、有名な演目、見方を図表でまとめた学習用ページ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body class="chronicle">
+
+<nav class="genre wrap" aria-label="分野">
+  <a href="index.html">ファッション</a>
+  <a href="painting.html">絵画</a>
+  <a href="philosophy.html">哲学</a>
+  <a href="history.html">歴史</a>
+  <a href="geino.html" aria-current="page">芸能</a>
+  <a href="bungaku.html">文学</a>
+  <a href="https://raiankun.github.io/medical-history/">医療</a>
+</nav>
+
+<header class="hero wrap">
+  <div class="eyebrow">Japanese Performing Arts</div>
+  <h1>芸能の系譜</h1>
+  <p>能・狂言、歌舞伎、人形浄瑠璃、落語、講談の歴史、有名な演目、ストーリー、見方をまとめました。</p>
+</header>
+
+<nav class="tabs" aria-label="セクション">
+  <div class="wrap" role="tablist">
+    <button role="tab" data-tab="overview" aria-selected="true">5つを比べる</button>
+    <button role="tab" data-tab="noh" aria-selected="false">能・狂言</button>
+    <button role="tab" data-tab="kabuki" aria-selected="false">歌舞伎</button>
+    <button role="tab" data-tab="bunraku" aria-selected="false">人形浄瑠璃</button>
+    <button role="tab" data-tab="rakugo" aria-selected="false">落語</button>
+    <button role="tab" data-tab="kodan" aria-selected="false">講談</button>
+    <button role="tab" data-tab="words" aria-selected="false">生まれた言葉</button>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section id="overview" data-panel>
+    <span class="kicker">Overview</span>
+    <h2>5つの芸能を比べる</h2>
+    <p class="lead">始まり、演じ手、言葉と音、初めて見るならどれか、どこで見られるかを並べました。名前を押すと、その芸能のページへ移動します。</p>
+    <div class="tbl-wrap"><table class="tbl" id="gCompare"></table></div>
+    <h3 class="sub">5つのストーリー</h3>
+    <div class="story-grid" id="gStories"></div>
+  </section>
+  <section id="noh" data-panel hidden></section>
+  <section id="kabuki" data-panel hidden></section>
+  <section id="bunraku" data-panel hidden></section>
+  <section id="rakugo" data-panel hidden></section>
+  <section id="kodan" data-panel hidden></section>
+  <section id="words" data-panel hidden>
+    <span class="kicker">Words from the Stage</span>
+    <h2>芸能から生まれた言葉</h2>
+    <p class="lead">ふだん使う言葉には、芝居や寄席から生まれたものがたくさんあります。由来に諸説あるものは、そう書いています。</p>
+    <div class="tbl-wrap"><table class="tbl" id="gWords"></table></div>
+  </section>
+
+  <p class="notice">年代は一般的な説にもとづく目安です。劇場の情報は2026年10月時点のもので、国立劇場（東京）は建て替えのため閉場中です。ストーリーは史料や研究で広く知られた逸話を選び、伝承や異説がある部分はそう書いています。</p>
+</main>
+
+<script src="data/geino.js"></script>
+<script src="data/chronicle-ui.js"></script>
+<script>
+const works = g => `<h4 class="lbl">有名な演目</h4><div class="tbl-wrap"><table class="tbl works-g">${table(["演目","内容"], g.works.map(w => [`<b>${w[0]}</b>`, w[1]]))}</table></div>`;
+GEINO.forEach(g => {
+  $("#" + g.id.slice(2)).innerHTML = eraCard(g, "歴史", works(g));
+});
+$("#gCompare").innerHTML = table(["芸能","始まり","演じ手","言葉と音","初めての一本","主な劇場"], GEINO_COMPARE.map((r,i) => [
+  `<a class="mpill" href="#${GEINO[i].id}" style="--mc:${GEINO[i].c}">${r[0]}</a>`, r[1], r[2], r[3], `<b>${r[4]}</b>`, r[5]]));
+$("#gWords").innerHTML = table(["言葉","芸能","由来"], GEINO_WORDS.map(w => [`<b>${w[0]}</b>`, w[1], w[2]]));
+$("#gStories").innerHTML = GEINO.map(storyCard).join("");
+initTabs("geino-tab", "overview", id => id.startsWith("g-") ? id.slice(2) : null);
+</script>
+</body>
+</html>
