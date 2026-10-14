@@ -797,3 +797,10 @@ ul.checklist input{margin-top:5px;accent-color:var(--ox)}
   .chronicle .tbl.events td:first-child{width:100%;font-size:13px;color:var(--mc,var(--ox))}
   .chronicle .tbl.events tr{padding:10px 14px}
 }
+.chronicle #geino>h2{border-left-color:#7A4A8A}
+.chronicle .tbl.watch .num{width:24px;height:24px;font-size:13px;margin-right:10px;background:var(--mc,var(--ox));vertical-align:middle}
+.chronicle .tbl.works-g td:first-child,.chronicle .tbl.watch td:first-child{width:13em}
+@media (max-width:960px){
+  .chronicle .tbl.works-g td,.chronicle .tbl.watch td{display:block;width:100%}
+  .chronicle .tbl.works-g td::before,.chronicle .tbl.watch td::before{content:none}
+}

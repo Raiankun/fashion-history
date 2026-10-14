@@ -23,13 +23,14 @@
 <header class="hero wrap">
   <div class="eyebrow">History · Japan &amp; the World</div>
   <h1>歴史の系譜</h1>
-  <p>日本史と世界史を、それぞれ14の時代に分けました。教科書の年表で流れを押さえ、各時代のストーリーで人と出来事に近づきます。</p>
+  <p>日本史と世界史を、それぞれ14の時代に分けました。教科書の年表で流れを押さえ、各時代のストーリーで人と出来事に近づきます。能や歌舞伎など日本の芸能もまとめています。</p>
 </header>
 
 <nav class="tabs" aria-label="セクション">
   <div class="wrap" role="tablist">
     <button role="tab" data-tab="japan" aria-selected="true">日本史</button>
     <button role="tab" data-tab="world" aria-selected="false">世界史</button>
+    <button role="tab" data-tab="geino" aria-selected="false">日本芸能</button>
     <button role="tab" data-tab="same" aria-selected="false">同じころの日本と世界</button>
     <button role="tab" data-tab="stories" aria-selected="false">ストーリー一覧</button>
   </div>
@@ -52,6 +53,19 @@
     <div class="eras" id="wEras"></div>
   </section>
 
+  <section id="geino" data-panel hidden>
+    <span class="kicker">Japanese Performing Arts</span>
+    <h2>日本芸能</h2>
+    <p class="lead">能・狂言、歌舞伎、人形浄瑠璃、落語、講談の歴史、有名な演目、ストーリー、見方をまとめました。芸能を選ぶと、その項目へ移動します。</p>
+    <div class="era-jump" id="gJump"></div>
+    <h3 class="sub" style="margin-top:0">5つの芸能を比べる</h3>
+    <div class="tbl-wrap"><table class="tbl" id="gCompare"></table></div>
+    <div class="eras" id="gEras" style="margin-top:40px"></div>
+    <h3 class="sub">芸能から生まれた言葉</h3>
+    <p class="caption" style="margin:-8px 0 16px">ふだん使う言葉には、芝居や寄席から生まれたものがたくさんあります。由来に諸説あるものは、そう書いています。</p>
+    <div class="tbl-wrap"><table class="tbl" id="gWords"></table></div>
+  </section>
+
   <section id="same" data-panel hidden>
     <span class="kicker">Meanwhile</span>
     <h2>同じころの日本と世界</h2>
@@ -67,12 +81,15 @@
     <div class="story-grid" id="jpStories"></div>
     <h3 class="sub">世界史</h3>
     <div class="story-grid" id="wStories"></div>
+    <h3 class="sub">日本芸能</h3>
+    <div class="story-grid" id="gStories"></div>
   </section>
 
-  <p class="notice">年代は高校の教科書で一般的な区分と年をもとにした目安で、古い時代ほど諸説があります。ストーリーは史料や研究で広く知られた逸話を選び、伝承や異説がある部分はそう書いています。出典は、各時代の「出典とつながり」に載せました。</p>
+  <p class="notice">年代は高校の教科書で一般的な区分と年をもとにした目安で、古い時代ほど諸説があります。劇場の情報は2026年10月時点の目安です。ストーリーは史料や研究で広く知られた逸話を選び、伝承や異説がある部分はそう書いています。出典は、各時代の「出典とつながり」に載せました。</p>
 </main>
 
 <script src="data/history.js"></script>
+<script src="data/geino.js"></script>
 <script>
 const $ = s => document.querySelector(s);
 const table = (head, rows) => `<thead><tr>${head.map(h => `<th scope="col">${h}</th>`).join("")}</tr></thead><tbody>${rows.map(r => `<tr>${r.map((c,i) => `<td data-l="${head[i]}"><span>${c}</span></td>`).join("")}</tr>`).join("")}</tbody>`;
@@ -81,9 +98,9 @@ const idTag = id => `<a class="sid" href="#${id}" data-copy="${id}" title="こ�
 const srcUrl = s => s.startsWith("http") ? s : s.startsWith("en:") ? "https://en.wikipedia.org/wiki/" + encodeURIComponent(s.slice(3)) : "https://ja.wikipedia.org/wiki/" + encodeURIComponent(s);
 const srcName = s => s.startsWith("http") ? new URL(s).hostname.replace(/^www\./, "") : s.startsWith("en:") ? "Wikipedia（英語）：" + s.slice(3).replace(/_/g, " ") : "Wikipedia：" + s;
 const srcLink = s => `<a class="src-a" href="${srcUrl(s)}" target="_blank" rel="noopener">${srcName(s)} ↗</a>`;
-const ALL = [...JP_ERAS, ...WORLD_ERAS];
+const ALL = [...JP_ERAS, ...WORLD_ERAS, ...GEINO];
 const eraById = id => ALL.find(e => e.id === id);
-const tabOf = id => id.startsWith("jp-") ? "japan" : "world";
+const tabOf = id => id.startsWith("jp-") ? "japan" : id.startsWith("g-") ? "geino" : "world";
 
 const eraCard = e => `
  <article class="era mv" id="${e.id}" style="--mc:${e.c}">
@@ -129,6 +146,41 @@ const storyCard = e => `
  </a>`;
 $("#jpStories").innerHTML = JP_ERAS.map(storyCard).join("");
 $("#wStories").innerHTML = WORLD_ERAS.map(storyCard).join("");
+
+const geinoCard = g => `
+ <article class="era mv" id="${g.id}" style="--mc:${g.c}">
+  <div class="swatch"><div class="years">${g.y}</div><div class="cloth"></div>${idTag(g.id)}</div>
+  <div class="era-body">
+   <h3>${g.t}<span class="en">${g.en}</span></h3>
+   <p class="sum">${g.sum}</p>
+   <h4 class="lbl">歴史</h4>
+   <div class="tbl-wrap"><table class="tbl events">${table(["年","できごと"], g.ev.map(v => [`<b>${v[0]}</b>`, v[1]]))}</table></div>
+   <h4 class="lbl">有名な演目</h4>
+   <div class="tbl-wrap"><table class="tbl works-g">${table(["演目","内容"], g.works.map(w => [`<b>${w[0]}</b>`, w[1]]))}</table></div>
+   <div class="story">
+    <span class="st-label">Story</span>
+    <h4>${g.st.t}</h4>
+    <p class="st-q">${g.st.q}</p>
+    ${g.st.p.map(p => `<p>${p}</p>`).join("")}
+   </div>
+   <h4 class="lbl">見方のポイント</h4>
+   <div class="tbl-wrap"><table class="tbl watch">${table(["ポイント","見るところ"], g.watch.map((w,i) => [`<span class="num">${i+1}</span><b>${w[0]}</b>`, w[1]]))}</table></div>
+   <h4 class="lbl">キーワード</h4>
+   <ul class="signs">${g.key.map(k => `<li>${k}</li>`).join("")}</ul>
+   <details>
+    <summary>出典とつながり</summary>
+    <div class="tbl-wrap"><table class="tbl meta">${table(["項目","内容"], [
+      ["出典", g.src.map(srcLink).join("<br>")],
+      ...(g.x ? [["つながり", g.x.map(x => `<a href="${x[0]}">${x[1]} →</a>`).join("<br>")]] : [])])}</table></div>
+   </details>
+  </div>
+ </article>`;
+$("#gEras").innerHTML = GEINO.map(geinoCard).join("");
+$("#gJump").innerHTML = jump(GEINO);
+$("#gCompare").innerHTML = table(["芸能","始まり","演じ手","言葉と音","初めての一本","主な劇場"], GEINO_COMPARE.map((r,i) => [
+  `<a class="mpill" href="#${GEINO[i].id}" style="--mc:${GEINO[i].c}">${r[0]}</a>`, r[1], r[2], r[3], `<b>${r[4]}</b>`, r[5]]));
+$("#gWords").innerHTML = table(["言葉","芸能","由来"], GEINO_WORDS.map(w => [`<b>${w[0]}</b>`, w[1], w[2]]));
+$("#gStories").innerHTML = GEINO.map(storyCard).join("");
 
 document.addEventListener("click", e => {
   const a = e.target.closest("[data-copy]"); if (!a) return;
