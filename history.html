@@ -32,6 +32,7 @@
   <div class="wrap" role="tablist">
     <button role="tab" data-tab="japan" aria-selected="true">日本史</button>
     <button role="tab" data-tab="world" aria-selected="false">世界史</button>
+    <button role="tab" data-tab="sangoku" aria-selected="false">三国志</button>
     <button role="tab" data-tab="same" aria-selected="false">同じころの日本と世界</button>
     <button role="tab" data-tab="stories" aria-selected="false">ストーリー一覧</button>
   </div>
@@ -64,6 +65,64 @@
     <div class="eras" id="wEras"></div>
   </section>
 
+  <section id="sangoku" data-panel hidden>
+    <span class="kicker">Three Kingdoms</span>
+    <h2>三国志</h2>
+    <p class="lead">後漢の末から晋の統一まで、魏・蜀・呉の三国が争った約100年（184〜280年）。歴史書の「正史」と小説の「演義」の違いに注意しながら、人物と名場面をたどります。</p>
+    <div class="era-jump">
+      <a class="mpill" href="#sg-books" style="--mc:#6E6A73">正史と演義</a>
+      <a class="mpill" href="#sg-map" style="--mc:#2F5D8A">地図と戦い</a>
+      <a class="mpill" href="#sg-chrono" style="--mc:#2E8A5E">年表</a>
+      <a class="mpill" href="#sg-scenes" style="--mc:#B0352B">名場面</a>
+      <a class="mpill" href="#sg-people" style="--mc:#C9A227">人物伝</a>
+      <a class="mpill" href="#sg-words" style="--mc:#7A4A8A">生まれた言葉</a>
+      <a class="mpill" href="#sg-japan" style="--mc:#8C6A4F">日本と三国志</a>
+    </div>
+
+    <h3 class="sub" id="sg-books" style="margin-top:8px">正史と演義の違い</h3>
+    <p class="caption" style="margin:-8px 0 16px">「三国志」と言うとき、歴史書と小説のどちらを指すかで、人物の姿が大きく変わります。このページでは、二つを分けて書いています。</p>
+    <div class="tbl-wrap"><table class="tbl" id="sgBooks"></table></div>
+
+    <h3 class="sub" id="sg-map">地図と主な戦い</h3>
+    <figure class="fig-card">
+      <figcaption><b>図1　三国の勢力と主な戦いの場所（230年ごろ）</b><span>おおよその位置を示した模式図です。赤い印が戦いの場所で、マウスを重ねる（スマホはタップ）と内容が出ます。</span></figcaption>
+      <div class="chart-wrap" id="sgMap"></div>
+    </figure>
+    <div class="tbl-wrap"><table class="tbl" id="sgBattles"></table></div>
+
+    <h3 class="sub" id="sg-chrono">年表</h3>
+    <figure class="fig-card">
+      <figcaption><b>図2　三国はいつからいつまで続いたか</b><span>帯は王朝・国の期間。点は出来事で、色は関係する勢力です。</span></figcaption>
+      <div class="chart-wrap"><svg id="sgLanes" class="chart" role="img" aria-label="後漢・魏・蜀・呉・晋の期間と主な出来事を並べた図"></svg></div>
+    </figure>
+    <div class="tbl-wrap"><table class="tbl events" id="sgEvents"></table></div>
+
+    <h3 class="sub" id="sg-scenes">名場面</h3>
+    <p class="caption" style="margin:-8px 0 16px">それぞれの場面が、正史にある話か、演義の創作かを示しています。</p>
+    <div id="sgScenes"></div>
+
+    <h3 class="sub" id="sg-people">人物伝</h3>
+    <p class="caption" style="margin:-8px 0 16px">18人を勢力ごとに並べました。名前を押すと、その人物へ移動します。</p>
+    <div id="sgPeopleJump"></div>
+    <figure class="fig-card" style="margin-top:20px">
+      <figcaption><b>図3　主な人物が生きた時代</b><span>生まれた年がわかる人物だけを並べています。色は勢力です。</span></figcaption>
+      <div class="chart-wrap"><svg id="sgLife" class="chart" role="img" aria-label="三国志の主な人物の生没年を横棒で並べた図"></svg></div>
+    </figure>
+    <div id="sgPeople"></div>
+
+    <h3 class="sub" id="sg-words">三国志から生まれた言葉</h3>
+    <div class="tbl-wrap"><table class="tbl" id="sgWords"></table></div>
+
+    <h3 class="sub" id="sg-japan">日本と三国志</h3>
+    <div class="tbl-wrap"><table class="tbl events" id="sgJapan"></table></div>
+    <div class="trivia" style="--mc:#B0352B"><span class="tv-label">豆知識</span><ul>
+      <li>日本の歴史で最初に名前が残る人物の一人・卑弥呼は、三国志の時代の人です。魏の皇帝から「親魏倭王」の称号を受けました</li>
+      <li>「魏志倭人伝」は、正式には正史『三国志』の「魏書」東夷伝の倭人の条のことです</li>
+      <li>魏・蜀・呉は後世の呼び名で、蜀は自らを「漢」と名のっていました。そのため「蜀漢」とも呼ばれます</li>
+      <li>三国時代の戦乱で、中国の人口は大きく減ったと考えられています。後漢の記録では5000万人を超えていた戸籍上の人口が、三国時代の末には三国合わせて約800万人にまで落ちています（戸籍から漏れた人も多いとみられます）</li>
+    </ul></div>
+  </section>
+
   <section id="same" data-panel hidden>
     <span class="kicker">Meanwhile</span>
     <h2>同じころの日本と世界</h2>
@@ -89,6 +148,7 @@
 </main>
 
 <script src="data/history.js"></script>
+<script src="data/sangoku.js"></script>
 <script src="data/chronicle-ui.js"></script>
 <script>
 const ALL = [...JP_ERAS, ...WORLD_ERAS];
@@ -154,7 +214,77 @@ popChart($("#wPop"), [[1,25000],[1000,30000],[1500,46000],[1800,100000],[1900,16
   const svg = $("#eraBands"); svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.innerHTML = g.replace(/y2="230"/g, `y2="${H}"`);
 })();
 
-initTabs("rekishi-tab", "japan", id => id.startsWith("jp-") ? "japan" : id.startsWith("w-") ? "world" : null);
+/* 三国志 */
+(function(){
+  const S = SG_SIDES, side = k => `<span class="mpill sg-side" style="--mc:${S[k].c}">${S[k].n}</span>`;
+  $("#sgBooks").innerHTML = table(["項目","正史『三国志』","小説『三国志演義』"], SG_BOOKS.map(r => [`<b>${r[0]}</b>`, r[1], r[2]]));
+  $("#sgBattles").innerHTML = table(["戦い","年","対戦","勝ったのは","内容"], SG_BATTLES.map(b => [`<b>${b[0]}</b>`, `${b[1]}年`, b[2], `<b>${b[3]}</b>`, b[4]]));
+  $("#sgEvents").innerHTML = table(["年","できごと"], SG_EVENTS.map(e => [`<b>${e[0]}年</b>`, `${side(e[2])} ${e[1]}`]));
+  $("#sgWords").innerHTML = table(["言葉","意味","由来"], SG_WORDS.map(w => [`<b>${w[0]}</b>`, w[1], w[2]]));
+  $("#sgJapan").innerHTML = table(["年","できごと"], SG_JAPAN.map(r => [`<b>${r[0]}</b>`, r[1]]));
+  $("#sgScenes").innerHTML = SG_SCENES.map(sc => `<div id="${sc.id}" style="--mc:${sc.kind === "演義" ? "#B0352B" : "#2F5D8A"}">${storyBox({t:`${sc.t}<span class="sg-kind">${sc.kind}</span><span class="sg-year">${sc.y}年</span>`, q:sc.q, p:sc.p})}</div>`).join("");
+
+  /* 図1：地図（模式図） */
+  const P = [["洛陽",420,228,"wei","魏の都"],["許昌",478,268,"wei","曹操が献帝を迎えた都"],["鄴",485,150,"wei","曹操の本拠地"],["長安",300,230,"wei",""],["成都",175,400,"shu","蜀の都"],["漢中",232,326,"shu",""],["白帝城",300,368,"shu","劉備が亡くなった城","end"],["建業",665,372,"wu","呉の都（今の南京）"],["江陵",400,392,"wu","荊州の中心"]];
+  let g = `<rect x="0" y="0" width="900" height="520" fill="#F6F1E6"/>
+    <path d="M40 120 C120 40 300 30 420 60 S 640 40 740 90 L 760 200 C 780 260 760 330 740 380 S 700 470 620 500 L 200 500 C 120 480 60 430 40 360 Z" fill="#FBF8F1" stroke="#CBBFA8" stroke-width="2"/>
+    <path d="M40 120 C120 40 300 30 420 60 S 560 50 600 70 L 610 300 C 520 320 470 330 330 330 L 250 330 L 210 260 C 150 250 90 230 40 230 Z" fill="${S.wei.c}" opacity=".16"/>
+    <path d="M40 230 C90 230 150 250 210 260 L 250 330 L 330 340 L 320 420 C 300 470 250 500 200 500 C 120 480 60 430 40 360 Z" fill="${S.shu.c}" opacity=".18"/>
+    <path d="M330 340 L 610 300 L 620 70 C 680 70 720 80 740 90 L 760 200 C 780 260 760 330 740 380 S 700 470 620 500 L 200 500 C 250 500 300 470 320 420 Z" fill="${S.wu.c}" opacity=".14"/>
+    <path d="M60 170 C140 90 260 80 320 150 S 420 210 520 190 S 650 140 750 160" fill="none" stroke="#C9A227" stroke-width="5" opacity=".7"/>
+    <path d="M90 440 C180 390 260 395 330 380 S 450 420 520 400 S 640 360 760 350" fill="none" stroke="#3A8FA3" stroke-width="6" opacity=".6"/>
+    <text x="150" y="104" class="stg s">黄河</text><text x="560" y="420" class="stg s">長江</text>
+    <text x="300" y="150" class="sgbig" style="fill:${S.wei.c}">魏</text><text x="105" y="345" class="sgbig" style="fill:${S.shu.c}">蜀</text><text x="560" y="465" class="sgbig" style="fill:${S.wu.c}">呉</text>`;
+  P.forEach(p => g += `<circle class="hit" cx="${p[1]}" cy="${p[2]}" r="${p[4].includes("都") ? 8 : 5}" fill="${S[p[3]].c}" stroke="#fff" stroke-width="2" data-tip="<b>${p[0]}</b>${p[4] ? "<br>" + p[4] : ""}"/><text x="${p[5] ? p[1] - 11 : p[1] + 11}" y="${p[2] + 5}" text-anchor="${p[5] || "start"}" class="stg">${p[0]}</text>`);
+  SG_BATTLES.forEach(b => g += `<g class="hit" data-tip="<b>${b[0]}（${b[1]}年）</b><br>${b[2]}<br>${b[4]}"><path d="M${b[5]-8} ${b[6]-8} L${b[5]+8} ${b[6]+8} M${b[5]+8} ${b[6]-8} L${b[5]-8} ${b[6]+8}" stroke="#C0392B" stroke-width="3.5" stroke-linecap="round"/><circle cx="${b[5]}" cy="${b[6]}" r="13" fill="transparent"/></g><text x="${b[5]}" y="${b[6] - 14}" text-anchor="middle" class="stg s" style="fill:#C0392B">${b[0].replace("の戦い","").replace("の対陣","")}</text>`);
+  g += `<path d="M845 250 q-10 -30 10 -60 q15 25 -10 60z M860 175 q5 -40 25 -55 q5 30 -25 55z" fill="#E0D6C4" stroke="#B9AC94"/><text x="830" y="290" text-anchor="middle" class="stg s">倭（日本）</text>
+    <path d="M820 240 C 720 260 600 250 492 236" fill="none" stroke="#8C6A4F" stroke-width="1.6" stroke-dasharray="6 5" marker-end="url(#sgar)"/>
+    <defs><marker id="sgar" viewBox="0 0 10 10" refX="9" refY="5" markerWidth="7" markerHeight="7" orient="auto"><path d="M0 0L10 5L0 10z" fill="#8C6A4F"/></marker></defs>
+    <text x="700" y="232" text-anchor="middle" class="stg s">239年 卑弥呼の使い</text>
+    <text x="700" y="60" class="stg s">遼東（公孫氏、238年に魏が滅ぼす）</text>`;
+  $("#sgMap").innerHTML = `<svg viewBox="0 0 900 520" class="chart" role="img" aria-label="魏・蜀・呉の勢力範囲と主な戦いの場所を示した模式図">${g}</svg>`;
+
+  /* 図2：王朝の期間 */
+  (function(){
+    const lanes = [["後漢",25,220,"#6E6A73","other"],["魏",220,265,S.wei.c,"wei"],["蜀",221,263,S.shu.c,"shu"],["呉",222,280,S.wu.c,"wu"],["晋",265,316,"#7A4A8A","jin"]];
+    const W = 900, L = 70, R = 20, x0 = 180, x1 = 290, row = 40, H = lanes.length * row + 50, x = v => L + (Math.max(x0, Math.min(x1, v)) - x0) / (x1 - x0) * (W - L - R);
+    let g = "";
+    for (let t = 180; t <= 290; t += 10) g += `<line x1="${x(t)}" y1="10" x2="${x(t)}" y2="${H-26}" stroke="var(--hair)"/><text x="${x(t)}" y="${H-8}" text-anchor="middle" class="ax">${t}</text>`;
+    lanes.forEach((l, i) => { const y = 20 + i * row;
+      if (["wei","shu","wu"].includes(l[4])) g += `<rect class="hit" x="${x(184)}" y="${y+7}" width="${x(l[1]) - x(184)}" height="10" rx="5" fill="${l[3]}" opacity=".18" data-tip="<b>${l[0]}の建国まで</b><br>${l[4] === "wei" ? "曹操" : l[4] === "shu" ? "劉備" : "孫堅・孫策・孫権"}の勢力として活動"/>`;
+      g += `<text x="${L-10}" y="${y+15}" text-anchor="end" class="rl">${l[0]}</text><rect class="hit" x="${x(l[1])}" y="${y+3}" width="${x(l[2]) - x(l[1])}" height="18" rx="5" fill="${l[3]}" opacity=".85" data-tip="<b>${l[0]}</b><br>${l[1]}〜${l[2]}年"/>`;
+      SG_EVENTS.filter(e => (l[4] === e[2] && l[4] !== "other") || (l[0] === "後漢" && e[2] === "other")).forEach(e => g += `<circle class="hit" cx="${x(e[0])}" cy="${y+12}" r="6" fill="#fff" stroke="${l[3]}" stroke-width="2.5" data-tip="<b>${e[0]}年</b><br>${e[1]}"/>`); });
+    const svg = $("#sgLanes"); svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.innerHTML = g;
+  })();
+
+  /* 図3：人物の生没年 */
+  (function(){
+    const list = SG_PEOPLE.filter(p => p.b).sort((a, b) => a.b - b.b);
+    const W = 900, L = 90, R = 20, row = 26, x0 = 150, x1 = 270, H = list.length * row + 40, x = v => L + (v - x0) / (x1 - x0) * (W - L - R);
+    let g = "";
+    [[220,"後漢の滅亡"],[280,"晋の統一"]].forEach(p => { if (p[0] <= x1) g += `<line x1="${x(p[0])}" y1="4" x2="${x(p[0])}" y2="${H-24}" stroke="#B0352B" stroke-dasharray="3 4"/><text x="${x(p[0])+4}" y="14" class="note">${p[1]}</text>`; });
+    for (let t = 150; t <= 270; t += 10) g += `<text x="${x(t)}" y="${H-8}" text-anchor="middle" class="ax">${t}</text>`;
+    list.forEach((p, i) => { const y = 20 + i * row;
+      g += `<a href="#${p.id}"><text x="${L-10}" y="${y+13}" text-anchor="end" class="rl">${p.n}</text><rect class="hit" x="${x(p.b)}" y="${y+2}" width="${x(p.d) - x(p.b)}" height="15" rx="4" fill="${S[p.side].c}" data-tip="<b>${p.n}（${S[p.side].n}）</b><br>${p.b}–${p.d}年、${p.d - p.b}歳ごろ"/></a>`; });
+    const svg = $("#sgLife"); svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.innerHTML = g;
+  })();
+
+  const years = p => `${p.b || "？"}–${p.d || "？"}年`;
+  $("#sgPeopleJump").innerHTML = Object.entries(S).filter(([k]) => SG_PEOPLE.some(p => p.side === k)).map(([k, v]) => { const ps = SG_PEOPLE.filter(p => p.side === k);
+    return `<div class="sg-group"><span class="sg-gname" style="--mc:${v.c}">${v.n}</span><span class="sg-gsub">${v.sub}</span><div class="era-jump" style="margin:6px 0 0">${ps.map(p => `<a class="mpill" href="#${p.id}" style="--mc:${v.c}">${p.n}</a>`).join("")}</div></div>`; }).join("");
+  $("#sgPeople").innerHTML = `<div class="sg-grid">${SG_PEOPLE.map(p => `
+   <article class="sg-card" id="${p.id}" style="--mc:${S[p.side].c}">
+    <div class="sg-head"><span class="sg-face">${p.n.slice(0,1)}</span><div><h4>${p.n}<small>${p.az.startsWith("（") ? p.az : "字は" + p.az}</small></h4><div class="sg-meta">${side(p.side)}<span>${years(p)}</span><span class="latin">${p.en}</span></div></div></div>
+    <p class="sg-catch">${p.catch}</p>
+    <div class="sg-cmp"><div><b>正史では</b><p>${p.seishi}</p></div><div class="engi"><b>演義では</b><p>${p.engi}</p></div></div>
+    ${p.scenes.length ? `<div class="sg-scenes"><span>名場面</span>${p.scenes.map(t => `<i>${t}</i>`).join("")}</div>` : ""}
+    ${p.q ? `<blockquote class="sg-q">「${p.q[0]}」<cite>${p.q[1]}</cite></blockquote>` : ""}
+    ${triviaBox(p.tr)}
+    <p class="sg-src">出典：${p.src.map(srcLink).join("、")}</p>
+   </article>`).join("")}</div>`;
+})();
+
+initTabs("rekishi-tab", "japan", id => id.startsWith("jp-") ? "japan" : id.startsWith("w-") ? "world" : id.startsWith("sg") ? "sangoku" : null);
 </script>
 </body>
 </html>
