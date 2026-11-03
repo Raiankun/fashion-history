@@ -988,3 +988,24 @@ ul.checklist input{margin-top:5px;accent-color:var(--ox)}
 .gr-refs td:first-child{width:3em}
 [id^="gr-"]{scroll-margin-top:72px}
 @media (max-width:760px){ .gr-row{grid-template-columns:1fr} }
+/* 源氏物語の絵 */
+.gj-art{margin:0;background:#fff;border:1px solid var(--hair);border-radius:14px;overflow:hidden;display:flex;flex-direction:column}
+.gj-art img{display:block;width:100%;height:auto;background:#F3ECDF}
+.gj-art figcaption{padding:10px 14px 12px;font-size:13.5px;line-height:1.8}
+.gj-art figcaption b{font-family:var(--f-jserif);font-weight:500;margin-right:6px;color:#6A4C93}
+.gj-art figcaption small{display:block;margin-top:6px;font-size:11px;color:var(--sub);line-height:1.6}
+.gj-art figcaption small a{color:#6A4C93}
+.gj-art.wide{flex-direction:row;margin:0 0 20px}
+.gj-art.wide a{flex:0 0 min(320px,45%)}
+.gj-art.wide figcaption{align-self:center;font-size:14.5px}
+.gj-gallery{display:grid;grid-template-columns:repeat(auto-fill,minmax(260px,1fr));gap:16px;align-items:start}
+.gj-scene{display:grid;grid-template-columns:minmax(0,300px) minmax(0,1fr);gap:20px;align-items:start;margin-bottom:24px}
+.gj-scene .story{margin-top:0}
+.gj-scene-art{display:flex;flex-direction:column;gap:12px}
+@media (max-width:760px){
+  .gj-scene{grid-template-columns:1fr}
+  .gj-scene-art{flex-direction:row;overflow-x:auto}
+  .gj-scene-art .gj-art{flex:0 0 78%}
+  .gj-art.wide{flex-direction:column}
+  .gj-art.wide a{flex:auto}
+}

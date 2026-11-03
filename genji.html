@@ -35,6 +35,7 @@
     <button role="tab" data-tab="chapters" aria-selected="false">54帖</button>
     <button role="tab" data-tab="people" aria-selected="false">人物と関係</button>
     <button role="tab" data-tab="scenes" aria-selected="false">名場面</button>
+    <button role="tab" data-tab="art" aria-selected="false">絵で見る</button>
     <button role="tab" data-tab="reception" aria-selected="false">読み継がれ方</button>
     <button role="tab" data-tab="trivia" aria-selected="false">豆知識と言葉</button>
     <button role="tab" data-tab="research" aria-selected="false">研究の今</button>
@@ -46,6 +47,7 @@
     <span class="kicker">Overview</span>
     <h2>全体像</h2>
     <p class="lead">作者は一条天皇の中宮・彰子に仕えた紫式部。1008年には宮中で読まれていた記録があります。光源氏とその子孫の約70年を、三つの部に分けて読むのが一般的です。</p>
+    <div class="gj-author" id="gjAuthor"></div>
     <div class="stats gj-stats">
       <div class="stat"><b>54帖</b><span>巻の数</span><small>本文のない「雲隠」を除く</small></div>
       <div class="stat"><b>約100万字</b><span>本文の長さ</span><small>400字詰め原稿用紙で約2500枚</small></div>
@@ -102,6 +104,16 @@
     <h2>名場面</h2>
     <p class="lead">物語の流れに沿って、よく知られた6つの場面を選びました。</p>
     <div id="sceneList"></div>
+  </section>
+
+  <section id="art" data-panel hidden>
+    <span class="kicker">Paintings</span>
+    <h2>絵で見る源氏物語</h2>
+    <p class="lead">源氏物語は、書かれてまもなく絵にもなりました。12世紀の国宝絵巻と、16世紀の土佐光信の画帖から、パブリックドメインの絵を選んで解説します。絵を押すと、出典のページが開きます。</p>
+    <h3 class="sub" style="margin-top:0">絵の見方</h3>
+    <div class="tbl-wrap"><table class="tbl" id="artTips"></table></div>
+    <div id="artSets"></div>
+    <p class="caption">画像はすべてウィキメディア・コモンズでパブリックドメインと表示されているもので、各絵の下にライセンス表示と出典を記しています。所蔵先と年代は、コモンズの説明と各館の情報によります。</p>
   </section>
 
   <section id="reception" data-panel hidden>
@@ -188,6 +200,7 @@
 
 <script src="data/genji.js"></script>
 <script src="data/genji-research.js"></script>
+<script src="data/genji-art.js"></script>
 <script src="data/chronicle-ui.js"></script>
 <script>
 const P = GJ_PARTS, pp = id => GJ_PEOPLE.find(p => p.id === id);
@@ -256,9 +269,22 @@ $("#peopleGrid").innerHTML = GJ_PEOPLE.map(p => `
   <div class="trivia" style="margin-top:10px"><span class="tv-label">豆知識</span><ul><li>${p.tr}</li></ul></div>
  </article>`).join("");
 
+/* 絵 */
+const art = k => GJ_ART.find(a => a[0] === k);
+const commons = n => "https://commons.wikimedia.org/wiki/File:" + encodeURIComponent(n.replace(/ /g, "_"));
+const artFig = (k, cls = "") => { const a = art(k); if (!a) return ""; const set = GJ_ART_SETS[a[2]];
+  return `<figure class="gj-art ${cls}"><a href="${commons(a[5])}" target="_blank" rel="noopener"><img src="images/genji/${a[1]}" alt="${set.t}${a[3] ? "より「" + a[3] + "」" : ""}" loading="lazy" onerror="this.closest('figure').hidden=true"></a>
+    <figcaption>${a[3] ? `<b>「${a[3]}」</b>` : ""}${a[4]}<small>${set.t}　${set.d}　${set.where}　／　${a[6]}　<a href="${commons(a[5])}" target="_blank" rel="noopener">出典 ↗</a></small></figcaption></figure>`; };
+$("#gjAuthor").innerHTML = artFig("murasaki", "wide");
+
 /* 名場面 */
 $("#sceneList").innerHTML = GJ_SCENES.map((s, i) => { const c = GJ_CHAPTERS.find(ch => s.ch.startsWith(ch[1])); const col = c ? P[c[3]].c : "#B0548A";
-  return `<div id="gs-${i+1}" style="--mc:${col}">${storyBox({t:`${s.t}<span class="sg-kind">「${s.ch}」</span>`, q:s.q, p:s.p})}</div>`; }).join("");
+  return `<div id="gs-${i+1}" class="gj-scene" style="--mc:${col}"><div class="gj-scene-art">${(GJ_SCENE_ART[i] || []).map(k => artFig(k)).join("")}</div>${storyBox({t:`${s.t}<span class="sg-kind">「${s.ch}」</span>`, q:s.q, p:s.p})}</div>`; }).join("");
+
+/* 絵で見る */
+$("#artTips").innerHTML = table(["技法","説明","見られる絵"], GJ_ART_TIPS.map(t => [`<b>${t[0]}</b>`, t[1], t[2]]));
+$("#artSets").innerHTML = ["emaki", "mitsunobu"].map(k => { const set = GJ_ART_SETS[k];
+  return `<h3 class="sub">${set.t}</h3><p class="caption" style="margin:-8px 0 16px">${set.d}　${set.where}。${set.sum}</p><div class="gj-gallery">${GJ_ART.filter(a => a[2] === k).map(a => artFig(a[0])).join("")}</div>`; }).join("");
 
 /* 図4：読み継がれ方 */
 (function(){
