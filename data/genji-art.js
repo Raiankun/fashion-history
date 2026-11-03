@@ -26,7 +26,7 @@ const GJ_ART = [
  ["e36t","e36-kashiwagi-text.png","emaki","柏木（詞書）","絵の前に置かれた詞書。料紙に金銀の箔を散らし、物語の本文を流れるような仮名で書いている","Genji_Emaki_Kashiwagi_Ms.png","PD-old（12世紀の作品）"],
  ["e37","e37-yokobue.jpg","emaki","横笛","夜泣きする幼い子をあやす雲居の雁と、それを見る夕霧。夕霧は、柏木が遺した笛を預かっている","Genji_emaki_YOKOBUE.jpg","PD-old（12世紀の作品）"],
  ["e38","e38-suzumushi.jpg","emaki","鈴虫","月見の宴で、源氏と冷泉院（実は源氏と藤壺の子）が向き合って語り合う。右上の群青の空と銀の満月が夜を表す","Genji_emaki_01003_006.jpg","PD-Art（12世紀の作品）"],
- ["e44","e44-takekawa.jpg","emaki","竹河","玉鬘の娘たちが、庭の桜をかけて碁を打つ","Genji_emaki_TAKEKAWA2.jpg","PD-Art（12世紀の作品）"],
+ ["e44","e44-takekawa.jpg","emaki","竹河","玉鬘の邸の場面。縁先に貴公子が座り、御簾の内には女性たちの衣の裾がのぞく。建物を斜めに切り取る構図が、屋内と屋外の距離を感じさせる","Genji_emaki_TAKEKAWA2.jpg","PD-Art（12世紀の作品）"],
  ["e45","e45-hashihime.jpg","emaki","橋姫","宇治の山荘で、月の光のもと琵琶と箏を弾く大君と中の君。薫がそれを垣根越しに見る","Genji_emaki_HASHIHIME.jpg","PD-old（12世紀の作品）"],
  ["e48","e48-sawarabi.jpg","emaki","早蕨","父を亡くした中の君が、都へ移る前に宇治の山荘で過ごす","Genji_emaki_SAWARABI.jpg","PD-old（12世紀の作品）"],
  ["e49","e49-yadorigi.jpg","emaki","宿木","宿木の巻の場面","Genji_emaki_Yadorigi.JPG","PD-old（12世紀の作品）"],
