@@ -1,0 +1,128 @@
+<!doctype html>
+<html lang="ja">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>古典を読む</title>
+<meta name="description" content="古事記から源氏物語、平家物語、おくのほそ道まで、日本の古典を年表・冒頭の一文・比較表でたどる入口のページ">
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Bodoni+Moda:ital,opsz,wght@0,6..96,400;0,6..96,500;1,6..96,400&family=Noto+Serif+JP:wght@300;400;500&family=Noto+Sans+JP:wght@400;500&display=swap">
+<link rel="stylesheet" href="site.css">
+</head>
+<body class="chronicle p-genji">
+
+<nav class="genre wrap" aria-label="分野">
+  <a href="index.html">ファッション</a>
+  <a href="painting.html">絵画</a>
+  <a href="philosophy.html">哲学</a>
+  <a href="history.html">歴史</a>
+  <a href="geino.html">芸能</a>
+  <a href="bungaku.html">文学</a>
+  <a href="koten.html" aria-current="page">古典</a>
+  <a href="https://raiankun.github.io/medical-history/">医療</a>
+</nav>
+
+<header class="hero wrap">
+  <div class="eyebrow">Japanese Classics · 712 / 1702</div>
+  <h1>古典を読む</h1>
+  <p>古事記から源氏物語、平家物語、おくのほそ道まで。日本の古典14作品を、年表と冒頭の一文、くらべる表でたどります。源氏物語には専用の解説ページがあります。</p>
+  <svg class="genjiko-deco" viewBox="0 0 300 120" aria-hidden="true" id="decoKo"></svg>
+</header>
+
+<nav class="tabs" aria-label="セクション">
+  <div class="wrap" role="tablist">
+    <button role="tab" data-tab="works" aria-selected="true">作品</button>
+    <button role="tab" data-tab="chrono" aria-selected="false">年表</button>
+    <button role="tab" data-tab="openings" aria-selected="false">冒頭を読む</button>
+    <button role="tab" data-tab="compare" aria-selected="false">くらべる</button>
+  </div>
+</nav>
+
+<main class="wrap">
+  <section id="works" data-panel>
+    <span class="kicker">Works</span>
+    <h2>作品</h2>
+    <a class="kt-feature" href="genji.html">
+      <img src="images/genji/m34-wakana.jpg" alt="土佐光信『源氏物語画帖』より「若菜上」" onerror="this.remove()">
+      <span class="kt-f-body"><small>専用ページ</small><b>源氏物語を読む</b><span>54帖のあらすじ、人物関係図、名場面、国宝絵巻などの絵、読み継がれ方、最新の研究まで。</span><i>ページを開く →</i></span>
+    </a>
+    <p class="lead" style="margin-top:28px">ジャンルを選ぶと、その作品だけを表示します。</p>
+    <div class="filter" id="genreFilter"></div>
+    <div class="kt-grid" id="ktGrid"></div>
+  </section>
+
+  <section id="chrono" data-panel hidden>
+    <span class="kicker">Timeline</span>
+    <h2>年表</h2>
+    <figure class="fig-card">
+      <figcaption><b>図1　古典が生まれた時代</b><span>点はおよその成立年で、色はジャンル。点にマウスを重ねる（スマホはタップ）と作品名が出ます。</span></figcaption>
+      <div class="chart-wrap"><svg id="ktChart" class="chart" role="img" aria-label="日本の古典14作品の成立年をジャンル別に並べた図"></svg></div>
+    </figure>
+    <div class="tbl-wrap"><table class="tbl events" id="ktTable"></table></div>
+  </section>
+
+  <section id="openings" data-panel hidden>
+    <span class="kicker">Opening Lines</span>
+    <h2>冒頭を読む</h2>
+    <p class="lead">古典は、書き出しを知っているだけで、ぐっと身近になります。原文と、当サイトによる現代語訳を並べました。</p>
+    <div id="ktOpenings"></div>
+  </section>
+
+  <section id="compare" data-panel hidden>
+    <span class="kicker">Compare</span>
+    <h2>くらべる</h2>
+    <h3 class="sub" style="margin-top:0">三大随筆</h3>
+    <div class="tbl-wrap"><table class="tbl" id="ktZui"></table></div>
+    <h3 class="sub">三大和歌集</h3>
+    <div class="tbl-wrap"><table class="tbl" id="ktWaka"></table></div>
+  </section>
+
+  <p class="notice">成立年は通説による目安で、作品によっては幅があります。原文の引用は一般的な校訂本文により、現代語訳は当サイトによるものです。</p>
+</main>
+
+<script src="data/koten.js"></script>
+<script src="data/chronicle-ui.js"></script>
+<script>
+const G = KT_GENRES, gp = k => `<span class="mpill" style="--mc:${G[k][1]}">${G[k][0]}</span>`;
+const card = k => `
+ <article class="kt-card" id="${k.id}" style="--mc:${G[k.g][1]}">
+  <div class="kt-head"><span class="kt-year">${k.ys}</span>${gp(k.g)}<span class="kt-era">${k.era}</span></div>
+  <h3>${k.page ? `<a href="${k.page}">${k.t}</a>` : k.t}<small>${k.yomi}</small></h3>
+  <p class="kt-author">${k.a}</p>
+  <blockquote class="kt-op">${k.op}</blockquote>
+  <p>${k.sum}</p>
+  ${triviaBox(k.tr)}
+  <div class="kt-links">${k.page ? `<a class="mpill" href="${k.page}" style="--mc:#9A3B8A">専用ページへ →</a>` : ""}${k.x.map(x => `<a class="mpill" href="${x[0]}" style="--mc:${G[k.g][1]}">${x[1]} →</a>`).join("")}<a class="aoz-s" href="https://www.google.com/search?q=${encodeURIComponent("site:aozora.gr.jp " + k.t)}" target="_blank" rel="noopener">青空文庫で探す</a></div>
+ </article>`;
+function render(g){
+  $("#genreFilter").innerHTML = `<button class="chip" data-g="" aria-pressed="${!g}">すべて</button>` + Object.entries(G).map(([k, v]) => `<button class="chip" data-g="${k}" aria-pressed="${g === k}">${v[0]}</button>`).join("");
+  $("#ktGrid").innerHTML = KOTEN.filter(k => !g || k.g === g).map(card).join("");
+}
+$("#genreFilter").addEventListener("click", e => { const b = e.target.closest(".chip"); if (b) render(b.dataset.g); });
+render("");
+
+/* 図1 */
+(function(){
+  const lanes = Object.keys(G), W = 900, L = 120, R = 30, row = 64, top = 24, x0 = 700, x1 = 1720, H = top + lanes.length * row + 30;
+  const x = v => L + (v - x0) / (x1 - x0) * (W - L - R);
+  let g = "";
+  [[710,794,"奈良"],[794,1185,"平安"],[1185,1333,"鎌倉"],[1336,1573,"室町"],[1573,1603,""],[1603,1720,"江戸"]].forEach((p, i) => g += `<rect x="${x(p[0])}" y="${top - 6}" width="${x(p[1]) - x(p[0])}" height="${lanes.length * row}" fill="${i % 2 ? "#F6F1E6" : "#FBF8F1"}"/><text x="${(x(p[0]) + x(p[1])) / 2}" y="${H - 6}" text-anchor="middle" class="ax">${p[2]}</text>`);
+  lanes.forEach((k, i) => { const y = top + i * row + 16;
+    g += `<text x="${L - 10}" y="${y + 5}" text-anchor="end" class="rl">${G[k][0]}</text><line x1="${L}" y1="${y}" x2="${W - R}" y2="${y}" stroke="${G[k][1]}" stroke-width="2" opacity=".25"/>`;
+    KOTEN.filter(w => w.g === k).forEach((w, j) => g += `<a href="#${w.id}"><circle class="hit" cx="${x(w.y)}" cy="${y}" r="8" fill="${G[k][1]}" stroke="#fff" stroke-width="2" data-tip="<b>${w.t}</b><br>${w.ys}　${w.a}"/><text x="${x(w.y)}" y="${j % 2 ? y + 26 : y - 13}" text-anchor="middle" class="stg s">${w.t}</text></a>`); });
+  const svg = $("#ktChart"); svg.setAttribute("viewBox", `0 0 ${W} ${H}`); svg.innerHTML = g;
+})();
+$("#ktTable").innerHTML = table(["成立","作品","ジャンル","作者・編者"], [...KOTEN].sort((a, b) => a.y - b.y).map(k => [`<b>${k.ys}</b>`, k.page ? `<a href="${k.page}"><b>${k.t}</b></a>` : `<b>${k.t}</b>`, gp(k.g), k.a]));
+$("#ktOpenings").innerHTML = [...KOTEN].sort((a, b) => a.y - b.y).map(k => `<div class="kt-open" style="--mc:${G[k.g][1]}"><b>${k.t}<small>${k.ys}・${k.a}</small></b><blockquote>${k.op}</blockquote><p>${k.opj}</p></div>`).join("");
+$("#ktZui").innerHTML = table(["","枕草子","方丈記","徒然草"], KT_ZUIHITSU.map(r => [`<b>${r[0]}</b>`, r[1], r[2], r[3]]));
+$("#ktWaka").innerHTML = table(["","万葉集","古今和歌集","新古今和歌集"], KT_WAKA.map(r => [`<b>${r[0]}</b>`, r[1], r[2], r[3]]));
+/* ヒーローの飾り（源氏香の図をもとにした模様） */
+(function(){
+  const mark = (groups, x0) => groups.map(gr => { const xs = gr.map(i => x0 + (i - 1) * 10); return xs.map(x => `<line x1="${x}" y1="10" x2="${x}" y2="100" stroke="#3A2E4A" stroke-width="3"/>`).join("") + (gr.length > 1 ? `<line x1="${xs[0]}" y1="10" x2="${xs[xs.length - 1]}" y2="10" stroke="#3A2E4A" stroke-width="3"/>` : ""); }).join("");
+  $("#decoKo").innerHTML = [[[1,2],[3],[4,5]],[[1],[2,3],[4],[5]],[[1,2,3],[4],[5]],[[1],[2],[3,4,5]],[[1,2],[3,4],[5]]].map((g, i) => mark(g, 8 + i * 60)).join("");
+})();
+initTabs("koten-tab", "works", id => id.startsWith("kt-") ? "works" : null);
+</script>
+</body>
+</html>

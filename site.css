@@ -1009,3 +1009,30 @@ ul.checklist input{margin-top:5px;accent-color:var(--ox)}
   .gj-art.wide{flex-direction:column}
   .gj-art.wide a{flex:auto}
 }
+/* 古典（koten.html） */
+.kt-feature{display:grid;grid-template-columns:minmax(0,220px) 1fr;gap:20px;align-items:center;padding:16px;border-radius:20px;background:linear-gradient(120deg,#fff,#F5ECF3);border:1px solid #E4D3E0;text-decoration:none;color:var(--ink);transition:box-shadow .15s}
+.kt-feature:hover{box-shadow:0 14px 30px -20px #9A3B8A}
+.kt-feature img{width:100%;border-radius:12px;display:block}
+.kt-f-body small{display:block;font-size:12px;letter-spacing:.14em;color:#9A3B8A}
+.kt-f-body b{display:block;font-family:var(--f-jserif);font-weight:500;font-size:clamp(24px,3vw,32px);margin:4px 0 8px}
+.kt-f-body span{display:block;font-size:14px;color:var(--sub)}
+.kt-f-body i{display:inline-block;margin-top:10px;font-style:normal;color:#9A3B8A;font-size:14px}
+.kt-grid{display:grid;grid-template-columns:repeat(2,minmax(0,1fr));gap:16px}
+.kt-card{scroll-margin-top:72px;background:#fff;border:1px solid var(--hair);border-top:6px solid var(--mc);border-radius:18px;padding:18px 20px 14px}
+.kt-head{display:flex;flex-wrap:wrap;gap:6px 10px;align-items:center;font-size:12.5px;color:var(--sub)}
+.kt-year{font-family:var(--f-latin);font-size:14px;color:var(--ink)}
+.kt-card h3{font-family:var(--f-jserif);font-weight:400;font-size:26px;margin:8px 0 2px}
+.kt-card h3 a{text-decoration-color:var(--mc)}
+.kt-card h3 small{font-family:var(--f-body);font-size:12.5px;color:var(--sub);margin-left:10px}
+.kt-author{margin:0 0 10px;font-size:13px;color:var(--sub)}
+.kt-op{margin:0 0 10px;padding:10px 14px;border-left:3px solid var(--mc);background:#FBF8F1;border-radius:0 10px 10px 0;font-family:var(--f-jserif);font-size:15.5px;line-height:1.9}
+.kt-card p{font-size:14px;margin:0 0 6px}
+.kt-links{display:flex;flex-wrap:wrap;gap:6px;align-items:center;margin-top:10px}
+.kt-open{background:#fff;border:1px solid var(--hair);border-left:6px solid var(--mc);border-radius:14px;padding:14px 18px;margin-bottom:12px}
+.kt-open b{font-family:var(--f-jserif);font-weight:500;font-size:18px}
+.kt-open b small{font-family:var(--f-body);font-weight:400;font-size:12px;color:var(--sub);margin-left:10px}
+.kt-open blockquote{margin:8px 0 6px;font-family:var(--f-jserif);font-size:17px;line-height:1.9}
+.kt-open p{margin:0;font-size:13.5px;color:var(--sub)}
+@media (max-width:960px){ .kt-grid{grid-template-columns:1fr} }
+@media (max-width:560px){ .kt-feature{grid-template-columns:1fr} }
+.chart a{text-decoration:none}
