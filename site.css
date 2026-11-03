@@ -926,3 +926,45 @@ ul.checklist input{margin-top:5px;accent-color:var(--ox)}
 @media (max-width:960px){ .sg-grid{grid-template-columns:1fr} }
 @media (max-width:560px){ .sg-cmp{grid-template-columns:1fr} }
 [id^="sgs-"],h3[id^="sg-"]{scroll-margin-top:72px}
+
+/* 源氏物語（genji.html）：金砂子を散らした料紙 */
+.p-genji{
+  --bg:#FBF8F3;
+  background:
+    radial-gradient(circle at 20% 30%, rgba(201,162,39,.32) 0 1.3px, transparent 1.8px) 0 0/46px 46px,
+    radial-gradient(circle at 70% 80%, rgba(201,162,39,.22) 0 1px, transparent 1.5px) 0 0/31px 31px,
+    radial-gradient(60vw 40vw at 92% -10%, rgba(176,84,138,.14), transparent 60%),
+    radial-gradient(60vw 40vw at -10% 110%, rgba(46,107,138,.12), transparent 60%),
+    var(--bg);
+  background-attachment:fixed;
+}
+.p-genji .hero{position:relative}
+.p-genji .hero h1{font-weight:400;letter-spacing:.08em;background:linear-gradient(100deg,#9A3B8A,#6A4C93 55%,#2E6B8A);-webkit-background-clip:text;background-clip:text;color:transparent}
+.p-genji .hero h1::after{background:linear-gradient(90deg,#B0548A,#6A4C93,#2E6B8A)}
+.p-genji nav.tabs{background:rgba(251,248,243,.92);-webkit-backdrop-filter:blur(8px);backdrop-filter:blur(8px)}
+.p-genji section>h2{border-left:6px solid #9A3B8A;padding-left:14px}
+.genjiko-deco{position:absolute;right:clamp(16px,4vw,48px);top:30px;width:min(300px,40vw);opacity:.35;pointer-events:none}
+.gj-stats .stat b{color:#9A3B8A}
+.gj-parts{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:14px}
+.gj-part{background:#fff;border:1px solid var(--hair);border-top:6px solid var(--mc);border-radius:16px;padding:16px 18px}
+.gj-part b{font-family:var(--f-jserif);font-weight:500;font-size:20px;color:var(--mc)}
+.gj-part span{display:block;font-size:12.5px;color:var(--sub)}
+.gj-part p{margin:8px 0 0;font-size:14px}
+.gj-two{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:18px;align-items:start}
+.chart.gj-small{min-width:0}
+.gj-chapters td:first-child{width:3em}
+.gj-chapters small{display:block;font-size:11.5px;color:var(--sub)}
+.gj-legend{display:flex;flex-wrap:wrap;gap:6px 18px;font-size:12.5px;color:var(--sub);margin-top:8px}
+.gj-legend i{display:inline-block;width:28px;height:0;margin-right:6px;vertical-align:middle;border-top:3px solid #9C8E78}
+.gj-legend .lg-m{border-top-color:#C9A227}
+.gj-legend .lg-s{border-top:3px dashed #C0392B}
+.gj-legend .lg-a{border-top:3px dotted #6A4C93}
+.gj-yukari{flex-wrap:wrap}
+.gj-yukari .fnode b{display:block}
+.gj-yukari .fnode small{display:block;font-size:11.5px;color:var(--sub);max-width:12em}
+.gj-yukari .fnode.me small{color:rgba(255,255,255,.85)}
+[id^="gp-"],[id^="gs-"]{scroll-margin-top:72px}
+@media (max-width:960px){ .gj-parts,.gj-two{grid-template-columns:1fr} }
+@media (max-width:760px){ .genjiko-deco{display:none} }
+.flowmap.gj-yukari{display:flex;flex-wrap:wrap;align-items:center;justify-content:center;--mc:#9A3B8A}
+.gj-yukari .fcol{flex:1 1 140px}

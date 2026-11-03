@@ -88,6 +88,7 @@ $("#page").innerHTML = `
   ${w.q ? `<div class="tate" aria-hidden="true">${w.q[0].replace(/／/g, "　")}</div>` : ""}
  </header>
  <p class="dp-lead">${w.catch}</p>
+ ${w.page ? `<div class="era-jump" style="margin:-6px 0 22px"><a class="mpill" href="${w.page[0]}" style="--mc:${w.c}">${w.page[1]} →</a></div>` : ""}
 
  <div class="stats">
   <div class="stat"><b>${w.b}</b><span>生まれた年</span><small>${w.life[0][1]}</small></div>
